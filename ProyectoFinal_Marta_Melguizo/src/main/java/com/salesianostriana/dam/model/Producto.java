@@ -18,4 +18,6 @@ public class Producto {
 	private boolean stock;
 	private LocalDate fechaCaducidad;
 	private boolean devolucion;
+	private TipoMascota tipoMascota;
+	private String imagen;
 }
