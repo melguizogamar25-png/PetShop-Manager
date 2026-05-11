@@ -1,4 +1,4 @@
-package com.salesianostriana.dam.proyectofinal_marta_melguizo;
+package com.salesianostriana.dam;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

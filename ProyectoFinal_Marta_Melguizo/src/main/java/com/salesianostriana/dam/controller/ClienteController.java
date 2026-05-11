@@ -12,7 +12,7 @@ public class ClienteController {
 	@GetMapping ("/clientes")
 	public String controladorClientes (Model model) {
 		
-		return null;
+		return "index2";
 		
 	}
 }
