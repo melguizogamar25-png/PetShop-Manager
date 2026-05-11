@@ -1,0 +1,36 @@
+:root {
+			--primary-green: #28a745;
+			--accent-orange: #f39c12;
+		}
+
+		body {
+			background-color: #f8f9fa;
+			font-family: 'Segoe UI', sans-serif;
+		}
+
+		.navbar {
+			background-color: white;
+			border-bottom: 2px solid var(--primary-green);
+		}
+
+		.btn-pet {
+			background-color: var(--primary-green);
+			color: white;
+			border-radius: 20px;
+		}
+
+		.btn-pet:hover {
+			background-color: #218838;
+			color: white;
+		}
+
+		.card {
+			border: none;
+			border-radius: 12px;
+			transition: transform 0.2s;
+		}
+
+		.card:hover {
+			transform: translateY(-5px);
+			box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+		}

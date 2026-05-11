@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="head_deps">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="../static/css/index.css" rel="stylesheet">
+</head>
+<body>
+	<nav th:fragment="menu" class="navbar navbar-expand-lg navbar-light sticky-top shadow-sm">
+		<div class="container">
+			<a class="navbar-brand fw-bold text-success" href="/">PetShop Manager</a>
+			<div class="collapse navbar-collapse">
+				<ul class="navbar-nav ms-auto">
+					<li class="nav-item"><a class="nav-link" href="/productos/">Catálogo</a></li>
+					<li class="nav-item"><a class="nav-link" href="/clientes/">Clientes</a></li>
+					<li class="nav-item"><a class="nav-link" href="/pedidos/">Pedidos</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+</body>
+
+</html>
