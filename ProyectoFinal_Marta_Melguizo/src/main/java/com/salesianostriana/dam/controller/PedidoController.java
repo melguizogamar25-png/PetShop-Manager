@@ -9,10 +9,8 @@ import lombok.RequiredArgsConstructor;
 @Controller @RequiredArgsConstructor
 public class PedidoController {
 
-	@GetMapping ("/pedido")
+	@GetMapping ("/pedidos")
 	public String controladorPedido (Model model) {
-		
-		return null;
-		
+		return "pedido-list";
 	}
 }

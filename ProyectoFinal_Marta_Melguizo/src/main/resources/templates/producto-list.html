@@ -1,27 +1,88 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments :: head_deps}"></head>
+<head th:replace="~{fragments/fragments :: head_deps}">
+    <title>Catálogo - PetShop Manager</title>
+</head>
 <body>
-    <nav th:replace="~{fragments :: menu}"></nav>
-    <div class="container mt-4">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2>Nuestro Catálogo</h2>
-            <a href="/productos/nuevo" class="btn btn-pet"> + Añadir Producto</a>
+    <nav th:replace="~{fragments/fragments :: menu}"></nav>
+
+    <!-- Page header -->
+    <div style="background:linear-gradient(135deg,#1e7a4a,#4caf7d);color:white;padding:2.5rem 0 3rem;">
+        <div class="container">
+            <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+                <div class="d-flex align-items-center gap-3">
+                    <div style="background:rgba(255,255,255,0.15);border-radius:16px;padding:1rem;font-size:2rem;line-height:1;">📦</div>
+                    <div>
+                        <h1 class="mb-0" style="font-family:'Playfair Display',serif;">Catálogo</h1>
+                        <p class="mb-0 mt-1" style="opacity:.85;">Todos los productos de tu tienda</p>
+                    </div>
+                </div>
+                <a th:href="@{/productos/nuevo}" class="btn"
+                   style="background:white;color:#1e7a4a;border-radius:50px;font-weight:800;padding:0.65rem 1.5rem;border:none;box-shadow:0 4px 14px rgba(0,0,0,0.15);">
+                    <i class="bi bi-plus-circle me-2"></i>Añadir Producto
+                </a>
+            </div>
         </div>
-        <div class="row">
-            <div class="col-md-4 mb-4" th:each="p : ${productos}">
-                <div class="card h-100 p-3">
-                    <img th:src="${p.imagen}" class="card-img-top" alt="Producto" style="max-height: 150px; object-fit: contain;">
-                    <div class="card-body text-center">
-                        <h5 class="card-title fw-bold" th:text="${p.nombre}">Nombre</h5>
-                        <p class="badge bg-info text-dark" th:text="${p.tipoMascota}">Tipo</p>
-                        <p class="card-text text-success fs-4 fw-bold" th:text="${p.precio} + ' €'">0.00 €</p>
-                        <p class="text-muted" th:text="'Stock: ' + ${p.stock}">Stock</p>
-                        <a href="#" class="btn btn-outline-success btn-sm w-100">Ver detalles</a>
+    </div>
+    <div class="container" style="margin-top:-1.5rem;">
+        <div th:if="${#lists.isEmpty(productos)}" class="row justify-content-center py-5">
+            <div class="col-md-6 text-center">
+                <div class="card p-5">
+                    <div class="fs-1 mb-3">🛒</div>
+                    <h5 class="fw-bold" style="color:#1e7a4a;">No hay productos todavía</h5>
+                    <p class="text-muted">Empieza añadiendo tu primer producto al catálogo.</p>
+                    <a th:href="@{/productos/nuevo}" class="btn-pet btn mt-2" style="display:inline-block;width:auto;">
+                        <i class="bi bi-plus-circle me-2"></i>Añadir Producto
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="row g-4" th:unless="${#lists.isEmpty(productos)}">
+            <div class="col-sm-6 col-md-4 col-lg-3" th:each="p : ${productos}">
+                <div class="card h-100">
+                    <!-- Imagen -->
+                    <div style="background:#f0faf4;border-radius:20px 20px 0 0;height:160px;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+                        <img th:if="${p.imagen != null and !p.imagen.isEmpty()}"
+                             th:src="${p.imagen}"
+                             alt="Producto"
+                             style="max-height:140px;max-width:100%;object-fit:contain;padding:0.5rem;">
+                        <span th:if="${p.imagen == null or p.imagen.isEmpty()}" style="font-size:3rem;">📦</span>
+                    </div>
+
+                    <div class="card-body d-flex flex-column p-3">
+                        <span class="badge-tipo mb-2" th:text="${p.tipoMascota}">Tipo</span>
+
+                        <h5 class="fw-bold mb-1" style="color:#1a2e1f;font-size:0.95rem;" th:text="${p.nombre}">Nombre</h5>
+
+                        <p class="text-muted small mb-2" th:text="${p.descripcion}" style="line-height:1.4;flex-grow:1;">Descripción</p>
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <span class="precio-tag" th:text="${#numbers.formatDecimal(p.precio,1,2)} + ' €'">0.00 €</span>
+                            <span class="badge" style="background:#d6f0e0;color:#155c37;border-radius:50px;font-size:0.75rem;padding:0.3rem 0.7rem;">
+                                <i class="bi bi-box me-1"></i><span th:text="${p.stock}">0</span>
+                            </span>
+                        </div>
+                        <div class="mb-3">
+                            <span th:if="${p.devolucion}" class="badge" style="background:#d6f0e0;color:#1e7a4a;">
+                                <i class="bi bi-arrow-return-left me-1"></i>Devolución permitida
+                            </span>
+                            <span th:unless="${p.devolucion}" class="badge" style="background:#fde8e8;color:#b91c1c;">
+                                <i class="bi bi-x-circle me-1"></i>Sin devolución
+                            </span>
+                        </div>
+                        <a href="#" class="btn btn-pet-outline w-100 mt-auto" style="font-size:0.85rem;">
+                            <i class="bi bi-eye me-1"></i>Ver detalles
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <div class="py-5"></div>
+
+    <footer class="footer text-center">
+        <div class="container">
+            <span>🐾 PetShop Manager &copy; 2025 &mdash; Desarrollado con Spring Boot &amp; Thymeleaf</span>
+        </div>
+    </footer>
 </body>
 </html>

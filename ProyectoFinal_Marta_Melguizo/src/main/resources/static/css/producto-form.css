@@ -1,43 +1,144 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Playfair+Display:wght@700&display=swap');
+
 :root {
-	--pet-green: #28a745;
-	--pet-dark: #2c3e50;
-	--bg-light: #f4f7f6;
+  --green-50:  #f0faf4;
+  --green-100: #d6f0e0;
+  --green-400: #4caf7d;
+  --green-500: #2e9e63;
+  --green-600: #1e7a4a;
+  --green-700: #155c37;
+  --text-dark: #1a2e1f;
+  --text-mid:  #3d5a44;
+  --shadow-md: 0 6px 24px rgba(30, 122, 74, 0.13);
 }
 
 body {
-	background-color: var(--bg-light);
-	font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(160deg, var(--green-50) 0%, #e8f5ee 100%);
+  font-family: 'Nunito', sans-serif;
+  min-height: 100vh;
 }
 
-.card-form {
-	border: none;
-	border-radius: 20px;
-	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+/* Navbar reutilizada del index.css */
+.navbar {
+  background: #fff;
+  border-bottom: 3px solid var(--green-400);
+}
+
+.navbar-brand {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  color: var(--green-600) !important;
+}
+
+.navbar-brand::before { content: '🐾'; margin-right: 0.4rem; }
+
+.nav-link {
+  color: var(--text-mid) !important;
+  font-weight: 600;
+  border-radius: 50px;
+  padding: 0.4rem 1rem !important;
+  transition: all 0.2s;
+}
+.nav-link:hover { background: var(--green-100); color: var(--green-600) !important; }
+
+/* Formulario */
+.form-card {
+  border: none;
+  border-radius: 24px;
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+.form-header {
+  background: linear-gradient(135deg, var(--green-600), var(--green-400));
+  color: white;
+  padding: 2rem 2.5rem;
+}
+
+.form-header h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  margin-bottom: 0.25rem;
+}
+
+.form-header p {
+  opacity: 0.85;
+  margin: 0;
+}
+
+.form-body {
+  padding: 2.5rem;
+  background: #fff;
 }
 
 .form-label {
-	font-weight: 600;
-	color: var(--pet-dark);
+  font-weight: 700;
+  color: var(--text-mid);
+  font-size: 0.9rem;
+  margin-bottom: 0.4rem;
+}
+
+.form-control, .form-select {
+  border: 2px solid var(--green-100);
+  border-radius: 12px;
+  padding: 0.6rem 1rem;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 600;
+  color: var(--text-dark);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--green-400);
+  box-shadow: 0 0 0 3px rgba(76, 175, 125, 0.18);
+  outline: none;
+}
+
+.form-check-input:checked {
+  background-color: var(--green-500);
+  border-color: var(--green-500);
 }
 
 .btn-save {
-	background-color: var(--pet-green);
-	border: none;
-	border-radius: 50px;
-	padding: 12px;
-	font-weight: bold;
-	transition: 0.3s;
+  background: linear-gradient(135deg, var(--green-500), var(--green-400));
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 0.75rem 2rem;
+  font-weight: 800;
+  font-family: 'Nunito', sans-serif;
+  font-size: 1rem;
+  box-shadow: 0 4px 14px rgba(46, 158, 99, 0.35);
+  transition: all 0.25s;
+  width: 100%;
 }
 
 .btn-save:hover {
-	background-color: #218838;
-	transform: scale(1.02);
+  background: linear-gradient(135deg, var(--green-600), var(--green-500));
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(46, 158, 99, 0.45);
 }
 
-.header-form {
-	background-color: var(--pet-green);
-	color: white;
-	padding: 20px;
-	border-radius: 20px 20px 0 0;
-	text-align: center;
+.btn-cancel {
+  background: transparent;
+  color: var(--text-mid);
+  border: 2px solid var(--green-100);
+  border-radius: 50px;
+  padding: 0.65rem 2rem;
+  font-weight: 700;
+  font-family: 'Nunito', sans-serif;
+  width: 100%;
+  transition: all 0.2s;
+}
+
+.btn-cancel:hover {
+  background: var(--green-50);
+  border-color: var(--green-400);
+  color: var(--green-600);
+}
+
+.field-icon {
+  font-size: 1rem;
+  margin-right: 0.3rem;
 }
