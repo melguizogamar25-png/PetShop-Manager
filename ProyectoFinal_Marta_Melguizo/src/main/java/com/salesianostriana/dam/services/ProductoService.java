@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ProductoService {
 
-	@Autowired
-	private ProductoRepository productoRepository;
+	
+	private final ProductoRepository productoRepository;
 	
 }

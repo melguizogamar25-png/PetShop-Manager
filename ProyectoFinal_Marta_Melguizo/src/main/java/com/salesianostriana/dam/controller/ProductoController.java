@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.salesianostriana.dam.model.Producto;
 import com.salesianostriana.dam.model.TipoMascota;
 import com.salesianostriana.dam.services.ProductoService;
+import com.salesianostriana.dam.services.base.BaseService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,11 +21,11 @@ import lombok.RequiredArgsConstructor;
 public class ProductoController {
 
 	@Autowired
-	private ProductoService productoService;
+	private BaseService baseService;
 	
 	@GetMapping("/")
 	public String listAll(Model model) {
-		model.addAttribute("productos", productoService.findAll());
+		model.addAttribute("productos", baseService.findAll());
 		return "producto-list";
 	}
 	
@@ -37,7 +38,7 @@ public class ProductoController {
 	
 	@PostMapping("/save")
     public String save(@ModelAttribute("producto") Producto p) {
-        productoService.save(p);
+		baseService.save(p);
         return "redirect:/productos/";
     }
 }
