@@ -24,7 +24,7 @@ public class Producto {
 	private LocalDate fechaCaducidad;
 	private boolean devolucion;
 	
-	@Enumerated(EnumType.STRING) //Preguntar a Ángel o Luismi
+	@Enumerated(EnumType.STRING)
 	//Sirve para guardar el enum como String
 	private TipoMascota tipoMascota;
 	private String imagen;

@@ -13,15 +13,5 @@ public class ClienteService {
 
 	@Autowired
 	private ClienteRepository clienteRepository;
-	
-	public List<Cliente> findAll () {
-		return clienteRepository
-				.findAll();
-	}
-	
-	public Cliente save(Cliente c) {
-		return clienteRepository
-				.save(c);
-	}
 
 }

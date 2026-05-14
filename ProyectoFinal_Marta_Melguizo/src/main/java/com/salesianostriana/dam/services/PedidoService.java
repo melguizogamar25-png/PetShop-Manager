@@ -14,20 +14,4 @@ public class PedidoService {
 	@Autowired
 	private PedidoRepository pedidoRepository;
 	
-	public List<Pedido> findAll () {
-		return pedidoRepository
-				.findAll();
-		
-	}
-	
-	public Pedido findById (String codigo) {
-		return pedidoRepository
-				.findById(codigo)
-				.orElse(null);
-	}
-	
-	public Pedido save (Pedido p) {
-		return pedidoRepository
-				.save(p);
-	}
 }

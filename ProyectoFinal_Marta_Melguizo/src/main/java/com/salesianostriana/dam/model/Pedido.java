@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -18,15 +20,15 @@ import lombok.NoArgsConstructor;
 public class Pedido {
 
 	@Id
-	private String codigo;
+	private Long codigo;
 	
 	private LocalDate fecha;
 	private double total;
 	private String descripcion;
 	
-	/*Preguntar a Ángel si poner un enum con el 
-	 * estado (pendiente, enviado, entregado)
-	 */
+	@Enumerated(EnumType.STRING)
+	private EstadoPedido estadoPedido;
+	
 	
 	@ManyToOne //Un pedido solo tiene un cliente
 	@JoinColumn (name= "cliente_id")
