@@ -20,25 +20,12 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/productos")
 public class ProductoController {
 
-	@Autowired
-	private BaseService baseService;
+	private final ProductoService productoService = new ProductoService();
 	
 	@GetMapping("/")
-	public String listAll(Model model) {
-		model.addAttribute("productos", baseService.findAll());
+	public String listAll (Model model) {
+		model.addAttribute("productos", productoService.findAll());
+		model.addAttribute("tipos", TipoMascota.values());
 		return "producto-list";
 	}
-	
-	@GetMapping("/nuevo")
-	public String showForm(Model model) {
-        model.addAttribute("producto", new Producto());
-        model.addAttribute("tipos", TipoMascota.values());
-        return "producto-form";
-    }
-	
-	@PostMapping("/save")
-    public String save(@ModelAttribute("producto") Producto p) {
-		baseService.save(p);
-        return "redirect:/productos/";
-    }
 }
