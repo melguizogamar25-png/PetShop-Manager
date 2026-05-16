@@ -55,4 +55,8 @@ public class ProductoController {
 				model.addAttribute("tipos", TipoMascota.values());
 				return "producto-form";
 	}
+	
+	//Actualizar
+	
+	//Borrar
 }
