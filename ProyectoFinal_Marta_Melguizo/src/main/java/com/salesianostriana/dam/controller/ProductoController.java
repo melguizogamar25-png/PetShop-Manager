@@ -59,4 +59,9 @@ public class ProductoController {
 	//Actualizar
 	
 	//Borrar
+	@GetMapping("/borrar/{id}")
+	public String delete(@PathVariable Long id) {
+		productoService.deleteById(id);
+		return "redirect:/productos/";
+	}
 }
