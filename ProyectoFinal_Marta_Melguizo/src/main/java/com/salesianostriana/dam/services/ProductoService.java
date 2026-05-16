@@ -7,12 +7,13 @@ import org.springframework.stereotype.Service;
 
 import com.salesianostriana.dam.model.Producto;
 import com.salesianostriana.dam.repository.ProductoRepository;
+import com.salesianostriana.dam.services.base.BaseServiceImpl;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class ProductoService {
+public class ProductoService extends BaseServiceImpl<Producto, Long, ProductoRepository>{
 
 	
 	private final ProductoRepository productoRepository;

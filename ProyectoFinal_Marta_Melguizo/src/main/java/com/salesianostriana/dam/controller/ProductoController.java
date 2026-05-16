@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -20,12 +21,12 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/productos")
 public class ProductoController {
 
-	@Autowired
-	private BaseService baseService;
+	private ProductoService productoService;
 	
 	@GetMapping("/")
 	public String listAll(Model model) {
-		model.addAttribute("productos", baseService.findAll());
+		model.addAttribute("productos", productoService.findAll());
+		model.addAttribute("tipos", TipoMascota.values());
 		return "producto-list";
 	}
 	
@@ -38,7 +39,17 @@ public class ProductoController {
 	
 	@PostMapping("/save")
     public String save(@ModelAttribute("producto") Producto p) {
-		baseService.save(p);
+		productoService.save(p);
         return "redirect:/productos/";
     }
+	
+	//Formulario editar
+	@GetMapping("/editar/{id}")
+	public String showEditrForm (@PathVariable Long id, Model model) {
+		Producto p = productoService.findById(id)
+				.orElseThrow();
+				model.addAttribute("productos", p);
+				model.addAttribute("tipos", TipoMascota.values());
+				return "producto-form";
+	}
 }
