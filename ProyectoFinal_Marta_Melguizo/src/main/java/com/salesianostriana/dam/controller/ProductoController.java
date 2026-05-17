@@ -71,9 +71,13 @@ public class ProductoController {
 	}
 	
 	//Borrar
-	@GetMapping("/borrar/{id}")
-	public String delete(@PathVariable Long id) {
-		productoService.deleteById(id);
+	@GetMapping("/*productos/borrar/{id}")
+	public String borrar(@PathVariable("id") Long id) {
+		Optional <Producto> pBorrar = productoService.findById(id);
+		
+		if(pBorrar.isPresent()) {
+			productoService.delete(pBorrar.get());
+		}
 		return "redirect:/productos/";
 	}
 }
