@@ -1,5 +1,7 @@
 package com.salesianostriana.dam.controller;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.salesianostriana.dam.model.Producto;
 import com.salesianostriana.dam.model.TipoMascota;
@@ -17,18 +20,18 @@ import com.salesianostriana.dam.services.base.BaseService;
 import lombok.RequiredArgsConstructor;
 
 @Controller 
-@RequiredArgsConstructor
-@RequestMapping("/productos")
 public class ProductoController {
 
-	private final ProductoService productoService = new ProductoService();
+	private ProductoService productoService;
 	
 
-	private ProductoService productosService;
+	public ProductoController(ProductoService productoService) {
+		this.productoService = productoService;
+	}
 	
 	@GetMapping("/")
 	public String listAll(Model model) {
-		model.addAttribute("productos", productosService.findAll());
+		model.addAttribute("productos", productoService.findAll());
 		model.addAttribute("tipos", TipoMascota.values());
 		return "producto-list";
 	}
@@ -42,21 +45,30 @@ public class ProductoController {
 	
 	@PostMapping("/save")
     public String save(@ModelAttribute("producto") Producto p) {
-		productosService.save(p);
+		productoService.save(p);
         return "redirect:/productos/";
     }
 	
 	//Formulario editar
-	@GetMapping("/editar/{id}")
-	public String showEditrForm (@PathVariable Long id, Model model) {
-		Producto p = productosService.findById(id)
-				.orElseThrow();
-				model.addAttribute("productos", p);
-				model.addAttribute("tipos", TipoMascota.values());
-				return "producto-form";
+	@GetMapping("/productos/editar/{id}")
+	public String mostrarFormularioEdicion(@PathVariable("id") long id, Model model) {
+		Optional<Producto> pEditar = productoService.findById(id);
+ 
+		if (pEditar.isPresent()) {
+			model.addAttribute("producto", pEditar.get());
+			model.addAttribute("tipos", TipoMascota.values());
+			return "producto-form";
+		} else {
+			return "redirect:/productos/";
+		}
 	}
 	
 	//Actualizar
+	@PostMapping("/productos/editar/submit")
+	public String procesarFormularioEdicion(@ModelAttribute("producto") Producto p) {
+		productoService.edit(p);
+		return "redirect:/productos/";
+	}
 	
 	//Borrar
 	@GetMapping("/borrar/{id}")

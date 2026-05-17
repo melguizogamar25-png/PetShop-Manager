@@ -13,10 +13,9 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class ProductoService extends BaseServiceImpl <Producto, Long, ProductoRepository>{
+public class ProductoService extends BaseServiceImpl<Producto, Long, ProductoRepository>{
 
 	
 	private final ProductoRepository productoRepository;
-	
 	
 }

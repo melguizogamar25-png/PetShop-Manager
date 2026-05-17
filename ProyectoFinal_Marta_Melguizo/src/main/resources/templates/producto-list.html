@@ -24,7 +24,41 @@
             </div>
         </div>
     </div>
-    <div class="container" style="margin-top:-1.5rem;">
+
+    <!-- Filtro por tipo de mascota -->
+    <div class="container mt-3 mb-2">
+        <div class="card p-3 d-flex flex-row align-items-center gap-3 flex-wrap">
+            <span class="fw-semibold"><i class="bi bi-funnel me-1"></i>Filtrar:</span>
+            <!--
+                El filtro usa botones/links en lugar de un <select> con enum vacío,
+                así evitamos el error de conversión cuando el valor es "".
+            -->
+            <a th:href="@{/productos/}"
+               class="btn btn-sm"
+               th:classappend="${tipoSeleccionado == null} ? 'btn-dark' : 'btn-outline-secondary'">
+                Todos
+            </a>
+            <a th:each="t : ${tipos}"
+               th:href="@{/productos/filtrar(tipo=${t})}"
+               class="btn btn-sm"
+               th:classappend="${tipoSeleccionado == t} ? 'btn-dark' : 'btn-outline-secondary'"
+               th:text="${t}">
+            </a>
+        </div>
+    </div>
+
+    <!-- Mensaje flash -->
+    <div class="container">
+        <div th:if="${mensaje}" class="alert alert-success alert-dismissible fade show mt-2">
+            <i class="bi bi-check-circle me-2"></i><span th:text="${mensaje}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    </div>
+
+    <!-- Contenido -->
+    <div class="container" style="margin-top:0.5rem;">
+
+        <!-- Sin resultados -->
         <div th:if="${#lists.isEmpty(productos)}" class="row justify-content-center py-5">
             <div class="col-md-6 text-center">
                 <div class="card p-5">
@@ -37,6 +71,8 @@
                 </div>
             </div>
         </div>
+
+        <!-- Grid de tarjetas -->
         <div class="row g-4" th:unless="${#lists.isEmpty(productos)}">
             <div class="col-sm-6 col-md-4 col-lg-3" th:each="p : ${productos}">
                 <div class="card h-100">
@@ -50,17 +86,24 @@
                     </div>
 
                     <div class="card-body d-flex flex-column p-3">
-                        <span class="badge-tipo mb-2" th:text="${p.tipoMascota}">Tipo</span>
+                        <!-- Usamos th:text con el enum directamente; Thymeleaf llama .name() automáticamente -->
+                        <span class="badge-tipo mb-2" th:text="${p.tipoMascota.name()}">Tipo</span>
 
                         <h5 class="fw-bold mb-1" style="color:#1a2e1f;font-size:0.95rem;" th:text="${p.nombre}">Nombre</h5>
 
                         <p class="text-muted small mb-2" th:text="${p.descripcion}" style="line-height:1.4;flex-grow:1;">Descripción</p>
-                        <div class="d-flex align-items-center justify-content-between mb-3">
+
+                        <div class="d-flex align-items-center justify-content-between mb-2">
                             <span class="precio-tag" th:text="${#numbers.formatDecimal(p.precio,1,2)} + ' €'">0.00 €</span>
-                            <span class="badge" style="background:#d6f0e0;color:#155c37;border-radius:50px;font-size:0.75rem;padding:0.3rem 0.7rem;">
+                            <!-- Badge stock: rojo si <= 5, verde si hay suficiente -->
+                            <span class="badge"
+                                  th:style="${p.stock <= 5}
+                                            ? 'background:#fde8e8;color:#b91c1c;border-radius:50px;font-size:0.75rem;padding:0.3rem 0.7rem;'
+                                            : 'background:#d6f0e0;color:#155c37;border-radius:50px;font-size:0.75rem;padding:0.3rem 0.7rem;'">
                                 <i class="bi bi-box me-1"></i><span th:text="${p.stock}">0</span>
                             </span>
                         </div>
+
                         <div class="mb-3">
                             <span th:if="${p.devolucion}" class="badge" style="background:#d6f0e0;color:#1e7a4a;">
                                 <i class="bi bi-arrow-return-left me-1"></i>Devolución permitida
@@ -69,20 +112,62 @@
                                 <i class="bi bi-x-circle me-1"></i>Sin devolución
                             </span>
                         </div>
-                        <a href="#" class="btn btn-pet-outline w-100 mt-auto" style="font-size:0.85rem;">
-                            <i class="bi bi-eye me-1"></i>Ver detalles
-                        </a>
+
+                        <!-- Botones acción -->
+                        <div class="d-flex gap-2 mt-auto">
+                            <a th:href="@{/productos/editar/{id}(id=${p.id})}"
+                               class="btn btn-sm flex-fill"
+                               style="border:2px solid #4caf7d;color:#1e7a4a;border-radius:50px;font-weight:700;font-size:0.8rem;">
+                                <i class="bi bi-pencil me-1"></i>Editar
+                            </a>
+                            <button type="button"
+                                    class="btn btn-sm"
+                                    style="border:2px solid #f87171;color:#b91c1c;border-radius:50px;font-weight:700;font-size:0.8rem;"
+                                    onclick="confirmarBorrado(this)"
+                                    th:data-url="@{/productos/borrar/{id}(id=${p.id})}"
+                                    th:data-nombre="${p.nombre}">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
     <div class="py-5"></div>
+
+    <!-- Modal confirmación borrado -->
+    <div class="modal fade" id="modalBorrar" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmar eliminación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    ¿Eliminar el producto <strong id="nombreProductoModal"></strong>? Esta acción no se puede deshacer.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <a id="btnConfirmarBorrar" href="#" class="btn btn-danger">Eliminar</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <footer class="footer text-center">
         <div class="container">
             <span>🐾 PetShop Manager &copy; 2025 &mdash; Desarrollado con Spring Boot &amp; Thymeleaf</span>
         </div>
     </footer>
+
+    <script>
+        function confirmarBorrado(btn) {
+            document.getElementById('nombreProductoModal').textContent = btn.dataset.nombre;
+            document.getElementById('btnConfirmarBorrar').href = btn.dataset.url;
+            new bootstrap.Modal(document.getElementById('modalBorrar')).show();
+        }
+    </script>
 </body>
 </html>
