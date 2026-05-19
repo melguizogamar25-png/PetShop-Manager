@@ -20,6 +20,7 @@ import com.salesianostriana.dam.services.base.BaseService;
 import lombok.RequiredArgsConstructor;
 
 @Controller 
+@RequestMapping("/productos")
 public class ProductoController {
 
 	private ProductoService productoService;
@@ -50,7 +51,7 @@ public class ProductoController {
     }
 	
 	//Formulario editar
-	@GetMapping("/productos/editar/{id}")
+	@GetMapping("/editar/{id}")
 	public String mostrarFormularioEdicion(@PathVariable("id") long id, Model model) {
 		Optional<Producto> pEditar = productoService.findById(id);
  
@@ -64,14 +65,14 @@ public class ProductoController {
 	}
 	
 	//Actualizar
-	@PostMapping("/productos/editar/submit")
+	@PostMapping("/editar/submit")
 	public String procesarFormularioEdicion(@ModelAttribute("producto") Producto p) {
 		productoService.edit(p);
 		return "redirect:/productos/";
 	}
 	
 	//Borrar
-	@GetMapping("/*productos/borrar/{id}")
+	@GetMapping("/borrar/{id}")
 	public String borrar(@PathVariable("id") Long id) {
 		Optional <Producto> pBorrar = productoService.findById(id);
 		
