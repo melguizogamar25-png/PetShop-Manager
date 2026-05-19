@@ -6,12 +6,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.salesianostriana.dam.model.Cliente;
+import com.salesianostriana.dam.model.Producto;
 import com.salesianostriana.dam.repository.ClienteRepository;
+import com.salesianostriana.dam.repository.ProductoRepository;
+import com.salesianostriana.dam.services.base.BaseServiceImpl;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
-public class ClienteService {
+@RequiredArgsConstructor
+public class ClienteService extends BaseServiceImpl<Cliente, Long, ClienteRepository>{
 
-	@Autowired
-	private ClienteRepository clienteRepository;
+	private final ClienteRepository clienteRepository;
+	
+	
 
 }
