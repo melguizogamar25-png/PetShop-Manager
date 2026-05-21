@@ -17,7 +17,7 @@ public class ProductoService extends BaseServiceImpl<Producto, Long, ProductoRep
 
 	//Producto que estan filtrados por el tipo de mascota
 	public List<Producto> findByTipoMascota(TipoMascota tipo) {
-		return productoRepository.findAll().stream()
+		return repository.findAll().stream()
 				.filter(p -> p.getTipoMascota() == tipo)
 				.toList();
 	}
