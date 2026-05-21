@@ -29,5 +29,8 @@ public class ProductoService extends BaseServiceImpl<Producto, Long, ProductoRep
                 .filter(p -> p.getTipoMascota() == (tipo))
                 .toList();
     }
+    
+    //CONTROL STOCK
+    
 	
 }

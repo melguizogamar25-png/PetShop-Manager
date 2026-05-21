@@ -1,97 +1,139 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{fragments/fragments :: head_deps}">
-	<title>PetShop Manager</title>
+    <title>PetShop Manager</title>
 </head>
-
 <body>
-	<nav th:replace="~{fragments/fragments :: menu}"></nav>
-	<section class="hero-section">
-		<div class="container text-center position-relative">
-			<div class="hero-badge mb-3">🐾 Gestión integral para tu tienda</div>
-			<h1 class="mb-3">Bienvenido a<br><span style="color:#a8dbbe;">PetShop Manager</span></h1>
-			<p class="lead mb-4 mx-auto" style="max-width:540px;">
-				Administra productos, clientes y pedidos desde un único panel intuitivo y eficiente.
-			</p>
-			<div class="d-flex justify-content-center gap-3 flex-wrap">
-				<a class="btn-pet btn" th:href="@{/productos/}">
-					<i class="bi bi-box-seam me-2"></i>Ver catálogo
-				</a>
-				<a class="btn"
-					style="background:rgba(255,255,255,0.15);color:white;border:2px solid rgba(255,255,255,0.4);border-radius:50px;font-weight:700;padding:0.65rem 1.75rem;"
-					th:href="@{/pedidos/}">
-					<i class="bi bi-cart3 me-2"></i>Ver pedidos
-				</a>
-			</div>
-		</div>
-	</section>
-	<section class="container py-5">
-		<div class="row g-4 justify-content-center">
-			<div class="col-6 col-md-3">
-				<div class="stat-card">
-					<div class="stat-number">🐶</div>
-					<div class="stat-label">Mascotas cubiertas</div>
-					<p class="text-muted small mt-1 mb-0">Perros, gatos y más</p>
-				</div>
-			</div>
-			<div class="col-6 col-md-3">
-				<div class="stat-card">
-					<div class="stat-number" style="font-size:1.8rem;">📦</div>
-					<div class="stat-label">Gestión de stock</div>
-					<p class="text-muted small mt-1 mb-0">En tiempo real</p>
-				</div>
-			</div>
-			<div class="col-6 col-md-3">
-				<div class="stat-card">
-					<div class="stat-number" style="font-size:1.8rem;">🧾</div>
-					<div class="stat-label">Control de pedidos</div>
-					<p class="text-muted small mt-1 mb-0">Historial completo</p>
-				</div>
-			</div>
-			<div class="col-6 col-md-3">
-				<div class="stat-card">
-					<div class="stat-number" style="font-size:1.8rem;">👥</div>
-					<div class="stat-label">Gestión de clientes</div>
-					<p class="text-muted small mt-1 mb-0">Datos centralizados</p>
-				</div>
-			</div>
-		</div>
-	</section>
-	<section class="container pb-5">
-		<h2 class="section-title mb-4 text-center">Accesos <span>rápidos</span></h2>
-		<div class="row g-4 justify-content-center">
-			<div class="col-md-4">
-				<div class="card p-4 text-center h-100">
-					<div class="fs-1 mb-3">📦</div>
-					<h5 class="fw-bold">Catálogo de Productos</h5>
-					<p class="text-muted small">Añade, edita y gestiona todos los productos de tu tienda.</p>
-					<a th:href="@{/productos/}" class="btn-pet btn mt-auto">Ir al catálogo</a>
-				</div>
-			</div>
-			<div class="col-md-4">
-				<div class="card p-4 text-center h-100">
-					<div class="fs-1 mb-3">👥</div>
-					<h5 class="fw-bold">Clientes</h5>
-					<p class="text-muted small">Consulta y gestiona la base de datos de clientes.</p>
-					<a th:href="@{/clientes/}" class="btn-pet btn mt-auto">Ver clientes</a>
-				</div>
-			</div>
-			<div class="col-md-4">
-				<div class="card p-4 text-center h-100">
-					<div class="fs-1 mb-3">🧾</div>
-					<h5 class="fw-bold">Pedidos</h5>
-					<p class="text-muted small">Revisa el estado y el historial completo de pedidos.</p>
-					<a th:href="@{/pedidos/}" class="btn-pet btn mt-auto">Ver pedidos</a>
-				</div>
-			</div>
-		</div>
-	</section>
-	<footer class="footer text-center">
-		<div class="container">
-			<span>🐾 PetShop Manager &copy; 2025 &mdash; Desarrollado con Spring Boot &amp; Thymeleaf</span>
-		</div>
-	</footer>
+<nav th:replace="~{fragments/fragments :: menu}"></nav>
+<section class="hero-section">
+    <div class="container position-relative">
+        <div class="row align-items-center gy-5">
+            <div class="col-lg-7">
+                <div class="hero-eyebrow">
+                    <span class="dot"></span>
+                    Panel de gestión integral
+                </div>
+                <h1>Bienvenido a<br><span class="accent">PetShop Manager</span></h1>
+                <p class="lead">
+                    Administra productos, clientes y pedidos desde un único panel
+                    intuitivo, eficiente y diseñado para tu negocio.
+                </p>
+                <div class="d-flex flex-wrap align-items-center gap-3 mb-4" sec:authorize="isAuthenticated()">
+                    <span class="d-flex align-items-center gap-2 text-white-50 small">
+                        <i class="bi bi-person-check-fill text-white"></i>
+                        Hola, <strong class="text-white ms-1" sec:authentication="name">usuario</strong>
+                    </span>
+                    <span class="badge-role badge-admin" sec:authorize="hasRole('ADMIN')">Administrador</span>
+                    <span class="badge-role badge-user"  sec:authorize="hasRole('USER')">Usuario</span>
+                </div>
+                <div class="d-flex flex-wrap gap-3">
+                    <a class="btn-pet btn" th:href="@{/productos/}">
+                        <i class="bi bi-box-seam"></i> Ver catálogo
+                    </a>
+                    <a class="btn-ghost btn" th:href="@{/pedidos/}">
+                        <i class="bi bi-cart3"></i> Ver pedidos
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-5 d-none d-lg-block text-center">
+                <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:24px;padding:2rem;display:inline-block;">
+                    <div style="font-size:6rem;line-height:1;filter:drop-shadow(0 8px 24px rgba(0,0,0,0.3));">🐾</div>
+                    <div class="mt-3 d-flex justify-content-center gap-2 flex-wrap">
+                        <span style="background:rgba(183,228,199,0.2);border:1px solid rgba(183,228,199,0.3);border-radius:100px;padding:4px 14px;font-size:0.78rem;color:rgba(255,255,255,0.85);">🐶 Perros</span>
+                        <span style="background:rgba(183,228,199,0.2);border:1px solid rgba(183,228,199,0.3);border-radius:100px;padding:4px 14px;font-size:0.78rem;color:rgba(255,255,255,0.85);">🐱 Gatos</span>
+                        <span style="background:rgba(183,228,199,0.2);border:1px solid rgba(183,228,199,0.3);border-radius:100px;padding:4px 14px;font-size:0.78rem;color:rgba(255,255,255,0.85);">🐠 Peces</span>
+                        <span style="background:rgba(183,228,199,0.2);border:1px solid rgba(183,228,199,0.3);border-radius:100px;padding:4px 14px;font-size:0.78rem;color:rgba(255,255,255,0.85);">🦜 Aves</span>
+                        <span style="background:rgba(183,228,199,0.2);border:1px solid rgba(183,228,199,0.3);border-radius:100px;padding:4px 14px;font-size:0.78rem;color:rgba(255,255,255,0.85);">🦎 Reptiles</span>
+                        <span style="background:rgba(183,228,199,0.2);border:1px solid rgba(183,228,199,0.3);border-radius:100px;padding:4px 14px;font-size:0.78rem;color:rgba(255,255,255,0.85);">🐹 Roedores</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section style="background:var(--warm-white);border-bottom:1px solid rgba(26,58,42,0.07);padding:2.5rem 0;">
+    <div class="container">
+        <div class="row g-4 text-center">
+            <div class="col-6 col-md-3">
+                <div class="stat-card h-100">
+                    <div class="stat-value">6</div>
+                    <div class="stat-label">Tipos de mascotas</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-card h-100">
+                    <div class="stat-value">📦</div>
+                    <div class="stat-label">Stock en tiempo real</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-card h-100">
+                    <div class="stat-value">🧾</div>
+                    <div class="stat-label">Historial de pedidos</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-card h-100">
+                    <div class="stat-value">📊</div>
+                    <div class="stat-label">Estadísticas avanzadas</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="container py-5">
+    <div class="text-center mb-4">
+        <h2 style="font-size:2rem;color:var(--forest);">Accesos <em style="color:var(--leaf);font-style:italic;">rápidos</em></h2>
+        <p class="text-muted" style="font-size:0.9rem;">Todo lo que necesitas a un clic de distancia</p>
+    </div>
+    <div class="row g-4 justify-content-center">
+        <div class="col-sm-6 col-md-3">
+            <div class="quick-card">
+                <div class="qc-icon">📦</div>
+                <h5>Catálogo</h5>
+                <p>Añade, edita y gestiona todos los productos de tu tienda.</p>
+                <a th:href="@{/productos/}" class="btn-pet btn w-100">
+                    <i class="bi bi-arrow-right-circle"></i> Ir al catálogo
+                </a>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3">
+            <div class="quick-card">
+                <div class="qc-icon">👥</div>
+                <h5>Clientes</h5>
+                <p>Consulta y gestiona la base de datos de clientes y socios.</p>
+                <a th:href="@{/clientes/}" class="btn-pet btn w-100">
+                    <i class="bi bi-arrow-right-circle"></i> Ver clientes
+                </a>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3">
+            <div class="quick-card">
+                <div class="qc-icon">🧾</div>
+                <h5>Pedidos</h5>
+                <p>Revisa el estado e historial completo de todos los pedidos.</p>
+                <a th:href="@{/pedidos/}" class="btn-pet btn w-100">
+                    <i class="bi bi-arrow-right-circle"></i> Ver pedidos
+                </a>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3">
+            <div class="quick-card">
+                <div class="qc-icon">📊</div>
+                <h5>Estadísticas</h5>
+                <p>Analiza ventas, stock bajo y el gasto por cliente.</p>
+                <a th:href="@{/consultas/}" class="btn-pet btn w-100">
+                    <i class="bi bi-arrow-right-circle"></i> Ver estadísticas
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+<footer class="site-footer text-center">
+    <div class="container">
+        <span>🐾 <strong>PetShop Manager</strong> &copy; 2025 &mdash; Desarrollado con Spring Boot &amp; Thymeleaf</span>
+    </div>
+</footer>
 </body>
-
 </html>
