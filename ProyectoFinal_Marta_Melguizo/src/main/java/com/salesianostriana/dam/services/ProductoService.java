@@ -16,10 +16,10 @@ import lombok.RequiredArgsConstructor;
 public class ProductoService extends BaseServiceImpl<Producto, Long, ProductoRepository>{
 
 	//Producto que estan filtrados por el tipo de mascota
-	public List<Producto> findByTipoMascota(TipoMascota tipo) {
-		return repository.findAll().stream()
-				.filter(p -> p.getTipoMascota() == tipo)
-				.toList();
-	}
+    public List<Producto> porTipoMascota(TipoMascota tipo) {
+        return findAll().stream()
+                .filter(p -> p.getTipoMascota() == (tipo))
+                .toList();
+    }
 	
 }
