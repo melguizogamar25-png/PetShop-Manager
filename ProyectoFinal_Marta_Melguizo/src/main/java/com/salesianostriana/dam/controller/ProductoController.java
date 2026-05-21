@@ -82,13 +82,4 @@ public class ProductoController {
 		return "redirect:/productos/";
 	}
 	
-	//Filtrar
-	@GetMapping("/productos/filtrar")
-	public String filtrar (@RequestParam(required = false) TipoMascota tipo, Model model) {
-		
-		if(tipo == null) {
-			return "redirect:/productos/";
-		}
-		model.addAttribute("productos", productoService);
-	}
 }
