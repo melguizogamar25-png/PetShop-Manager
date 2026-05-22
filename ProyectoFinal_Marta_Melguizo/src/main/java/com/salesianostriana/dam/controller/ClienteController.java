@@ -60,6 +60,16 @@ public class ClienteController {
 		}
 	}
 	
-	
+	//Actualización del Cliente
+	@PostMapping("/editar/{id}")
+	public String update(@PathVariable long id, @Valid @ModelAttribute("cliente")
+						Cliente c, BindingResult result) {
+		if(result.hasErrors()) {
+			return "cliente-form";
+		}
+		
+		clienteService.edit(c);
+		return "redirect:/clientes/";
+	}
 	
 }
