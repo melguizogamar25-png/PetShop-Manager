@@ -24,4 +24,5 @@ public class ClienteController {
 		model.addAttribute("clientes", clienteService.findAll());
 		return "cliente-list";
 	}
+	
 }
