@@ -1,10 +1,13 @@
 package com.salesianostriana.dam.controller;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -43,5 +46,20 @@ public class ClienteController {
 		clienteService.save(c);
 		return "redirect:/clientes/";
 	}
+	
+	//Editar Fomulario
+	@GetMapping("/editar/{id}")
+	public String mostrarFormulariodicion (@PathVariable long id, Model model) {
+		Optional<Cliente> cEditar = clienteService.findById(id);
+		
+		if(cEditar.isPresent()) {
+			model.addAttribute("cliente", cEditar.get());
+			return "cliente-form";
+		}else {
+			return "redirect:/clientes/";
+		}
+	}
+	
+	
 	
 }
