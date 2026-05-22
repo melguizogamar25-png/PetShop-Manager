@@ -10,15 +10,13 @@ import com.salesianostriana.dam.services.ClienteService;
 import lombok.RequiredArgsConstructor;
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/clientes")
 public class ClienteController {
 
-	private ClienteService clienteService;
+	private final ClienteService clienteService;
 	
-	public ClienteController (ClienteService clienteService) {
-		this.clienteService = clienteService;
-	}
-	
+	//Ponerle los filtros
 	@GetMapping("/")
 	public String listAll (Model model) {
 		model.addAttribute("clientes", clienteService.findAll());
