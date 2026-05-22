@@ -88,7 +88,7 @@ public class ProductoController {
 	
 	//Borrar
 	@GetMapping("/borrar/{id}")
-	public String borrar(@PathVariable("id") Long id) {
+	public String borrar(@PathVariable long id) {
 		Optional <Producto> pBorrar = productoService.findById(id);
 		
 		if(pBorrar.isPresent()) {

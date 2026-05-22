@@ -72,4 +72,14 @@ public class ClienteController {
 		return "redirect:/clientes/";
 	}
 	
+	@GetMapping("/borrar/{id}")
+	public String borrar(@PathVariable long id) {
+		Optional<Cliente> cBorrar = clienteService.findById(id);
+		
+		if(cBorrar.isPresent()) {
+			clienteService.delete(cBorrar.get());
+		}
+		return "redirect:/clientes/";
+	}
+	
 }
