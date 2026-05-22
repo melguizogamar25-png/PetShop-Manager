@@ -1,13 +1,107 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/fragments :: head_deps}"></head>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/fragments :: head_deps}">
+    <title>Pedidos — PetShop Manager</title>
+</head>
 <body>
-    <nav th:replace="~{fragments/fragments :: menu}"></nav>
-    <div class="container mt-5">
-        <div class="text-center py-5">
-            <h1>Pedidos</h1>
-            <p class="lead">Aquí aparecerá el listado de pedidos disponibles.</p>
+<nav th:replace="~{fragments/fragments :: menu}"></nav>
+
+<div class="page-header">
+    <div class="container position-relative">
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+            <div class="d-flex align-items-center gap-3">
+                <div class="ph-icon">🧾</div>
+                <div>
+                    <h1>Gestión de Pedidos</h1>
+                    <p>
+                        Total facturado (entregados):
+                        <strong style="color:var(--sage);"
+                                th:text="${#numbers.formatDecimal(totalFacturado,1,2)} + ' €'">0.00 €</strong>
+                    </p>
+                </div>
+            </div>
+            <a th:href="@{/pedidos/nuevo}" class="btn-light-outline" sec:authorize="hasRole('ADMIN')">
+                <i class="bi bi-plus-lg"></i> Nuevo pedido
+            </a>
         </div>
     </div>
+</div>
+
+<div class="container py-4">
+    <div class="card p-0">
+        <div class="table-scroll">
+            <table class="table table-petshop align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th class="ps-4">Código</th>
+                        <th>Fecha</th>
+                        <th>Cliente</th>
+                        <th>Estado</th>
+                        <th class="text-center">Líneas</th>
+                        <th class="text-end">Total</th>
+                        <th class="text-center pe-4">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="p : ${pedidos}">
+                        <td class="ps-4">
+                            <span class="fw-semibold" style="color:var(--text-soft);font-size:0.875rem;"
+                                  th:text="'#' + ${p.codigo}">1</span>
+                        </td>
+                        <td style="font-size:0.875rem;"
+                            th:text="${#temporals.format(p.fecha,'dd/MM/yyyy')}">—</td>
+                        <td>
+                            <span class="fw-semibold" style="font-size:0.9rem;"
+                                  th:text="${p.cliente != null ? p.cliente.nombre : '—'}">—</span>
+                        </td>
+                        <td>
+                            <span th:if="${p.estadoPedido.name() == 'pendiente'}"  class="badge-estado badge-pendiente"  th:text="${p.estadoPedido}">pendiente</span>
+                            <span th:if="${p.estadoPedido.name() == 'enviado'}"    class="badge-estado badge-enviado"    th:text="${p.estadoPedido}">enviado</span>
+                            <span th:if="${p.estadoPedido.name() == 'entregado'}"  class="badge-estado badge-entregado"  th:text="${p.estadoPedido}">entregado</span>
+                        </td>
+                        <td class="text-center">
+                            <span style="background:var(--cream-dark);color:var(--forest-mid);font-size:0.72rem;font-weight:700;border-radius:100px;padding:3px 10px;"
+                                  th:text="${p.lineas.size()} + ' líneas'">0</span>
+                        </td>
+                        <td class="text-end fw-bold" style="color:var(--forest-mid);"
+                            th:text="${#numbers.formatDecimal(p.total,1,2)} + ' €'">0.00 €</td>
+                        <td class="text-center pe-4">
+                            <div class="d-flex justify-content-center gap-2">
+                                <a th:href="@{/pedidos/{id}(id=${p.codigo})}"
+                                   class="btn btn-sm btn-outline-success rounded-pill" style="font-size:0.78rem;padding:3px 10px;">
+                                    <i class="bi bi-eye"></i> Ver
+                                </a>
+                                <a th:href="@{/pedidos/editar/{id}(id=${p.codigo})}"
+                                   class="btn btn-sm btn-outline-primary rounded-pill" style="font-size:0.78rem;padding:3px 10px;"
+                                   sec:authorize="hasRole('ADMIN')">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a th:href="@{/pedidos/borrar/{id}(id=${p.codigo})}"
+                                   class="btn btn-sm btn-outline-danger rounded-pill" style="font-size:0.78rem;padding:3px 10px;"
+                                   onclick="return confirm('¿Eliminar este pedido?')"
+                                   sec:authorize="hasRole('ADMIN')">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(pedidos)}">
+                        <td colspan="7" class="text-center py-5">
+                            <div style="font-size:2.5rem;margin-bottom:.75rem;">🧾</div>
+                            <p class="mb-0 text-muted">No hay pedidos registrados.</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<footer class="site-footer text-center mt-5">
+    <div class="container">
+        <span>🐾 <strong>PetShop Manager</strong> &copy; 2025</span>
+    </div>
+</footer>
 </body>
 </html>
