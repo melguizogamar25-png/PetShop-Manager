@@ -44,7 +44,7 @@ public class PedidoController {
 		
 		if(peDetalle.isPresent()) {
 			model.addAttribute("pedido", peDetalle.get());
-			model.addAttribute("produstos", productoService.findAll());
+			model.addAttribute("productos", productoService.findAll());
 			return "pedido-detail";
 		}else {
 			return "redirect:/pedidos/";
@@ -59,7 +59,7 @@ public class PedidoController {
 		p.setEstadoPedido(EstadoPedido.pendiente);
 		model.addAttribute("pedido", p);
 		model.addAttribute("clientes", clienteService.findAll());
-		model.addAttribute("edtados", EstadoPedido.values());
+		model.addAttribute("estados", EstadoPedido.values());
 		return "pedido-form";
 	}
 	
@@ -73,9 +73,27 @@ public class PedidoController {
 			model.addAttribute("estados", EstadoPedido.values());
 			return "pedido-form";
 		}
-		clienteService.findById(clienteId).isPresent(pedido::setCliente);
+		clienteService.findById(clienteId).ifPresent(p::setCliente);
 		p.setTotal(0.0);
 		pedidoService.save(p);
+		return "redirect:/pedidos/";
+	}
+	
+	@PostMapping("/editar/{id}")
+	public String update (@PathVariable long id, @Valid @ModelAttribute("pedido")
+						  Pedido p, BindingResult result, 
+						  @RequestParam long clienteId, Model model) {
+		if(result.hasErrors()) {
+			model.addAttribute("clientes", clienteService.findAll());
+			model.addAttribute("estados", EstadoPedido.values());
+			return "pedido-form";
+		}
+		clienteService.findById(clienteId).ifPresent(p::setCliente);
+		pedidoService.findById(id).ifPresent(existing -> {
+			p.setLineas(existing.getLineas());
+			pedidoService.recalcularTotal(p);
+		});
+		pedidoService.edit(p);
 		return "redirect:/pedidos/";
 	}
 }
