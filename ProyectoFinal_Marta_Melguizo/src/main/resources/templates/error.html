@@ -1,34 +1,31 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/fragments :: head_deps}">
-    <title>Error — PetShop Manager</title>
+    <title>Error – PetShop Manager</title>
 </head>
 <body>
-<nav th:replace="~{fragments/fragments :: menu}"></nav>
-
-<div class="error-page container">
-    <div class="row justify-content-center w-100">
-        <div class="col-md-6 col-lg-5">
-            <div class="card text-center p-0">
-                <div style="background:linear-gradient(150deg,#7f1d1d,#b91c1c);padding:2.5rem 2rem;border-radius:20px 20px 0 0;">
-                    <div style="font-size:4rem;margin-bottom:.75rem;">⚠️</div>
-                    <h3 style="font-family:'DM Serif Display',serif;color:#fff;font-size:1.6rem;margin:0;"
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <div class="card border-0 shadow-lg overflow-hidden">
+                <div class="card-header py-4 text-center"
+                     style="background: linear-gradient(135deg,#c0392b,#e74c3c);">
+                    <div style="font-size:3.5rem;">⚠️</div>
+                    <h3 class="text-white mb-0 mt-2"
                         th:text="${errorTitulo} ?: 'Ha ocurrido un error'">Error</h3>
                 </div>
-                <div style="padding:2rem 2rem 2.5rem;background:var(--warm-white);">
-                    <p style="font-size:1rem;color:var(--text-mid);margin-bottom:1.5rem;"
-                       th:text="${errorMensaje} ?: 'Se ha producido un error inesperado. Por favor, inténtalo de nuevo.'">
+                <div class="card-body text-center p-5">
+                    <p class="fs-5 text-secondary mb-4"
+                       th:text="${errorMensaje} ?: 'Se ha producido un error inesperado.'">
                         Detalle del error.
                     </p>
-                    <p style="font-size:0.8rem;color:var(--text-soft);margin-bottom:1.5rem;">
-                        Si el problema persiste, contacta con el administrador del sistema.
-                    </p>
-                    <div class="d-flex justify-content-center gap-3 flex-wrap">
+                    <hr>
+                    <div class="d-flex justify-content-center gap-3 mt-4">
                         <a th:href="@{/}" class="btn-pet btn">
-                            <i class="bi bi-house"></i> Volver al inicio
+                            <i class="bi bi-house me-1"></i>Volver al inicio
                         </a>
-                        <button onclick="history.back()" class="btn-pet-outline btn">
-                            <i class="bi bi-arrow-left"></i> Atrás
+                        <button onclick="history.back()" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left me-1"></i>Atrás
                         </button>
                     </div>
                 </div>
@@ -36,11 +33,6 @@
         </div>
     </div>
 </div>
-
-<footer class="site-footer text-center mt-5">
-    <div class="container">
-        <span>🐾 <strong>PetShop Manager</strong> &copy; 2025</span>
-    </div>
-</footer>
+<footer th:replace="~{fragments/fragments :: footer}"></footer>
 </body>
 </html>
