@@ -22,6 +22,7 @@ public class Producto {
 	@Id @GeneratedValue
 	private Long id;
 	
+	
 	private String nombre;
 	private double precio;
 	private int stock;
@@ -33,4 +34,17 @@ public class Producto {
 	private TipoMascota tipoMascota;
 	private String imagen;
 	private String descripcion;
+	
+	//Metodo para el precio con descuento si es socio
+	public double getPrecioConDescuento (boolean esSocio) {
+		double dto = switch(tipoMascota) {
+		case Ave, Reptil -> 0.10;
+		case Roedor, Pez -> 0.8;
+		default -> 0.5;
+		};
+		if (esSocio) {
+			dto += 0.5;
+		}
+		return precio * (1-dto);
+	}
 }
