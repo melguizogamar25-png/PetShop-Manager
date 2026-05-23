@@ -96,4 +96,10 @@ public class PedidoController {
 		pedidoService.edit(p);
 		return "redirect:/pedidos/";
 	}
+	
+	@GetMapping("/borrar/{id}")
+	public String delete(@PathVariable long id) {
+		pedidoService.deleteById(id);
+		return "redirect:/pedidos/";
+	}
 }
