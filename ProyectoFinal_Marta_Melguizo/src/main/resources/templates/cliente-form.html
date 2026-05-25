@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/fragments :: head_deps}">
+    <title>Cliente — PetShop Manager</title>
+</head>
+<body>
+<nav th:replace="~{fragments/fragments :: menu}"></nav>
+
+<div class="container py-5" style="max-width:600px;">
+    <div class="form-card">
+
+        <div class="form-card-header">
+            <div class="header-icon">👤</div>
+            <h4 th:text="${cliente.id != null} ? 'Editar cliente' : 'Nuevo cliente'">Cliente</h4>
+            <p>Completa los datos del cliente</p>
+        </div>
+
+        <div class="form-card-body">
+            <form th:action="${cliente.id != null}
+                              ? @{/clientes/editar/{id}(id=${cliente.id})}
+                              : @{/clientes/save}"
+                  th:object="${cliente}"
+                  method="post"
+                  id="clienteForm"
+                  novalidate>
+                <div class="mb-3">
+                    <label class="form-label">
+                        <i class="bi bi-person text-leaf"></i> Nombre completo <span class="text-danger">*</span>
+                    </label>
+                    <input type="text" class="form-control"
+                           th:field="*{nombre}" th:errorclass="is-invalid"
+                           placeholder="Ej: María García López">
+                    <div class="invalid-feedback" th:errors="*{nombre}"></div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">
+                        <i class="bi bi-envelope text-leaf"></i> Email <span class="text-danger">*</span>
+                    </label>
+                    <input type="email" class="form-control"
+                           th:field="*{email}" th:errorclass="is-invalid"
+                           placeholder="correo@ejemplo.com">
+                    <div class="invalid-feedback" th:errors="*{email}"></div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">
+                        <i class="bi bi-telephone text-leaf"></i> Teléfono <span class="text-danger">*</span>
+                    </label>
+                    <input type="number" class="form-control"
+                           th:field="*{telefono}" th:errorclass="is-invalid"
+                           placeholder="600 000 000">
+                    <div class="invalid-feedback" th:errors="*{telefono}"></div>
+                    <div class="form-text">9 dígitos sin espacios ni guiones.</div>
+                </div>
+                <div class="mb-4" style="background:rgba(64,145,108,0.07);border:1px solid rgba(64,145,108,0.18);border-radius:10px;padding:.9rem 1rem;">
+                    <div class="form-check form-switch mb-0">
+                        <input class="form-check-input" type="checkbox"
+                               id="socioTienda" th:field="*{socioTienda}">
+                        <label class="form-check-label" for="socioTienda"
+                               style="font-size:0.9rem;font-weight:600;color:var(--forest-mid);">
+                            ⭐ Es socio de la tienda
+                            <span class="fw-normal text-muted d-block" style="font-size:0.8rem;margin-top:2px;">
+                                Los socios obtienen descuentos adicionales en sus pedidos
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <hr style="border-color:rgba(26,58,42,0.1);margin-bottom:1.5rem;">
+
+                <div class="d-flex gap-3 flex-wrap">
+                    <button type="submit" class="btn-pet btn flex-grow-1" style="justify-content:center;padding:.7rem;">
+                        <i class="bi bi-check-circle"></i> Guardar cliente
+                    </button>
+                    <a th:href="@{/clientes/}" class="btn-pet-outline btn px-4">
+                        <i class="bi bi-arrow-left"></i> Cancelar
+                    </a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    const form = document.getElementById('clienteForm');
+    form?.addEventListener('submit', e => { if (!form.checkValidity()) { e.preventDefault(); e.stopPropagation(); } form.classList.add('was-validated'); });
+</script>
+
+<footer class="site-footer text-center mt-5">
+    <div class="container">
+        <span>🐾 <strong>PetShop Manager</strong> &copy; 2025</span>
+    </div>
+</footer>
+</body>
+</html>

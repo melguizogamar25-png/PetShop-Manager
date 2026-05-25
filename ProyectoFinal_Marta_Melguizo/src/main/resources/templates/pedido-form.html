@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/fragments :: head_deps}">
+    <title>Pedido — PetShop Manager</title>
+</head>
+<body>
+<nav th:replace="~{fragments/fragments :: menu}"></nav>
+
+<div class="container py-5" style="max-width:650px;">
+    <div class="form-card">
+
+        <div class="form-card-header">
+            <div class="header-icon">🧾</div>
+            <h4 th:text="${pedido.codigo != null} ? 'Editar pedido #' + ${pedido.codigo} : 'Nuevo pedido'">Pedido</h4>
+            <p>Completa los datos del pedido</p>
+        </div>
+
+        <div class="form-card-body">
+            <form th:action="${pedido.codigo != null}
+                              ? @{/pedidos/editar/{id}(id=${pedido.codigo})}
+                              : @{/pedidos/save}"
+                  th:object="${pedido}"
+                  method="post"
+                  id="pedidoForm"
+                  novalidate>
+                <div class="mb-3">
+                    <label class="form-label">
+                        <i class="bi bi-person text-leaf"></i> Cliente <span class="text-danger">*</span>
+                    </label>
+                    <select class="form-select" name="clienteId" required>
+                        <option value="">— Selecciona un cliente —</option>
+                        <option th:each="c : ${clientes}"
+                                th:value="${c.id}"
+                                th:text="${c.nombre} + (${c.socioTienda} ? ' ⭐' : '')"
+                                th:selected="${pedido.cliente != null and pedido.cliente.id == c.id}">
+                        </option>
+                    </select>
+                    <div class="invalid-feedback">Selecciona un cliente.</div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">
+                        <i class="bi bi-calendar3 text-leaf"></i> Fecha <span class="text-danger">*</span>
+                    </label>
+                    <input type="date" class="form-control"
+                           th:field="*{fecha}" th:errorclass="is-invalid">
+                    <div class="invalid-feedback" th:errors="*{fecha}"></div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">
+                        <i class="bi bi-flag text-leaf"></i> Estado <span class="text-danger">*</span>
+                    </label>
+                    <select class="form-select"
+                            th:field="*{estadoPedido}" th:errorclass="is-invalid">
+                        <option th:each="e : ${estados}" th:value="${e}" th:text="${e}"></option>
+                    </select>
+                    <div class="invalid-feedback" th:errors="*{estadoPedido}"></div>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label">
+                        <i class="bi bi-chat-left-text text-leaf"></i> Notas del pedido
+                    </label>
+                    <textarea class="form-control"
+                              th:field="*{descripcion}" th:errorclass="is-invalid"
+                              rows="3" maxlength="300"
+                              placeholder="Notas o instrucciones adicionales (opcional)..."></textarea>
+                    <div class="invalid-feedback" th:errors="*{descripcion}"></div>
+                </div>
+
+                <hr style="border-color:rgba(26,58,42,0.1);margin-bottom:1.5rem;">
+
+                <div class="d-flex gap-3 flex-wrap">
+                    <button type="submit" class="btn-pet btn flex-grow-1" style="justify-content:center;padding:.7rem;">
+                        <i class="bi bi-check-circle"></i> Guardar pedido
+                    </button>
+                    <a th:href="@{/pedidos/}" class="btn-pet-outline btn px-4">
+                        <i class="bi bi-arrow-left"></i> Cancelar
+                    </a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    const form = document.getElementById('pedidoForm');
+    form?.addEventListener('submit', e => { if (!form.checkValidity()) { e.preventDefault(); e.stopPropagation(); } form.classList.add('was-validated'); });
+</script>
+
+<footer class="site-footer text-center mt-5">
+    <div class="container">
+        <span>🐾 <strong>PetShop Manager</strong> &copy; 2025</span>
+    </div>
+</footer>
+</body>
+</html>
