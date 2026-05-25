@@ -1,11 +1,13 @@
 package com.salesianostriana.dam;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.stereotype.Component;
 
 import com.salesianostriana.dam.model.Cliente;
 import com.salesianostriana.dam.model.EstadoPedido;
+import com.salesianostriana.dam.model.LineaPedido;
 import com.salesianostriana.dam.model.Pedido;
 import com.salesianostriana.dam.model.Producto;
 import com.salesianostriana.dam.model.TipoMascota;
@@ -30,8 +32,7 @@ public class DataSeed {
 	@PostConstruct
 	public void init() {
 		//Productos
-		productoRepository.save(
-				Producto.builder()
+				Producto p1 = Producto.builder()
 				.nombre("Pienso Premium para perro Adulto")
 				.precio(34.99)
 				.stock(50)
@@ -40,10 +41,9 @@ public class DataSeed {
 				.tipoMascota(TipoMascota.PERRO)
 				.imagen("")
 				.descripcion("Alimentación completa y equilibrada para perros adultos de todas las razas.")
-				.build());
+				.build();
 				
-		productoRepository.save(
-				Producto.builder()
+				Producto p2 = Producto.builder()
 				.nombre("Arnés Acolchado para perros")
 				.precio(19.95)
 				.stock(30)
@@ -51,10 +51,9 @@ public class DataSeed {
 				.tipoMascota(TipoMascota.PERRO)
 				.imagen("")
 				.descripcion("Arnés cómodo y seguro con cierre de seguridad y pasador reflectante.")
-				.build());
+				.build();
 		
-		productoRepository.save(
-				Producto.builder()
+				Producto p3 = Producto.builder()
 				.nombre("Juguete Mordedor para perros")
 				.precio(8.50)
 				.stock(100)
@@ -62,10 +61,9 @@ public class DataSeed {
 				.tipoMascota(TipoMascota.PERRO)
 				.imagen("")
 				.descripcion("Mordedor de goma natural resistente para entretenimiento y salud dental.")
-				.build());
+				.build();
 		
-		productoRepository.save(
-				Producto.builder()
+				Producto p4 = Producto.builder()
 				.nombre("Pienso Sterilised para Gato")
 				.precio(22.50)
 				.stock(40)
@@ -74,10 +72,9 @@ public class DataSeed {
 				.tipoMascota(TipoMascota.GATO)
 				.imagen("")
 				.descripcion("Fórmula especial para gatos esterilizados. Control de peso y bienestar urinario.")
-				.build());
+				.build();
 		
-		productoRepository.save(
-				Producto.builder()
+				Producto p5 = Producto.builder()
 				.nombre("Rascador de Cama para Gatos")
 				.precio(45.00)
 				.stock(15)
@@ -85,10 +82,9 @@ public class DataSeed {
 				.tipoMascota(TipoMascota.GATO)
 				.imagen("")
 				.descripcion("Rascador de sisal con plataformas de descanso y hamaca integrada.")
-				.build());
+				.build();
 		
-		productoRepository.save(
-				Producto.builder()
+				Producto p6 = Producto.builder()
 				.nombre("Mezcla de Semillas para Canarios")
 				.precio(6.99)
 				.stock(8)
@@ -97,10 +93,9 @@ public class DataSeed {
 				.tipoMascota(TipoMascota.AVE)
 				.imagen("")
 				.descripcion("Mezcla natural de semillas sin colorantes para canarios y pájaros pequeños.")
-				.build());
+				.build();
 		
-		productoRepository.save(
-				Producto.builder()
+				Producto p7 = Producto.builder()
 				.nombre("Jaula Grande para Loros")
 				.precio(129.00)
 				.stock(8)
@@ -108,10 +103,9 @@ public class DataSeed {
 				.tipoMascota(TipoMascota.AVE)
 				.imagen("")
 				.descripcion("Jaula espaciosa con posaderos naturales, comederos y bandeja extraíble.")
-				.build());
+				.build();
 		
-		productoRepository.save(
-				Producto.builder()
+				Producto p8 = Producto.builder()
 				.nombre("Lámpara UVB para Reptiles")
 				.precio(38.00)
 				.stock(20)
@@ -119,10 +113,9 @@ public class DataSeed {
 				.tipoMascota(TipoMascota.REPTIL)
 				.imagen("")
 				.descripcion("Lámpara de espectro completo UVA/UVB esencial para tortugas y lagartos.")
-				.build());
+				.build();
 		
-		productoRepository.save(
-				Producto.builder()
+				Producto p9 = Producto.builder()
 				.nombre("Sustrato Natural para Terrario")
 				.precio(12.50)
 				.stock(60)
@@ -130,10 +123,9 @@ public class DataSeed {
 				.tipoMascota(TipoMascota.REPTIL)
 				.imagen("")
 				.descripcion("Sustrato de fibra de coco 100% natural. Retención de humedad perfecta.")
-				.build());
+				.build();
 		
-		productoRepository.save(
-				Producto.builder()
+				Producto p10 = Producto.builder()
 				.nombre("Rueda Silenciosa para Hámster")
 				.precio(14.99)
 				.stock(45)
@@ -141,10 +133,9 @@ public class DataSeed {
 				.tipoMascota(TipoMascota.ROEDOR)
 				.imagen("")
 				.descripcion("Rueda de ejercicio sin ruido, superficie antideslizante. Ideal para hámsters.")
-				.build());
+				.build();
 		
-		productoRepository.save(
-				Producto.builder()
+				Producto p11 = Producto.builder()
 				.nombre("Pellets para Conejos Enanos")
 				.precio(9.25)
 				.stock(70)
@@ -153,10 +144,9 @@ public class DataSeed {
 				.tipoMascota(TipoMascota.ROEDOR)
 				.imagen("")
 				.descripcion("Pellets enriquecidos con vitaminas C y D para conejos enanos y cobayas.")
-				.build());
+				.build();
 		
-		productoRepository.save(
-				Producto.builder()
+				Producto p12 = Producto.builder()
 				.nombre("Acuario Completo 60L con Filtro")
 				.precio(89.00)
 				.stock(5)
@@ -164,40 +154,52 @@ public class DataSeed {
 				.tipoMascota(TipoMascota.PEZ)
 				.imagen("")
 				.descripcion("Acuario de 60L con filtro interno, iluminación LED y termómetro incluido.")
-				.build());
+				.build();
 		
+				productoRepository.saveAll(List.of(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12));
 		
 		//Clientes
-		clienteRepository.save(
-				Cliente.builder()
+				Cliente c1 = Cliente.builder()
 				.nombre("María García López")
 				.email("maria.garcia@email.com")
 				.telefono(612345678)
 				.socioTienda(true)
-				.build());
+				.build();
 		
-		clienteRepository.save(
-				Cliente.builder()
+				Cliente c2= Cliente.builder()
 				.nombre("Carlos Martínez Ruiz")
 				.email("carlos.martinez@email.com")
 				.telefono(698765432)
 				.socioTienda(false)
-				.build());
+				.build();
 		
-		clienteRepository.save(
-				Cliente.builder()
+				Cliente c3= Cliente.builder()
 				.nombre("Ana Fernández Torres")
 				.email("ana.fernandez@email.com")
 				.telefono(655444333)
 				.socioTienda(true)
-				.build());
+				.build();
 	
-		clienteRepository.save(
-				Cliente.builder()
+				Cliente c4 = Cliente.builder()
 				.nombre("Pedro Sánchez Gil")
 				.email("pedro.sanchez@email.com")
 				.telefono(677888999)
+				.build();	
+		
+				clienteRepository.saveAll(List.of(c1, c2, c3, c4));
+		
+		//Pedido
+		pedidoRepository.save(
+				Pedido.builder()
+				.codigo(1001L)
+				.fecha(LocalDate.of(2026, 3, 10))
+				.estadoPedido(EstadoPedido.ENTREGADO)
+				.descripcion("Pedido mensual de María")
+				.cliente(c1)
 				.build());
+		
+		//Linea de Pedido
+		
 		
 	}
 }
