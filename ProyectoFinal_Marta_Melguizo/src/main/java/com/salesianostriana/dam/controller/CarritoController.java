@@ -38,4 +38,20 @@ public class CarritoController {
         return "redirect:/carrito";
     }
 	
+	//Quitar una unidad del carrito
+	@GetMapping("/borrarProducto/{id}")
+	public String removeOne(@PathVariable Long id) {
+		Producto p = productoService.findById(id)
+				.orElseThrow(() -> new NoSuchElementException("Producto no encontrado: " + id));
+		carritoService.removeProducto(p);
+		return "redirect:/carrito";
+	}
+	
+	//Quitamos el producto entero
+	@GetMapping("/eliminarDelCarrito/{id}")
+	public String removeAll(@PathVariable Long id) {
+		carritoService.eliminarProductoCompleto(id);
+		return "redirect:/carrito";
+	}
+	
 }
