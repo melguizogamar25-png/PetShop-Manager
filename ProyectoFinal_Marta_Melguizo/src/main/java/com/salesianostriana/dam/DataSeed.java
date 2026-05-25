@@ -4,6 +4,9 @@ import java.time.LocalDate;
 
 import org.springframework.stereotype.Component;
 
+import com.salesianostriana.dam.model.Cliente;
+import com.salesianostriana.dam.model.EstadoPedido;
+import com.salesianostriana.dam.model.Pedido;
 import com.salesianostriana.dam.model.Producto;
 import com.salesianostriana.dam.model.TipoMascota;
 import com.salesianostriana.dam.repository.ClienteRepository;
@@ -165,6 +168,36 @@ public class DataSeed {
 		
 		
 		//Clientes
+		clienteRepository.save(
+				Cliente.builder()
+				.nombre("María García López")
+				.email("maria.garcia@email.com")
+				.telefono(612345678)
+				.socioTienda(true)
+				.build());
+		
+		clienteRepository.save(
+				Cliente.builder()
+				.nombre("Carlos Martínez Ruiz")
+				.email("carlos.martinez@email.com")
+				.telefono(698765432)
+				.socioTienda(false)
+				.build());
+		
+		clienteRepository.save(
+				Cliente.builder()
+				.nombre("Ana Fernández Torres")
+				.email("ana.fernandez@email.com")
+				.telefono(655444333)
+				.socioTienda(true)
+				.build());
+	
+		clienteRepository.save(
+				Cliente.builder()
+				.nombre("Pedro Sánchez Gil")
+				.email("pedro.sanchez@email.com")
+				.telefono(677888999)
+				.build());
 		
 	}
 }
