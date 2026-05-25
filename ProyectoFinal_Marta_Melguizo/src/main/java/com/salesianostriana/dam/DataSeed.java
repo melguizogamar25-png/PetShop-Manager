@@ -189,17 +189,24 @@ public class DataSeed {
 				clienteRepository.saveAll(List.of(c1, c2, c3, c4));
 		
 		//Pedido
-		pedidoRepository.save(
-				Pedido.builder()
+				Pedido pe1 = Pedido.builder()
 				.codigo(1001L)
 				.fecha(LocalDate.of(2026, 3, 10))
 				.estadoPedido(EstadoPedido.ENTREGADO)
 				.descripcion("Pedido mensual de María")
 				.cliente(c1)
-				.build());
+				.build();
+				
+				pedidoRepository.saveAll(List.of(pe1));
 		
 		//Linea de Pedido
+		LineaPedido l1 = LineaPedido.builder()
+				.cantidad(2)
+				.precioUnitario(p1.getPrecioConDescuento(true))
+				//.subtotal(l1.getPrecioUnitario()* l1.getCantidad())
+				.producto(p1)
+				.build();
 		
-		
+		lineaPedidoRepository.saveAll(List.of(l1));
 	}
 }
