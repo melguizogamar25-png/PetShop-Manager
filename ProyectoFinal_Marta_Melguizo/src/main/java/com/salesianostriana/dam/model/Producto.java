@@ -58,8 +58,8 @@ public class Producto {
 	//Metodo para el precio con descuento si es socio
 	public double getPrecioConDescuento (boolean esSocio) {
 		double dto = switch(tipoMascota) {
-		case Ave, Reptil -> 0.10;
-		case Roedor, Pez -> 0.8;
+		case AVE, REPTIL -> 0.10;
+		case ROEDOR, PEZ -> 0.8;
 		default -> 0.5;
 		};
 		if (esSocio) {

@@ -56,7 +56,7 @@ public class PedidoController {
 	public String showForm (Model model) {
 		Pedido p = new Pedido();
 		p.setFecha(LocalDate.now());
-		p.setEstadoPedido(EstadoPedido.pendiente);
+		p.setEstadoPedido(EstadoPedido.PENDIENTE);
 		model.addAttribute("pedido", p);
 		model.addAttribute("clientes", clienteService.findAll());
 		model.addAttribute("estados", EstadoPedido.values());

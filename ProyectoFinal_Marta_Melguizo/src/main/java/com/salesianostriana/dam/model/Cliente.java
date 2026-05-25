@@ -40,8 +40,8 @@ public class Cliente {
 	private String email;
 	
 	@NotNull(message = "El teléfono es obligatorio.")
-	@Min(value = 100000000L, message = "El teléfono debe tener 9 dígitos.")
-	@Max(value = 999999999L, message = "El teléfono debe tener 9 dígitos.")
+	@Min(value = 100000000, message = "El teléfono debe tener 9 dígitos.")
+	@Max(value = 999999999, message = "El teléfono debe tener 9 dígitos.")
 	private int telefono;
 	
 	private boolean socioTienda;
