@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/fragments :: head_deps}">
+    <title>Mi área — PetShop Manager</title>
+</head>
+<body>
+<nav th:replace="~{fragments/fragments :: menu_user}"></nav>
+
+<div class="page-header">
+    <div class="container position-relative">
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+            <div class="d-flex align-items-center gap-3">
+                <div class="ph-icon">🐾</div>
+                <div>
+                    <h1>¡Hola, <span sec:authentication="name">usuario</span>!</h1>
+                    <p>Explora el catálogo y haz tus compras con descuentos exclusivos.</p>
+                </div>
+            </div>
+            <span class="badge-role badge-user">Usuario</span>
+        </div>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row g-4 justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            <div class="quick-card">
+                <div class="qc-icon">📦</div>
+                <h5>Catálogo</h5>
+                <p>Explora todos los productos disponibles para tu mascota.</p>
+                <a th:href="@{/productos/}" class="btn-pet btn w-100" style="justify-content:center;">
+                    <i class="bi bi-arrow-right-circle"></i> Ver catálogo
+                </a>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+            <div class="quick-card">
+                <div class="qc-icon">🛒</div>
+                <h5>Mi carrito</h5>
+                <p>Revisa los productos añadidos antes de confirmar tu pedido.</p>
+                <a th:href="@{/carrito}" class="btn-pet btn w-100" style="justify-content:center;">
+                    <i class="bi bi-bag"></i> Ir al carrito
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="~{fragments/fragments :: footer}"></footer>
+</body>
+</html>
