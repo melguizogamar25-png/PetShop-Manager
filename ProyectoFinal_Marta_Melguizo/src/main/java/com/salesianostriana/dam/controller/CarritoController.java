@@ -54,4 +54,9 @@ public class CarritoController {
 		return "redirect:/carrito";
 	}
 	
-}
+	@GetMapping("/carrito/vaciar")
+		public String vaciar() {
+			carritoService.vaciarCarrito();
+			return "redirect:/carrito";
+		}
+	}
