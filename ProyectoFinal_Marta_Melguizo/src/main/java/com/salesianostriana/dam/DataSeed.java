@@ -111,7 +111,7 @@ public class DataSeed {
 				.stock(20)
 				.devolucion(true)
 				.tipoMascota(TipoMascota.REPTIL)
-				.imagen("")
+				.imagen("https://media.adeo.com/mkp/76ade02e796eceb84d8541727f8dbb6c/media.jpg?width=3000&height=3000&format=jpg&quality=80&fit=bounds")
 				.descripcion("Lámpara de espectro completo UVA/UVB esencial para tortugas y lagartos.")
 				.build();
 
@@ -121,7 +121,7 @@ public class DataSeed {
 				.stock(60)
 				.devolucion(false)
 				.tipoMascota(TipoMascota.REPTIL)
-				.imagen("")
+				.imagen("https://static3.zoomalia.com/cdn-cgi/image/width=800,height=800,format=auto/prod_img/22990/lm_f85060325cb5838f9cabfd2b02eec519_st3.jpg")
 				.descripcion("Sustrato de fibra de coco 100% natural. Retención de humedad perfecta.")
 				.build();
 
@@ -131,7 +131,7 @@ public class DataSeed {
 				.stock(45)
 				.devolucion(true)
 				.tipoMascota(TipoMascota.ROEDOR)
-				.imagen("")
+				.imagen("https://m.media-amazon.com/images/I/71BvF7UXHNL._AC_SX569_.jpg")
 				.descripcion("Rueda de ejercicio sin ruido, superficie antideslizante. Ideal para hámsters.")
 				.build();
 
@@ -151,7 +151,7 @@ public class DataSeed {
 				.precio(89.00)
 				.stock(5)
 				.devolucion(true).tipoMascota(TipoMascota.PEZ)
-				.imagen("")
+				.imagen("https://static3.zoomalia.com/cdn-cgi/image/width=800,height=800,format=auto/prod_img/15599/lm_cf9d006bd74b4ba33ed8fd389640b50f_st3.jpg")
 				.descripcion("Acuario de 60L con filtro interno, iluminación LED y termómetro incluido.")
 				.build();
 
