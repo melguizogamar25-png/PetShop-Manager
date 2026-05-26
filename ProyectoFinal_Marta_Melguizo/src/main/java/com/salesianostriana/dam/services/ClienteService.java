@@ -19,6 +19,15 @@ public class ClienteService extends BaseServiceImpl<Cliente, Long, ClienteReposi
 
 	private final ClienteRepository clienteRepository;
 	
+	//Consultas derivadas
+	// - Busca los clientes que el nombre contiene el texto
+	public List<Cliente> buscarPorNombre(String nombre) {
+		return repository.findByNombreContainingIgnoreCase(nombre);
+	}
 	
-
+	// - Solo los clientes que son socios
+	public List<Cliente> obtenerSocios() {
+		return repository.findBySocioTiendaTrue();
+	}
+	
 }
