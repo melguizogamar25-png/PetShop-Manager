@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/fragments :: head_deps}">
+    <title>Confirmar Pedido – PetShop Manager</title>
+</head>
+<body>
+<nav th:replace="~{fragments/fragments :: menu_user}"></nav>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+
+            <h2 class="fw-bold mb-4 text-center">📋 Confirmación del pedido</h2>
+            <div class="ticket-container">
+                <div class="ticket">
+                    <div class="ticket-header">
+                        <div style="font-size:2.5rem;">🐾</div>
+                        <div class="ticket-title">PetShop Manager</div>
+                        <small class="text-muted" th:text="${#temporals.format(#dates.createNow(),'dd/MM/yyyy HH:mm')}">
+                            Fecha
+                        </small>
+                    </div>
+                    <div th:each="entry : ${productos}">
+                        <div class="d-flex justify-content-between align-items-start py-1">
+                            <div style="max-width:60%;">
+                                <span class="fw-semibold small" th:text="${entry.key.nombre}">Producto</span>
+                                <br>
+                                <small class="text-muted"
+                                       th:text="${entry.value} + ' x ' + #numbers.formatDecimal(entry.key.precio,1,2) + ' €'">
+                                </small>
+                            </div>
+                            <span class="fw-bold small"
+                                  th:text="${#numbers.formatDecimal(entry.key.precio * entry.value,1,2)} + ' €'">
+                                0.00 €
+                            </span>
+                        </div>
+                        <div class="ticket-line"></div>
+                    </div>
+                    <div class="d-flex justify-content-between fw-bold mt-2">
+                        <span>TOTAL (sin desc.):</span>
+                        <span th:text="${#numbers.formatDecimal(total_carrito,1,2)} + ' €'">0.00 €</span>
+                    </div>
+                    <div class="ticket-footer">
+                        <small class="text-muted">
+                            * Los descuentos por tipo de mascota y condición de socio<br>
+                            se aplicarán automáticamente al confirmar.
+                        </small>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex gap-3 justify-content-center mt-4">
+                <a th:href="@{/carrito/confirmar}" class="btn-pet btn">
+                    <i class="bi bi-check-circle me-1"></i>Confirmar y pagar
+                </a>
+                <a th:href="@{/carrito}" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left me-1"></i>Volver al carrito
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<footer th:replace="~{fragments/fragments :: footer}"></footer>
+</body>
+</html>
