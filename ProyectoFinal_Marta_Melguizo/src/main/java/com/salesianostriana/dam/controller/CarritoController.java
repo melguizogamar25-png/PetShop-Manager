@@ -59,4 +59,5 @@ public class CarritoController {
 			carritoService.vaciarCarrito();
 			return "redirect:/carrito";
 		}
+	
 	}
