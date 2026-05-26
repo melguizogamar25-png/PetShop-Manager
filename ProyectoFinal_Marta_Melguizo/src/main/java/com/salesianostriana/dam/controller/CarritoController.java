@@ -73,5 +73,4 @@ public class CarritoController {
 		return "ticket";
 	}
 	
-	
 	}
