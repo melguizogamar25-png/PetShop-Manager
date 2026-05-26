@@ -7,56 +7,48 @@
 <div class="login-wrap">
     <div class="login-box">
         <div class="login-top">
-            <div style="font-size:2.2rem;">🐾</div>
+            <div style="font-size:2rem;">🐾</div>
             <h4>PetShop Manager</h4>
             <p>Accede a tu panel de gestión</p>
         </div>
         <div class="login-body">
 
             <div th:if="${param.error}"
-                 class="alert d-flex align-items-center gap-2 py-2 mb-3"
-                 style="background:#fef2f2;border:1px solid #fecaca;border-radius:10px;font-size:.875rem;color:#991b1b;">
+                 class="alert alert-danger d-flex align-items-center gap-2 py-2 mb-3" style="font-size:.875rem;">
                 <i class="bi bi-exclamation-circle-fill flex-shrink-0"></i>
                 Usuario o contraseña incorrectos.
             </div>
 
             <div th:if="${param.logout}"
-                 class="alert d-flex align-items-center gap-2 py-2 mb-3"
-                 style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;font-size:.875rem;color:#166534;">
+                 class="alert alert-success d-flex align-items-center gap-2 py-2 mb-3" style="font-size:.875rem;">
                 <i class="bi bi-check-circle-fill flex-shrink-0"></i>
                 Has cerrado sesión correctamente.
             </div>
 
             <form th:action="@{/login}" method="post">
                 <div class="mb-3">
-                    <label class="form-label fw-semibold small">
-                        <i class="bi bi-person me-1" style="color:var(--verde-med);"></i>Usuario
-                    </label>
+                    <label class="form-label fw-semibold small">Usuario</label>
                     <input type="text" name="username" class="form-control"
                            placeholder="admin o user" autofocus required>
                 </div>
                 <div class="mb-4">
-                    <label class="form-label fw-semibold small">
-                        <i class="bi bi-lock me-1" style="color:var(--verde-med);"></i>Contraseña
-                    </label>
+                    <label class="form-label fw-semibold small">Contraseña</label>
                     <input type="password" name="password" class="form-control"
                            placeholder="Contraseña" required>
                 </div>
-                <button type="submit" class="btn btn-verde w-100 rounded-pill py-2 fw-600">
+                <button type="submit" class="btn btn-verde w-100 rounded-pill py-2">
                     <i class="bi bi-box-arrow-in-right me-1"></i>Iniciar sesión
                 </button>
             </form>
 
             <hr class="my-3">
-            <p class="text-center text-muted small mb-2 fw-semibold" style="text-transform:uppercase;letter-spacing:.05em;">
-                Cuentas de demo
-            </p>
+            <p class="text-center text-muted small fw-semibold mb-2" style="text-transform:uppercase;letter-spacing:.05em;">Cuentas de demo</p>
             <div class="d-flex justify-content-center gap-3">
-                <div class="text-center p-2 rounded-3" style="background:#fffbeb;border:1px solid #fde68a;min-width:110px;">
+                <div class="text-center p-2 rounded-3 border" style="min-width:110px;">
                     <span class="badge-admin d-inline-block mb-1">Admin</span>
                     <p class="mb-0 small text-muted">admin / admin</p>
                 </div>
-                <div class="text-center p-2 rounded-3" style="background:#f0fdf4;border:1px solid #bbf7d0;min-width:110px;">
+                <div class="text-center p-2 rounded-3 border" style="min-width:110px;">
                     <span class="badge-user d-inline-block mb-1">User</span>
                     <p class="mb-0 small text-muted">user / user</p>
                 </div>

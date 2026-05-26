@@ -8,15 +8,10 @@
 <nav th:replace="~{fragments/fragments :: menu}"></nav>
 
 <div class="seccion-header">
-    <div class="container d-flex flex-wrap align-items-center justify-content-between gap-3">
-        <div class="d-flex align-items-center gap-3">
-            <div style="background:rgba(255,255,255,0.15);border-radius:10px;width:46px;height:46px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;">🛠️</div>
-            <div>
-                <h4 class="text-white fw-bold mb-0">Panel del Administrador</h4>
-                <p class="text-white mb-0" style="opacity:.75;font-size:.875rem;">
-                    Hola, <strong sec:authentication="name">admin</strong>. Tienes acceso completo a la tienda.
-                </p>
-            </div>
+    <div class="container d-flex align-items-center justify-content-between">
+        <div>
+            <h5 class="fw-bold mb-0">Panel del Administrador</h5>
+            <p class="mb-0 small opacity-75">Hola, <strong sec:authentication="name">admin</strong>. Tienes acceso completo.</p>
         </div>
         <span class="badge-admin">Administrador</span>
     </div>
@@ -24,46 +19,51 @@
 
 <div class="container py-5 flex-grow-1">
     <div class="row g-3">
+
         <div class="col-md-6 col-lg-3">
-            <div class="quick-card">
-                <div class="qc-icon">📦</div>
-                <h5>Productos</h5>
-                <p>Crea, edita o elimina productos del catálogo.</p>
+            <div class="card h-100 border-0 shadow-sm text-center p-4">
+                <div class="fs-2 mb-2">📦</div>
+                <h6 class="fw-bold" style="color:var(--verde);">Productos</h6>
+                <p class="small text-muted flex-grow-1">Crea, edita o elimina productos del catálogo.</p>
                 <a th:href="@{/productos/}" class="btn btn-verde btn-sm rounded-pill w-100">
                     <i class="bi bi-box-seam me-1"></i>Gestionar
                 </a>
             </div>
         </div>
+
         <div class="col-md-6 col-lg-3">
-            <div class="quick-card">
-                <div class="qc-icon">👥</div>
-                <h5>Clientes</h5>
-                <p>Consulta la base de clientes y socios.</p>
+            <div class="card h-100 border-0 shadow-sm text-center p-4">
+                <div class="fs-2 mb-2">👥</div>
+                <h6 class="fw-bold" style="color:var(--verde);">Clientes</h6>
+                <p class="small text-muted flex-grow-1">Consulta la base de clientes y socios.</p>
                 <a th:href="@{/clientes/}" class="btn btn-verde btn-sm rounded-pill w-100">
                     <i class="bi bi-people me-1"></i>Gestionar
                 </a>
             </div>
         </div>
+
         <div class="col-md-6 col-lg-3">
-            <div class="quick-card">
-                <div class="qc-icon">🧾</div>
-                <h5>Pedidos</h5>
-                <p>Crea pedidos, añade líneas y cambia estados.</p>
+            <div class="card h-100 border-0 shadow-sm text-center p-4">
+                <div class="fs-2 mb-2">🧾</div>
+                <h6 class="fw-bold" style="color:var(--verde);">Pedidos</h6>
+                <p class="small text-muted flex-grow-1">Crea pedidos, añade líneas y cambia estados.</p>
                 <a th:href="@{/pedidos/}" class="btn btn-verde btn-sm rounded-pill w-100">
                     <i class="bi bi-receipt me-1"></i>Gestionar
                 </a>
             </div>
         </div>
+
         <div class="col-md-6 col-lg-3">
-            <div class="quick-card">
-                <div class="qc-icon">📊</div>
-                <h5>Estadísticas</h5>
-                <p>Ventas, top productos y alertas de stock.</p>
+            <div class="card h-100 border-0 shadow-sm text-center p-4">
+                <div class="fs-2 mb-2">📊</div>
+                <h6 class="fw-bold" style="color:var(--verde);">Estadísticas</h6>
+                <p class="small text-muted flex-grow-1">Ventas, top productos y alertas de stock.</p>
                 <a th:href="@{/consultas/}" class="btn btn-verde btn-sm rounded-pill w-100">
                     <i class="bi bi-bar-chart-line me-1"></i>Ver estadísticas
                 </a>
             </div>
         </div>
+
     </div>
 </div>
 

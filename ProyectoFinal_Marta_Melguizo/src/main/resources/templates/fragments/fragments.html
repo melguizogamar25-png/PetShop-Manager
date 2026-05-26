@@ -10,41 +10,29 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
 </head>
 
-<!--Admin -->
+<!-- Admin -->
 <nav th:fragment="menu" class="navbar navbar-expand-lg sticky-top pet-navbar">
     <div class="container">
-        <a class="navbar-brand d-flex align-items-center gap-2" th:href="@{/}">
-            <span style="background:var(--verde-med);border-radius:7px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;">🐾</span>
-            PetShop Manager
-        </a>
+        <a class="navbar-brand" th:href="@{/}">🐾 PetShop Manager</a>
 
         <button class="navbar-toggler border-0" type="button"
-                data-bs-toggle="collapse" data-bs-target="#navAdmin"
-                style="color:rgba(255,255,255,.75);">
+                data-bs-toggle="collapse" data-bs-target="#navAdmin">
             <i class="bi bi-list fs-3 text-white"></i>
         </button>
 
         <div class="collapse navbar-collapse" id="navAdmin">
             <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-1">
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/productos/}">
-                        <i class="bi bi-box-seam me-1"></i>Productos
-                    </a>
+                    <a class="nav-link" th:href="@{/productos/}"><i class="bi bi-box-seam me-1"></i>Productos</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/clientes/}">
-                        <i class="bi bi-people me-1"></i>Clientes
-                    </a>
+                    <a class="nav-link" th:href="@{/clientes/}"><i class="bi bi-people me-1"></i>Clientes</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/pedidos/}">
-                        <i class="bi bi-receipt me-1"></i>Pedidos
-                    </a>
+                    <a class="nav-link" th:href="@{/pedidos/}"><i class="bi bi-receipt me-1"></i>Pedidos</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/consultas/}">
-                        <i class="bi bi-bar-chart-line me-1"></i>Estadísticas
-                    </a>
+                    <a class="nav-link" th:href="@{/consultas/}"><i class="bi bi-bar-chart-line me-1"></i>Estadísticas</a>
                 </li>
                 <li class="nav-item" sec:authorize="hasRole('ADMIN')">
                     <a class="nav-link nav-link-gold" th:href="@{/productos/nuevo}">
@@ -55,9 +43,9 @@
 
             <ul class="navbar-nav ms-auto align-items-center gap-2">
                 <li class="nav-item" sec:authorize="isAuthenticated()">
-                    <span class="d-flex align-items-center gap-2 small" style="color:rgba(255,255,255,.7);">
-                        <i class="bi bi-person-circle text-white" style="font-size:1.1rem;"></i>
-                        <span class="text-white" sec:authentication="name">usuario</span>
+                    <span class="small text-white opacity-75 d-flex align-items-center gap-2">
+                        <i class="bi bi-person-circle"></i>
+                        <span sec:authentication="name">usuario</span>
                         <span class="badge-admin" sec:authorize="hasRole('ADMIN')">Admin</span>
                         <span class="badge-user"  sec:authorize="hasRole('USER')">User</span>
                     </span>
@@ -77,48 +65,39 @@
     </div>
 </nav>
 
-<!-- User -->
+<!-- Usuario -->
 <nav th:fragment="menu_user" class="navbar navbar-expand-lg sticky-top pet-navbar">
     <div class="container">
-        <a class="navbar-brand d-flex align-items-center gap-2" th:href="@{/}">
-            <span style="background:var(--verde-med);border-radius:7px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;">🐾</span>
-            PetShop Manager
-        </a>
+        <a class="navbar-brand" th:href="@{/}">🐾 PetShop Manager</a>
 
         <button class="navbar-toggler border-0" type="button"
-                data-bs-toggle="collapse" data-bs-target="#navUser"
-                style="color:rgba(255,255,255,.75);">
+                data-bs-toggle="collapse" data-bs-target="#navUser">
             <i class="bi bi-list fs-3 text-white"></i>
         </button>
 
         <div class="collapse navbar-collapse" id="navUser">
             <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-1">
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/}">
-                        <i class="bi bi-house me-1"></i>Inicio
-                    </a>
+                    <a class="nav-link" th:href="@{/}"><i class="bi bi-house me-1"></i>Inicio</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/productos/}">
-                        <i class="bi bi-box-seam me-1"></i>Catálogo
-                    </a>
+                    <a class="nav-link" th:href="@{/productos/}"><i class="bi bi-box-seam me-1"></i>Catálogo</a>
                 </li>
             </ul>
 
-            <ul class="navbar-nav ms-auto align-items-center gap-3">
-                <!-- Carrito con badge -->
+            <ul class="navbar-nav ms-auto align-items-center gap-2">
                 <li class="nav-item">
                     <a class="nav-link position-relative" th:href="@{/carrito}">
-                        <i class="bi bi-cart3 text-white" style="font-size:1.25rem;"></i>
+                        <i class="bi bi-cart3 text-white" style="font-size:1.2rem;"></i>
                         <span class="cart-badge"
                               th:if="${unidades_carrito != null and unidades_carrito > 0}"
                               th:text="${unidades_carrito}">0</span>
                     </a>
                 </li>
                 <li class="nav-item" sec:authorize="isAuthenticated()">
-                    <span class="d-flex align-items-center gap-2 small" style="color:rgba(255,255,255,.7);">
-                        <i class="bi bi-person-circle text-white" style="font-size:1.1rem;"></i>
-                        <span class="text-white" sec:authentication="name">usuario</span>
+                    <span class="small text-white opacity-75 d-flex align-items-center gap-2">
+                        <i class="bi bi-person-circle"></i>
+                        <span sec:authentication="name">usuario</span>
                         <span class="badge-user">User</span>
                     </span>
                 </li>
@@ -131,6 +110,8 @@
         </div>
     </div>
 </nav>
+
+<!-- Footer -->
 <footer th:fragment="footer" class="site-footer text-center mt-auto">
     <div class="container">
         <span>🐾 <strong>PetShop Manager</strong> &copy; 2025 &mdash; Spring Boot &amp; Thymeleaf</span>
