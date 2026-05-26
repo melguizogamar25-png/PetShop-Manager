@@ -3,33 +3,33 @@
 <head th:replace="~{fragments/fragments :: head_deps}">
     <title>Error — PetShop Manager</title>
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
 <nav th:replace="~{fragments/fragments :: menu}"></nav>
 
-<div class="error-page container">
+<div class="error-wrap container flex-grow-1">
     <div class="row justify-content-center w-100">
         <div class="col-md-6 col-lg-5">
-            <div class="card text-center p-0">
-                <div style="background:linear-gradient(150deg,#7f1d1d,#b91c1c);padding:2.5rem 2rem;border-radius:20px 20px 0 0;">
-                    <div style="font-size:4rem;margin-bottom:.75rem;">⚠️</div>
-                    <h3 style="font-family:'DM Serif Display',serif;color:#fff;font-size:1.6rem;margin:0;"
-                        th:text="${errorTitulo} ?: 'Ha ocurrido un error'">Error</h3>
+            <div class="card border-0 shadow-sm text-center" style="border-radius:16px;overflow:hidden;">
+                <div style="background:linear-gradient(135deg,#7f1d1d,#b91c1c);padding:2.5rem 2rem;">
+                    <div style="font-size:3.5rem;">⚠️</div>
+                    <h4 class="text-white fw-bold mt-2 mb-0"
+                        th:text="${errorTitulo} ?: 'Ha ocurrido un error'">Error</h4>
                 </div>
-                <div style="padding:2rem 2rem 2.5rem;background:var(--warm-white);">
-                    <p style="font-size:1rem;color:var(--text-mid);margin-bottom:1.5rem;"
-                       th:text="${errorMensaje} ?: 'Se ha producido un error inesperado. Por favor, inténtalo de nuevo.'">
+                <div class="card-body p-4">
+                    <p class="text-muted mb-3"
+                       th:text="${errorMensaje} ?: 'Se ha producido un error inesperado. Inténtalo de nuevo.'">
                         Detalle del error.
                     </p>
-                    <p style="font-size:0.8rem;color:var(--text-soft);margin-bottom:1.5rem;">
-                        Si el problema persiste, contacta con el administrador del sistema.
+                    <p class="small text-muted mb-4">
+                        Si el problema persiste, contacta con el administrador.
                     </p>
-                    <div class="d-flex justify-content-center gap-3 flex-wrap">
-                        <a th:href="@{/}" class="btn-pet btn">
-                            <i class="bi bi-house"></i> Volver al inicio
+                    <div class="d-flex justify-content-center gap-2 flex-wrap">
+                        <a th:href="@{/}" class="btn btn-verde rounded-pill px-4">
+                            <i class="bi bi-house me-1"></i>Volver al inicio
                         </a>
-                        <button onclick="history.back()" class="btn-pet-outline btn">
-                            <i class="bi bi-arrow-left"></i> Atrás
-                        </button>
+                        <a th:href="javascript:history.back()" class="btn btn-verde-outline rounded-pill px-4">
+                            <i class="bi bi-arrow-left me-1"></i>Atrás
+                        </a>
                     </div>
                 </div>
             </div>

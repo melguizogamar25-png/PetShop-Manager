@@ -4,33 +4,33 @@
 <head th:replace="~{fragments/fragments :: head_deps}">
     <title>Panel Admin — PetShop Manager</title>
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
 <nav th:replace="~{fragments/fragments :: menu}"></nav>
 
-<div class="page-header">
-    <div class="container position-relative">
-        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
-            <div class="d-flex align-items-center gap-3">
-                <div class="ph-icon">🛠️</div>
-                <div>
-                    <h1>Panel del Administrador</h1>
-                    <p>Hola, <strong sec:authentication="name">admin</strong>. Tienes acceso completo a la tienda.</p>
-                </div>
+<div class="seccion-header">
+    <div class="container d-flex flex-wrap align-items-center justify-content-between gap-3">
+        <div class="d-flex align-items-center gap-3">
+            <div style="background:rgba(255,255,255,0.15);border-radius:10px;width:46px;height:46px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;">🛠️</div>
+            <div>
+                <h4 class="text-white fw-bold mb-0">Panel del Administrador</h4>
+                <p class="text-white mb-0" style="opacity:.75;font-size:.875rem;">
+                    Hola, <strong sec:authentication="name">admin</strong>. Tienes acceso completo a la tienda.
+                </p>
             </div>
-            <span class="badge-role badge-admin">Administrador</span>
         </div>
+        <span class="badge-admin">Administrador</span>
     </div>
 </div>
 
-<div class="container py-5">
-    <div class="row g-4">
+<div class="container py-5 flex-grow-1">
+    <div class="row g-3">
         <div class="col-md-6 col-lg-3">
             <div class="quick-card">
                 <div class="qc-icon">📦</div>
                 <h5>Productos</h5>
                 <p>Crea, edita o elimina productos del catálogo.</p>
-                <a th:href="@{/productos/}" class="btn-pet btn w-100" style="justify-content:center;">
-                    <i class="bi bi-box-seam"></i> Gestionar
+                <a th:href="@{/productos/}" class="btn btn-verde btn-sm rounded-pill w-100">
+                    <i class="bi bi-box-seam me-1"></i>Gestionar
                 </a>
             </div>
         </div>
@@ -39,8 +39,8 @@
                 <div class="qc-icon">👥</div>
                 <h5>Clientes</h5>
                 <p>Consulta la base de clientes y socios.</p>
-                <a th:href="@{/clientes/}" class="btn-pet btn w-100" style="justify-content:center;">
-                    <i class="bi bi-people"></i> Gestionar
+                <a th:href="@{/clientes/}" class="btn btn-verde btn-sm rounded-pill w-100">
+                    <i class="bi bi-people me-1"></i>Gestionar
                 </a>
             </div>
         </div>
@@ -49,18 +49,18 @@
                 <div class="qc-icon">🧾</div>
                 <h5>Pedidos</h5>
                 <p>Crea pedidos, añade líneas y cambia estados.</p>
-                <a th:href="@{/pedidos/}" class="btn-pet btn w-100" style="justify-content:center;">
-                    <i class="bi bi-cart3"></i> Gestionar
+                <a th:href="@{/pedidos/}" class="btn btn-verde btn-sm rounded-pill w-100">
+                    <i class="bi bi-receipt me-1"></i>Gestionar
                 </a>
             </div>
         </div>
         <div class="col-md-6 col-lg-3">
             <div class="quick-card">
                 <div class="qc-icon">📊</div>
-                <h5>Consultas</h5>
-                <p>Estadísticas, top de ventas y bajo stock.</p>
-                <a th:href="@{/consultas/}" class="btn-pet btn w-100" style="justify-content:center;">
-                    <i class="bi bi-bar-chart-line"></i> Ver consultas
+                <h5>Estadísticas</h5>
+                <p>Ventas, top productos y alertas de stock.</p>
+                <a th:href="@{/consultas/}" class="btn btn-verde btn-sm rounded-pill w-100">
+                    <i class="bi bi-bar-chart-line me-1"></i>Ver estadísticas
                 </a>
             </div>
         </div>

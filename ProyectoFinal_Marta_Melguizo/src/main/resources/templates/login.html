@@ -4,67 +4,61 @@
     <title>Acceso — PetShop Manager</title>
 </head>
 <body>
-<div class="login-bg">
-    <div class="login-card">
-
+<div class="login-wrap">
+    <div class="login-box">
         <div class="login-top">
-            <div class="login-logo">🐾</div>
-            <h2>PetShop Manager</h2>
+            <div style="font-size:2.2rem;">🐾</div>
+            <h4>PetShop Manager</h4>
             <p>Accede a tu panel de gestión</p>
         </div>
-
         <div class="login-body">
 
             <div th:if="${param.error}"
-                 class="alert d-flex align-items-center gap-2 mb-3 py-2"
-                 style="background:#fef2f2;border:1px solid #fecaca;border-radius:10px;font-size:0.875rem;color:#991b1b;">
+                 class="alert d-flex align-items-center gap-2 py-2 mb-3"
+                 style="background:#fef2f2;border:1px solid #fecaca;border-radius:10px;font-size:.875rem;color:#991b1b;">
                 <i class="bi bi-exclamation-circle-fill flex-shrink-0"></i>
-                Usuario o contraseña incorrectos. Inténtalo de nuevo.
+                Usuario o contraseña incorrectos.
             </div>
 
             <div th:if="${param.logout}"
-                 class="alert d-flex align-items-center gap-2 mb-3 py-2"
-                 style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;font-size:0.875rem;color:#166534;">
+                 class="alert d-flex align-items-center gap-2 py-2 mb-3"
+                 style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;font-size:.875rem;color:#166534;">
                 <i class="bi bi-check-circle-fill flex-shrink-0"></i>
                 Has cerrado sesión correctamente.
             </div>
 
             <form th:action="@{/login}" method="post">
                 <div class="mb-3">
-                    <label class="form-label">
-                        <i class="bi bi-person text-leaf"></i> Usuario
+                    <label class="form-label fw-semibold small">
+                        <i class="bi bi-person me-1" style="color:var(--verde-med);"></i>Usuario
                     </label>
                     <input type="text" name="username" class="form-control"
                            placeholder="admin o user" autofocus required>
                 </div>
                 <div class="mb-4">
-                    <label class="form-label">
-                        <i class="bi bi-lock text-leaf"></i> Contraseña
+                    <label class="form-label fw-semibold small">
+                        <i class="bi bi-lock me-1" style="color:var(--verde-med);"></i>Contraseña
                     </label>
                     <input type="password" name="password" class="form-control"
                            placeholder="Contraseña" required>
                 </div>
-                <button type="submit" class="btn-pet btn w-100"
-                        style="justify-content:center;padding:.75rem;">
-                    <i class="bi bi-box-arrow-in-right"></i> Iniciar sesión
+                <button type="submit" class="btn btn-verde w-100 rounded-pill py-2 fw-600">
+                    <i class="bi bi-box-arrow-in-right me-1"></i>Iniciar sesión
                 </button>
             </form>
 
-            <div style="margin-top:1.5rem;padding-top:1.2rem;border-top:1px solid rgba(26,58,42,0.1);">
-                <p class="text-center mb-2" style="font-size:0.78rem;color:var(--text-soft);text-transform:uppercase;letter-spacing:.06em;font-weight:600;">
-                    Cuentas de demo
-                </p>
-                <div class="d-flex gap-3 justify-content-center">
-                    <div class="text-center"
-                         style="background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.25);border-radius:10px;padding:.6rem 1rem;">
-                        <span class="badge-role badge-admin d-block mb-1">Admin</span>
-                        <span style="font-size:0.8rem;color:var(--text-mid);">admin / admin</span>
-                    </div>
-                    <div class="text-center"
-                         style="background:rgba(116,198,157,0.1);border:1px solid rgba(116,198,157,0.25);border-radius:10px;padding:.6rem 1rem;">
-                        <span class="badge-role badge-user d-block mb-1">User</span>
-                        <span style="font-size:0.8rem;color:var(--text-mid);">user / user</span>
-                    </div>
+            <hr class="my-3">
+            <p class="text-center text-muted small mb-2 fw-semibold" style="text-transform:uppercase;letter-spacing:.05em;">
+                Cuentas de demo
+            </p>
+            <div class="d-flex justify-content-center gap-3">
+                <div class="text-center p-2 rounded-3" style="background:#fffbeb;border:1px solid #fde68a;min-width:110px;">
+                    <span class="badge-admin d-inline-block mb-1">Admin</span>
+                    <p class="mb-0 small text-muted">admin / admin</p>
+                </div>
+                <div class="text-center p-2 rounded-3" style="background:#f0fdf4;border:1px solid #bbf7d0;min-width:110px;">
+                    <span class="badge-user d-inline-block mb-1">User</span>
+                    <p class="mb-0 small text-muted">user / user</p>
                 </div>
             </div>
         </div>

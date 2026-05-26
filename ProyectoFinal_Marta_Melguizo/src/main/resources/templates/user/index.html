@@ -4,33 +4,35 @@
 <head th:replace="~{fragments/fragments :: head_deps}">
     <title>Mi área — PetShop Manager</title>
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
 <nav th:replace="~{fragments/fragments :: menu_user}"></nav>
 
-<div class="page-header">
-    <div class="container position-relative">
-        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
-            <div class="d-flex align-items-center gap-3">
-                <div class="ph-icon">🐾</div>
-                <div>
-                    <h1>¡Hola, <span sec:authentication="name">usuario</span>!</h1>
-                    <p>Explora el catálogo y haz tus compras con descuentos exclusivos.</p>
-                </div>
+<div class="seccion-header">
+    <div class="container d-flex flex-wrap align-items-center justify-content-between gap-3">
+        <div class="d-flex align-items-center gap-3">
+            <div style="background:rgba(255,255,255,0.15);border-radius:10px;width:46px;height:46px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;">🐾</div>
+            <div>
+                <h4 class="text-white fw-bold mb-0">
+                    ¡Hola, <span sec:authentication="name">usuario</span>!
+                </h4>
+                <p class="text-white mb-0" style="opacity:.75;font-size:.875rem;">
+                    Explora el catálogo y haz tus compras con descuentos exclusivos.
+                </p>
             </div>
-            <span class="badge-role badge-user">Usuario</span>
         </div>
+        <span class="badge-user">Usuario</span>
     </div>
 </div>
 
-<div class="container py-5">
-    <div class="row g-4 justify-content-center">
+<div class="container py-5 flex-grow-1">
+    <div class="row g-3 justify-content-center">
         <div class="col-md-6 col-lg-4">
             <div class="quick-card">
                 <div class="qc-icon">📦</div>
                 <h5>Catálogo</h5>
                 <p>Explora todos los productos disponibles para tu mascota.</p>
-                <a th:href="@{/productos/}" class="btn-pet btn w-100" style="justify-content:center;">
-                    <i class="bi bi-arrow-right-circle"></i> Ver catálogo
+                <a th:href="@{/productos/}" class="btn btn-verde btn-sm rounded-pill w-100">
+                    <i class="bi bi-arrow-right-circle me-1"></i>Ver catálogo
                 </a>
             </div>
         </div>
@@ -39,8 +41,8 @@
                 <div class="qc-icon">🛒</div>
                 <h5>Mi carrito</h5>
                 <p>Revisa los productos añadidos antes de confirmar tu pedido.</p>
-                <a th:href="@{/carrito}" class="btn-pet btn w-100" style="justify-content:center;">
-                    <i class="bi bi-bag"></i> Ir al carrito
+                <a th:href="@{/carrito}" class="btn btn-verde btn-sm rounded-pill w-100">
+                    <i class="bi bi-cart3 me-1"></i>Ir al carrito
                 </a>
             </div>
         </div>
