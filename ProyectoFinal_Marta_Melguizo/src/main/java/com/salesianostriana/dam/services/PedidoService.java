@@ -2,6 +2,8 @@ package com.salesianostriana.dam.services;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -41,19 +43,20 @@ public class PedidoService extends BaseServiceImpl<Pedido, Long, PedidoRepositor
 		return result != null ? result : 0.0;
 	}
 	
+	//La logica de negocios
+	public Map<EstadoPedido, List<Pedido>> agrupadosPorEstado() {
+		return findAll().stream()
+				.collect(Collectors.groupingBy(Pedido::getEstadoPedido));
+	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	public double totalFacturado() {
+		return findAll().stream()
+				.filter(p -> p.getEstadoPedido() == EstadoPedido.ENTREGADO)
+				.mapToDouble(Pedido::getTotal)
+				.sum();
+	}
+
+	//La gestión de las lineas de pedido
 	//Recalcular el total
 	public void recalcularTotal(Pedido p) {
 		double total = p.getLineas().stream()
