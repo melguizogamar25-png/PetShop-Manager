@@ -30,9 +30,14 @@ public class ClienteController {
 							@RequestParam(required = false) String buscar,
 							@RequestParam(required = false) String socios) {
 		if(buscar != null && !buscar.isBlank()) {
-			
+			model.addAttribute("clientes", clienteService.buscarPorNombre(buscar));
+			model.addAttribute("buscar", buscar);
+		}else if("true".equals(socios)) {
+			model.addAttribute("clientes", clienteService.obtenerSocios());
+			model.addAttribute("filtroSocios", true);
+		}else {
+			model.addAttribute("clientes", clienteService.findAll());
 		}
-		model.addAttribute("clientes", clienteService.findAll());
 		return "cliente-list";
 	}
 	
