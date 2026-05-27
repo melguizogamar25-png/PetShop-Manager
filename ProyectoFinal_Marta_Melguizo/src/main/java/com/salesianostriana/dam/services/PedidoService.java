@@ -3,13 +3,16 @@ package com.salesianostriana.dam.services;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.salesianostriana.dam.excepciones.PedidoYaFinalizadoException;
 import com.salesianostriana.dam.model.EstadoPedido;
 import com.salesianostriana.dam.model.LineaPedido;
 import com.salesianostriana.dam.model.Pedido;
+import com.salesianostriana.dam.model.Producto;
 import com.salesianostriana.dam.repository.PedidoRepository;
 import com.salesianostriana.dam.services.base.BaseServiceImpl;
 
@@ -57,7 +60,7 @@ public class PedidoService extends BaseServiceImpl<Pedido, Long, PedidoRepositor
 	}
 
 	//La gestión de las lineas de pedido
-	//Recalcular el total
+	// - Recalcular el total
 	public void recalcularTotal(Pedido p) {
 		double total = p.getLineas().stream()
 				.mapToDouble(LineaPedido::getSubtotal)
@@ -65,5 +68,19 @@ public class PedidoService extends BaseServiceImpl<Pedido, Long, PedidoRepositor
 		p.setTotal(total);
 	}
 	
-	
+	public Pedido agregarLineaPedido(Long pedidoId, Long productoId, int cantidad, ProductoService productoService) {
+		
+		Pedido pedido = findById(pedidoId)
+				.orElseThrow(() -> new NoSuchElementException("Pedido no encontrado: " + pedidoId));
+		
+		// - Cuando el pedido ya esta terminado
+		if(pedido.getEstadoPedido() == EstadoPedido.ENVIADO || pedido.getEstadoPedido() == EstadoPedido.ENTREGADO) {
+			throw new PedidoYaFinalizadoException(pedidoId);
+		}
+		
+		Producto producto = productoService.findById(productoId)
+                .orElseThrow(() -> new NoSuchElementException(
+                        "Producto no encontrado: " + productoId));
+				
+	}
 }
