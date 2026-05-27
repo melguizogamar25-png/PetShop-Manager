@@ -1,7 +1,10 @@
 package com.salesianostriana.dam.services;
 
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -50,5 +53,16 @@ public class ProductoService extends BaseServiceImpl<Producto, Long, ProductoRep
 				.mapToDouble(Producto::getPrecio)
 				.average() //Calcula la media
 				.orElse(0.0);
+	}
+	
+	public Map<TipoMascota, List<Producto>> agrupadosPorTipo() {
+		return findAll().stream()
+				.collect(Collectors.groupingBy(Producto::getTipoMascota));
+	}
+	
+	public List<Producto> ordenadosPorPrecioAsc() {
+		return findAll().stream()
+				.sorted(Comparator.comparingDouble(Producto::getPrecio))
+				.toList();
 	}
 }
