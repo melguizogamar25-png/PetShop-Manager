@@ -70,6 +70,7 @@ public class PedidoService extends BaseServiceImpl<Pedido, Long, PedidoRepositor
 	}
 	
 	public Pedido agregarLineaPedido(Long pedidoId, Long productoId, int cantidad, ProductoService productoService) {
+		double precioFinal;
 		
 		Pedido pedido = findById(pedidoId)
 				.orElseThrow(() -> new NoSuchElementException("Pedido no encontrado: " + pedidoId));
@@ -86,5 +87,9 @@ public class PedidoService extends BaseServiceImpl<Pedido, Long, PedidoRepositor
 		if(producto.getStock() < cantidad) {
 			throw new StockInsuficienteException(producto.getNombre(), producto.getStock(), cantidad);
 		}
+		
+		// - Calculo del precio con el descuento(Tenia descuento si era socio)
+		boolean esSocio = pedido.getCliente() != null && pedido.getCliente().isSocioTienda();
+			precioFinal = producto.getPrecioConDescuento(esSocio);
 	}
 }
