@@ -66,4 +66,12 @@ public class ProductoService extends BaseServiceImpl<Producto, Long, ProductoRep
 				.sorted(Comparator.comparingDouble(Producto::getPrecio))
 				.toList();
 	}
+	
+	// - Control de stock
+	public void verificarStock(Producto producto, int cantidad) {
+		if(producto.getStock() < cantidad) {
+			throw new StockInsuficienteException(producto.getNombre(), 
+					producto.getStock(), cantidad);
+		}
+	}
 }
