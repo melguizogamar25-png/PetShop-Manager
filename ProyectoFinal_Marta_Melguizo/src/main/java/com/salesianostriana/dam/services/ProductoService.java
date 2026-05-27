@@ -74,4 +74,12 @@ public class ProductoService extends BaseServiceImpl<Producto, Long, ProductoRep
 					producto.getStock(), cantidad);
 		}
 	}
+	
+	//descontar stock
+	public void descontarStock(Producto producto, int cantidad) {
+		verificarStock(producto, cantidad);
+		producto.setStock(producto.getStock() - cantidad);
+		edit(producto);
+	}
+	
 }
