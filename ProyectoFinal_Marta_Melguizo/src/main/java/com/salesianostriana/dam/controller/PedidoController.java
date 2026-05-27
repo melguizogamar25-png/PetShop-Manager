@@ -35,6 +35,7 @@ public class PedidoController {
 	@GetMapping("/")
 	public String listAll(Model model) {
 		model.addAttribute("pedidos", pedidoService.findAll());
+		model.addAttribute("totalFacturado", pedidoService.totalFacturado());
 		return "pedido-list";
 	}
 	
