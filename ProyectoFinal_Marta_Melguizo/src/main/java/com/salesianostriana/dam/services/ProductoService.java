@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.salesianostriana.dam.excepciones.StockInsuficienteException;
 import com.salesianostriana.dam.excepciones.TipoMascotaInvalidoException;
 import com.salesianostriana.dam.model.Producto;
 import com.salesianostriana.dam.model.TipoMascota;
@@ -55,15 +56,22 @@ public class ProductoService extends BaseServiceImpl<Producto, Long, ProductoRep
 				.orElse(0.0);
 	}
 	
-	public Map<TipoMascota, List<Producto>> agruparPorTipo() {
+	public Map<TipoMascota, List<Producto>> agrupadosPorTipo() {
 		return findAll().stream()
 				.collect(Collectors.groupingBy(Producto::getTipoMascota));
 	}
 	
-	// - Ordenado por el precio asc
-	public List<Producto> ordenadorPorPrecioAsc() {
+	public List<Producto> ordenadosPorPrecioAsc() {
 		return findAll().stream()
 				.sorted(Comparator.comparingDouble(Producto::getPrecio))
 				.toList();
+	}
+	
+	// - Control de stock
+	public void verificarStock(Producto producto, int cantidad) {
+		if(producto.getStock() < cantidad) {
+			throw new StockInsuficienteException(producto.getNombre(), 
+					producto.getStock(), cantidad);
+		}
 	}
 }
