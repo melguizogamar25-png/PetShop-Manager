@@ -99,6 +99,11 @@ public class PedidoService extends BaseServiceImpl<Pedido, Long, PedidoRepositor
 		linea.setSubtotal(precioFinal * cantidad);
 		pedido.addLinea(linea);
 		
+		// - Descontar el stock
+		productoService.descontarStock(producto, cantidad);
+		
+		// - Recalcular el total
+		recalcularTotal(pedido);
 		
 		return edit(pedido);
 		
