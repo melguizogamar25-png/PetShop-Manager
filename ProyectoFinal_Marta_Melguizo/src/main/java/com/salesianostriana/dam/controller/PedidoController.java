@@ -115,4 +115,13 @@ public class PedidoController {
 		pedidoService.deleteById(id);
 		return "redirect:/pedidos/";
 	}
+	
+	//Añadir linea pedido desde admin
+		//Las excepciones son del global
+	@PostMapping("/{id}/agregar-producto")
+	public String agregarProducto(@PathVariable Long id, @RequestParam Long productoId,
+								@RequestParam int cantidad) {
+		pedidoService.agregarLineaPedido(id, productoId, cantidad, productoService);
+		return "redirect:/pedidos/" + id; 
+	}
 }
