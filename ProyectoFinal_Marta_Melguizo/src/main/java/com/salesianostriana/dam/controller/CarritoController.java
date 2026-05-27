@@ -73,4 +73,31 @@ public class CarritoController {
 		return "ticket";
 	}
 	
+	//Confirmar el pedido
+	@GetMapping("/carrito/confirmar")
+	public String confirmar(@AuthenticationPrincipal Usuario userDetails) {
+		
+		if(carritoService.estaVacio()) {
+			return "redirect:/carrito";
+		}
+		
+		// - Busca el cliente para que el email coincida 
+		Cliente cliente = null;
+		if(userDetails != null) {
+			cliente = clienteService.findAll().stream()
+					.filter(c -> c.getEmail().equalsIgnoreCase(userDetails.getEmail()))
+					.findFirst()
+					.orElse(null); //Si no tenemos un clienete asociado es un pedido sin cliente
+		}
+		
+		// - Crear pedido aplicando los descuentos
+		pedidoService.tramitarCarrito(carritoService.getProductosInCarr(),
+							cliente, productoService);
+		
+		carritoService.vaciarCarrito();
+		return "redirect:/carrito/confirmado";
+	}
+	
+	
+	
 	}
