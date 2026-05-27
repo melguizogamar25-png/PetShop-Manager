@@ -6,6 +6,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.salesianostriana.dam.model.Cliente;
@@ -98,6 +99,20 @@ public class CarritoController {
 		return "redirect:/carrito/confirmado";
 	}
 	
+	// - Pagina que esta la compra confirmada
+	@GetMapping("/carrito/confirmado")
+	public String confirmado() {
+		return "compra-confirmada";
+	}
 	
+	// - En el fragments del menu se puede ver el total del carrito
+	@ModelAttribute("total_carrito")
+	public Double totalCarrito() {
+		return carritoService.calcularTotal();
+	}
 	
+	@ModelAttribute("unidades_carrito")
+	public int unidadesCarrito() {
+		return carritoService.totalUnidades();
+	}
 	}
