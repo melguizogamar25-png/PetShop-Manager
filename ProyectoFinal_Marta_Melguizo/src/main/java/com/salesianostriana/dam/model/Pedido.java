@@ -54,4 +54,15 @@ public class Pedido {
 	//Un pedido tiene unas cuantas de lineas de pedido
 	@OneToMany 
 	private List <LineaPedido> lineas = new ArrayList<>(); 
+	
+	//Añade y elimina una linea de pedido
+	public void addLinea(LineaPedido linea) {
+		lineas.add(linea);
+		linea.setPedido(this);
+	}
+
+	public void removeLinea(LineaPedido linea) {
+		lineas.remove(linea);
+		linea.setPedido(null);
+	}
 }
