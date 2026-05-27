@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.salesianostriana.dam.model.Cliente;
 import com.salesianostriana.dam.services.ClienteService;
@@ -24,10 +25,19 @@ public class ClienteController {
 
 	private final ClienteService clienteService;
 	
-	//Ponerle los filtros
 	@GetMapping("/")
-	public String listAll (Model model) {
-		model.addAttribute("clientes", clienteService.findAll());
+	public String listAll (Model model,
+							@RequestParam(required = false) String buscar,
+							@RequestParam(required = false) String socios) {
+		if(buscar != null && !buscar.isBlank()) {
+			model.addAttribute("clientes", clienteService.buscarPorNombre(buscar));
+			model.addAttribute("buscar", buscar);
+		}else if("true".equals(socios)) {
+			model.addAttribute("clientes", clienteService.obtenerSocios());
+			model.addAttribute("filtroSocios", true);
+		}else {
+			model.addAttribute("clientes", clienteService.findAll());
+		}
 		return "cliente-list";
 	}
 	

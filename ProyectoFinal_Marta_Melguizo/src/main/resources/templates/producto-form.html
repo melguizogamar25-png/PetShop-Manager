@@ -3,76 +3,53 @@
 <head th:replace="~{fragments/fragments :: head_deps}">
     <title>Producto — PetShop Manager</title>
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
 <nav th:replace="~{fragments/fragments :: menu}"></nav>
 
-<div class="container py-5" style="max-width:700px;">
-    <div class="form-card">
-
-        <div class="form-card-header">
-            <div class="header-icon">📦</div>
-            <h4 th:text="${producto.id != null} ? 'Editar producto' : 'Nuevo producto'">Producto</h4>
-            <p>Completa los datos para el catálogo de la tienda</p>
+<div class="container py-4 flex-grow-1" style="max-width:680px;">
+    <div class="card border-0 shadow-sm">
+        <div class="card-header seccion-header border-0 py-3 px-4">
+            <h5 class="fw-bold mb-0" th:text="${producto.id != null} ? '✏️ Editar producto' : '📦 Nuevo producto'">Producto</h5>
+            <p class="mb-0 small opacity-75">Completa los datos para el catálogo de la tienda</p>
         </div>
-
-        <div class="form-card-body">
-            <form th:action="${producto.id != null}
-                              ? @{/productos/editar/submit}
-                              : @{/productos/save}"
-                  th:object="${producto}"
-                  method="post"
-                  id="productoForm"
-                  novalidate>
+        <div class="card-body p-4">
+            <form th:action="${producto.id != null} ? @{/productos/editar/submit} : @{/productos/save}"
+                  th:object="${producto}" method="post">
                 <input type="hidden" th:field="*{id}">
 
                 <div class="row g-3">
 
                     <div class="col-12">
-                        <label class="form-label">
-                            <i class="bi bi-tag text-leaf"></i>
-                            Nombre del producto <span class="text-danger">*</span>
-                        </label>
-                        <input type="text" class="form-control"
-                               th:field="*{nombre}" th:errorclass="is-invalid"
+                        <label class="form-label fw-semibold small">Nombre <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" th:field="*{nombre}"
+                               th:errorclass="is-invalid"
                                placeholder="Ej: Pienso premium para perro adulto">
                         <div class="invalid-feedback" th:errors="*{nombre}"></div>
                     </div>
 
                     <div class="col-md-6">
-                        <label class="form-label">
-                            <i class="bi bi-currency-euro text-leaf"></i>
-                            Precio <span class="text-danger">*</span>
-                        </label>
+                        <label class="form-label fw-semibold small">Precio <span class="text-danger">*</span></label>
                         <div class="input-group">
-                            <input type="number" class="form-control"
-                                   th:field="*{precio}" th:errorclass="is-invalid"
-                                   step="0.01" min="0.01" placeholder="9.99">
+                            <input type="number" class="form-control" th:field="*{precio}"
+                                   th:errorclass="is-invalid" step="0.01" min="0.01" placeholder="9.99">
                             <span class="input-group-text">€</span>
                         </div>
                         <div class="invalid-feedback" th:errors="*{precio}"></div>
                     </div>
 
                     <div class="col-md-6">
-                        <label class="form-label">
-                            <i class="bi bi-boxes text-leaf"></i>
-                            Stock <span class="text-danger">*</span>
-                        </label>
+                        <label class="form-label fw-semibold small">Stock <span class="text-danger">*</span></label>
                         <div class="input-group">
-                            <input type="number" class="form-control"
-                                   th:field="*{stock}" th:errorclass="is-invalid"
-                                   min="0" placeholder="50">
+                            <input type="number" class="form-control" th:field="*{stock}"
+                                   th:errorclass="is-invalid" min="0" placeholder="50">
                             <span class="input-group-text">uds</span>
                         </div>
                         <div class="invalid-feedback" th:errors="*{stock}"></div>
                     </div>
 
                     <div class="col-md-6">
-                        <label class="form-label">
-                            <i class="bi bi-heart text-leaf"></i>
-                            Tipo de mascota <span class="text-danger">*</span>
-                        </label>
-                        <select class="form-select"
-                                th:field="*{tipoMascota}" th:errorclass="is-invalid">
+                        <label class="form-label fw-semibold small">Tipo de mascota <span class="text-danger">*</span></label>
+                        <select class="form-select" th:field="*{tipoMascota}" th:errorclass="is-invalid">
                             <option value="">— Selecciona —</option>
                             <option th:each="t : ${tipos}" th:value="${t}" th:text="${t}"></option>
                         </select>
@@ -80,105 +57,50 @@
                     </div>
 
                     <div class="col-md-6">
-                        <label class="form-label">
-                            <i class="bi bi-calendar3 text-leaf"></i>
-                            Fecha de caducidad
-                        </label>
-                        <input type="date" class="form-control"
-                               th:field="*{fechaCaducidad}" th:errorclass="is-invalid">
+                        <label class="form-label fw-semibold small">Fecha de caducidad</label>
+                        <input type="date" class="form-control" th:field="*{fechaCaducidad}"
+                               th:errorclass="is-invalid">
                         <div class="invalid-feedback" th:errors="*{fechaCaducidad}"></div>
                     </div>
 
                     <div class="col-12">
-                        <label class="form-label">
-                            <i class="bi bi-image text-leaf"></i>
-                            URL de imagen
-                        </label>
-                        <input type="url" class="form-control"
-                               th:field="*{imagen}"
+                        <label class="form-label fw-semibold small">URL de imagen</label>
+                        <input type="url" class="form-control" th:field="*{imagen}"
                                placeholder="https://ejemplo.com/imagen.jpg">
-                        <div class="mt-2" id="imgPreviewBox" style="display:none;">
-                            <img id="imgPreview" src="" alt="Preview"
-                                 style="max-height:110px;border-radius:10px;border:1px solid rgba(26,58,42,0.1);">
-                        </div>
                     </div>
 
                     <div class="col-12">
-                        <label class="form-label">
-                            <i class="bi bi-card-text text-leaf"></i>
-                            Descripción
-                        </label>
-                        <textarea class="form-control"
-                                  th:field="*{descripcion}" th:errorclass="is-invalid"
-                                  rows="3" maxlength="500"
+                        <label class="form-label fw-semibold small">Descripción</label>
+                        <textarea class="form-control" th:field="*{descripcion}"
+                                  th:errorclass="is-invalid" rows="3" maxlength="500"
                                   placeholder="Descripción breve del producto..."></textarea>
-                        <div class="d-flex justify-content-end mt-1">
-                            <span style="font-size:0.75rem;color:var(--text-soft);">
-                                <span id="descCount">0</span>/500
-                            </span>
-                        </div>
                         <div class="invalid-feedback" th:errors="*{descripcion}"></div>
                     </div>
 
                     <div class="col-12">
-                        <div style="background:rgba(64,145,108,0.07);border:1px solid rgba(64,145,108,0.18);border-radius:10px;padding:.9rem 1rem;">
-                            <div class="form-check form-switch mb-0">
-                                <input class="form-check-input" type="checkbox"
-                                       id="devolucion" th:field="*{devolucion}">
-                                <label class="form-check-label" for="devolucion"
-                                       style="font-size:0.9rem;font-weight:600;color:var(--forest-mid);">
-                                    <i class="bi bi-arrow-return-left me-1"></i>
-                                    Admite devolución
-                                    <span class="fw-normal text-muted" style="font-size:0.8rem;">
-                                        (el cliente podrá solicitar la devolución)
-                                    </span>
-                                </label>
-                            </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="devolucion" th:field="*{devolucion}">
+                            <label class="form-check-label small fw-semibold" for="devolucion">
+                                Admite devolución
+                            </label>
                         </div>
                     </div>
 
                 </div>
 
-                <hr style="border-color:rgba(26,58,42,0.1);margin:1.5rem 0;">
-
-                <div class="d-flex gap-3 flex-wrap">
-                    <button type="submit" class="btn-pet btn flex-grow-1"
-                            style="justify-content:center;padding:.7rem;">
-                        <i class="bi bi-check-circle"></i> Guardar producto
+                <hr class="my-4">
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-verde rounded-pill px-4 flex-grow-1">
+                        <i class="bi bi-check-circle me-1"></i>Guardar producto
                     </button>
-                    <a th:href="@{/productos/}" class="btn-pet-outline btn px-4">
-                        <i class="bi bi-arrow-left"></i> Cancelar
+                    <a th:href="@{/productos/}" class="btn btn-verde-outline rounded-pill px-4">
+                        <i class="bi bi-arrow-left me-1"></i>Cancelar
                     </a>
                 </div>
-
             </form>
         </div>
     </div>
 </div>
-
-<script>
-    const imgInput   = document.querySelector('input[name="imagen"]');
-    const imgPreview = document.getElementById('imgPreview');
-    const previewBox = document.getElementById('imgPreviewBox');
-    imgInput?.addEventListener('input', () => {
-        const url = imgInput.value.trim();
-        if (url) { imgPreview.src = url; previewBox.style.display = 'block'; imgPreview.onerror = () => previewBox.style.display = 'none'; }
-        else previewBox.style.display = 'none';
-    });
-    // Mostrar preview si ya hay imagen (modo edición)
-    if (imgInput?.value.trim()) { imgPreview.src = imgInput.value.trim(); previewBox.style.display = 'block'; }
-
-    const desc = document.querySelector('textarea[name="descripcion"]');
-    const cnt  = document.getElementById('descCount');
-    const updateCnt = () => { if (cnt && desc) cnt.textContent = desc.value.length; };
-    desc?.addEventListener('input', updateCnt); updateCnt();
-
-    const form = document.getElementById('productoForm');
-    form?.addEventListener('submit', e => {
-        if (!form.checkValidity()) { e.preventDefault(); e.stopPropagation(); }
-        form.classList.add('was-validated');
-    });
-</script>
 
 <footer th:replace="~{fragments/fragments :: footer}"></footer>
 </body>

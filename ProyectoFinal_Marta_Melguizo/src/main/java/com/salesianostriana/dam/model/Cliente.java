@@ -52,4 +52,14 @@ public class Cliente {
 	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true) 
 	private List<Pedido> pedidos = new ArrayList<>();
 	
+	//Método bidireccional
+	public void addPedido(Pedido p)  {
+		pedidos.add(p);
+		p.setCliente(this);
+	}
+	
+	public void removePedido(Pedido p) {
+		pedidos.add(p);
+		p.setCliente(null);
+	}
 }

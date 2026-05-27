@@ -4,62 +4,54 @@
 <head th:replace="~{fragments/fragments :: head_deps}">
     <title>Clientes — PetShop Manager</title>
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
 <nav th:replace="~{fragments/fragments :: menu}"></nav>
 
-<div class="page-header">
-    <div class="container position-relative">
-        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
-            <div class="d-flex align-items-center gap-3">
-                <div class="ph-icon">👥</div>
-                <div>
-                    <h1>Gestión de Clientes</h1>
-                    <p>Consulta, filtra y gestiona tu base de clientes</p>
-                </div>
-            </div>
-            <a th:href="@{/clientes/nuevo}" class="btn-light-outline"
-               sec:authorize="hasRole('ADMIN')">
-                <i class="bi bi-person-plus-fill"></i> Nuevo cliente
-            </a>
+<div class="seccion-header">
+    <div class="container d-flex align-items-center justify-content-between">
+        <div>
+            <h5 class="fw-bold mb-0">Gestión de Clientes</h5>
+            <p class="mb-0 small opacity-75">Consulta, filtra y gestiona tu base de clientes</p>
         </div>
+        <a th:href="@{/clientes/nuevo}" class="btn btn-light btn-sm rounded-pill fw-semibold"
+           style="color:var(--verde);" sec:authorize="hasRole('ADMIN')">
+            <i class="bi bi-person-plus me-1"></i>Nuevo cliente
+        </a>
     </div>
 </div>
 
-<div class="container py-4">
-    <div class="filter-bar mb-4">
+<div class="container py-4 flex-grow-1">
+
+    <!-- Filtros -->
+    <div class="card border-0 shadow-sm mb-4 p-3">
         <div class="row g-2 align-items-center">
             <div class="col-md-6">
                 <form th:action="@{/clientes/}" method="get" class="d-flex gap-2">
-                    <div class="input-group">
-                        <span class="input-group-text" style="border-right:none;">
-                            <i class="bi bi-search text-leaf"></i>
-                        </span>
-                        <input type="text" name="buscar" class="form-control"
-                               placeholder="Buscar por nombre..."
-                               th:value="${buscar}" style="border-left:none;">
-                    </div>
-                    <button type="submit" class="btn-pet btn px-3">Buscar</button>
+                    <input type="text" name="buscar" class="form-control form-control-sm"
+                           placeholder="Buscar por nombre..." th:value="${buscar}">
+                    <button type="submit" class="btn btn-verde btn-sm px-3">
+                        <i class="bi bi-search"></i>
+                    </button>
                 </form>
             </div>
             <div class="col-md-3">
                 <a th:href="@{/clientes/?socios=true}"
-                   class="btn w-100"
-                   th:classappend="${filtroSocios} ? 'btn-pet' : 'btn-pet-outline'"
-                   style="justify-content:center;">
-                    <i class="bi bi-star-fill"></i> Solo socios
+                   class="btn btn-sm w-100 rounded-pill"
+                   th:classappend="${filtroSocios} ? 'btn-verde' : 'btn-verde-outline'">
+                    <i class="bi bi-star-fill me-1"></i>Solo socios
                 </a>
             </div>
             <div class="col-md-3">
-                <a th:href="@{/clientes/}" class="btn-pet-outline btn w-100"
-                   style="justify-content:center;">
-                    <i class="bi bi-x-circle"></i> Limpiar
+                <a th:href="@{/clientes/}" class="btn btn-verde-outline btn-sm w-100 rounded-pill">
+                    <i class="bi bi-x-circle me-1"></i>Limpiar
                 </a>
             </div>
         </div>
     </div>
-    <div class="card p-0">
-        <div class="table-scroll">
-            <table class="table table-petshop align-middle mb-0">
+
+    <div class="card border-0 shadow-sm p-0">
+        <div class="table-responsive">
+            <table class="table tabla-verde align-middle mb-0">
                 <thead>
                     <tr>
                         <th class="ps-4">#</th>
@@ -73,41 +65,29 @@
                 </thead>
                 <tbody>
                     <tr th:each="c : ${clientes}">
-                        <td class="ps-4 text-muted" style="font-size:0.8rem;" th:text="${c.id}">1</td>
-                        <td>
-                            <div class="fw-semibold" style="color:var(--forest);"
-                                 th:text="${c.nombre}">Nombre</div>
-                        </td>
+                        <td class="ps-4 text-muted small" th:text="${c.id}">1</td>
+                        <td class="fw-semibold" style="color:var(--verde);" th:text="${c.nombre}">—</td>
                         <td>
                             <a th:href="'mailto:' + ${c.email}" th:text="${c.email}"
-                               class="text-decoration-none"
-                               style="color:var(--leaf);font-size:0.875rem;"></a>
+                               class="text-decoration-none small" style="color:var(--verde-med);">—</a>
                         </td>
-                        <td style="font-size:0.875rem;" th:text="${c.telefono}">600000000</td>
+                        <td class="small" th:text="${c.telefono}">—</td>
                         <td class="text-center">
-                            <span th:if="${c.socioTienda}"
-                                  style="background:#fef9c3;color:#713f12;border:1px solid #fde047;border-radius:100px;font-size:0.72rem;font-weight:700;padding:3px 10px;display:inline-block;">
-                                ⭐ Socio
-                            </span>
-                            <span th:unless="${c.socioTienda}"
-                                  style="background:#f3f4f6;color:#6b7280;border:1px solid #e5e7eb;border-radius:100px;font-size:0.72rem;padding:3px 10px;display:inline-block;">
-                                No
-                            </span>
+                            <span th:if="${c.socioTienda}" class="badge-pendiente">⭐ Socio</span>
+                            <span th:unless="${c.socioTienda}" class="text-muted small">No</span>
                         </td>
                         <td class="text-center">
-                            <span style="background:var(--mint);color:var(--forest);font-size:0.72rem;font-weight:700;border-radius:100px;padding:3px 10px;display:inline-block;"
+                            <span class="badge rounded-pill" style="background-color:var(--menta);color:var(--verde);"
                                   th:text="${c.pedidos.size()}">0</span>
                         </td>
                         <td class="text-center pe-4" sec:authorize="hasRole('ADMIN')">
-                            <div class="d-flex justify-content-center gap-2">
+                            <div class="d-flex justify-content-center gap-1">
                                 <a th:href="@{/clientes/editar/{id}(id=${c.id})}"
-                                   class="btn btn-sm btn-outline-primary rounded-pill"
-                                   style="font-size:0.78rem;padding:3px 12px;">
+                                   class="btn btn-sm btn-outline-primary rounded-pill px-3">
                                     <i class="bi bi-pencil"></i> Editar
                                 </a>
                                 <a th:href="@{/clientes/borrar/{id}(id=${c.id})}"
-                                   class="btn btn-sm btn-outline-danger rounded-pill"
-                                   style="font-size:0.78rem;padding:3px 10px;"
+                                   class="btn btn-sm btn-outline-danger rounded-pill px-2"
                                    onclick="return confirm('¿Eliminar a este cliente y todos sus pedidos?')">
                                     <i class="bi bi-trash"></i>
                                 </a>
@@ -115,16 +95,14 @@
                         </td>
                     </tr>
                     <tr th:if="${#lists.isEmpty(clientes)}">
-                        <td colspan="7" class="text-center py-5">
-                            <div style="font-size:2.5rem;margin-bottom:.75rem;">👤</div>
-                            <p class="mb-0 text-muted">No hay clientes registrados.</p>
+                        <td colspan="7" class="text-center py-5 text-muted">
+                            No hay clientes registrados.
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
-
 </div>
 
 <footer th:replace="~{fragments/fragments :: footer}"></footer>

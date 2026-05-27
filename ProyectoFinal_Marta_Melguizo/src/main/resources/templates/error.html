@@ -3,35 +3,23 @@
 <head th:replace="~{fragments/fragments :: head_deps}">
     <title>Error — PetShop Manager</title>
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
 <nav th:replace="~{fragments/fragments :: menu}"></nav>
 
-<div class="error-page container">
-    <div class="row justify-content-center w-100">
-        <div class="col-md-6 col-lg-5">
-            <div class="card text-center p-0">
-                <div style="background:linear-gradient(150deg,#7f1d1d,#b91c1c);padding:2.5rem 2rem;border-radius:20px 20px 0 0;">
-                    <div style="font-size:4rem;margin-bottom:.75rem;">⚠️</div>
-                    <h3 style="font-family:'DM Serif Display',serif;color:#fff;font-size:1.6rem;margin:0;"
-                        th:text="${errorTitulo} ?: 'Ha ocurrido un error'">Error</h3>
-                </div>
-                <div style="padding:2rem 2rem 2.5rem;background:var(--warm-white);">
-                    <p style="font-size:1rem;color:var(--text-mid);margin-bottom:1.5rem;"
-                       th:text="${errorMensaje} ?: 'Se ha producido un error inesperado. Por favor, inténtalo de nuevo.'">
-                        Detalle del error.
-                    </p>
-                    <p style="font-size:0.8rem;color:var(--text-soft);margin-bottom:1.5rem;">
-                        Si el problema persiste, contacta con el administrador del sistema.
-                    </p>
-                    <div class="d-flex justify-content-center gap-3 flex-wrap">
-                        <a th:href="@{/}" class="btn-pet btn">
-                            <i class="bi bi-house"></i> Volver al inicio
-                        </a>
-                        <button onclick="history.back()" class="btn-pet-outline btn">
-                            <i class="bi bi-arrow-left"></i> Atrás
-                        </button>
-                    </div>
-                </div>
+<div class="error-wrap container flex-grow-1">
+    <div class="col-md-5 mx-auto text-center">
+        <div class="card border-0 shadow-sm p-4">
+            <div style="font-size:3rem;" class="mb-3">⚠️</div>
+            <h5 class="fw-bold mb-2" th:text="${errorTitulo} ?: 'Ha ocurrido un error'">Error</h5>
+            <p class="text-muted mb-1" th:text="${errorMensaje} ?: 'Se ha producido un error inesperado.'">Detalle.</p>
+            <p class="small text-muted mb-4">Si el problema persiste, contacta con el administrador.</p>
+            <div class="d-flex justify-content-center gap-2">
+                <a th:href="@{/}" class="btn btn-verde rounded-pill px-4">
+                    <i class="bi bi-house me-1"></i>Volver al inicio
+                </a>
+                <a th:href="javascript:history.back()" class="btn btn-verde-outline rounded-pill px-4">
+                    <i class="bi bi-arrow-left me-1"></i>Atrás
+                </a>
             </div>
         </div>
     </div>
