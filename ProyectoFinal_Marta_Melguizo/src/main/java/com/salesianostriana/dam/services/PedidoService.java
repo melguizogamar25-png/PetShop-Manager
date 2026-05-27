@@ -91,5 +91,17 @@ public class PedidoService extends BaseServiceImpl<Pedido, Long, PedidoRepositor
 		// - Calculo del precio con el descuento(Tenia descuento si era socio)
 		boolean esSocio = pedido.getCliente() != null && pedido.getCliente().isSocioTienda();
 			precioFinal = producto.getPrecioConDescuento(esSocio);
+			
+		// - Crear la linea del pedido
+		LineaPedido linea = new LineaPedido();
+		linea.setCantidad(cantidad);
+		linea.setPrecioUnitario(precioFinal);
+		linea.setSubtotal(precioFinal * cantidad);
+		pedido.addLinea(linea);
+		
+		
+		return edit(pedido);
+		
+		
 	}
 }
