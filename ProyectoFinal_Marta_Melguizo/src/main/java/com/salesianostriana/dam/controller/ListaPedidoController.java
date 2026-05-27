@@ -77,4 +77,51 @@ public class ListaPedidoController {
 		return "redirect:/pedidos/" + pedidoId;
 	}
 	
+	//Editar la cantidad de una linea
+	@PostMapping("/{lineaId}/edit")
+	public String editarCantidad(@PathVariable Long pedidoId, @PathVariable Long lineaId, 
+								@RequestParam int nuevaCantidad, RedirectAttributes ra) {
+		int diferencia; 
+		
+		if(nuevaCantidad < 1) {
+			ra.addFlashAttribute("mensajeError", "La cantidad debe ser al menos 1.");
+			return "redirect:/pedidos/" + pedidoId;
+		}
+		
+		Pedido pedido = pedidoService.findById(pedidoId)
+				.orElseThrow(() -> new NoSuchElementException("Pedido no encontrado"));
+		
+		if(pedido.getEstadoPedido() == EstadoPedido.ENVIADO || 
+				pedido.getEstadoPedido() == EstadoPedido.ENTREGADO) {
+			throw new PedidoYaFinalizadoException(pedidoId);
+		}
+		
+		LineaPedido linea = lineaPedidoService.findById(lineaId)
+				.orElseThrow(() -> new NoSuchElementException("Línea no encontrada"));
+		
+		Producto producto = linea.getProducto();
+		diferencia = nuevaCantidad - linea.getCantidad();
+		
+		if(diferencia > 0) {
+			// - Mas stock
+			productoService.verificarStock(producto, diferencia);
+			productoService.descontarStock(producto, diferencia);
+		}else if(diferencia < 0) {
+			//Devovemos stock
+			productoService.devolverStock(producto, Math.abs(diferencia));
+		}
+		
+		// - Actualizar la linea
+		linea.setCantidad(nuevaCantidad);
+		linea.setSubtotal(linea.getPrecioUnitario() * nuevaCantidad);
+		lineaPedidoService.edit(linea);
+		
+		// - Recalcular el total del pedido
+		pedidoService.recalcularTotal(pedido);
+		pedidoService.edit(pedido);
+		
+		ra.addFlashAttribute("mensajeError", "Cantidad actualizada correctamente.");
+		return "redirect:/pedidos/" + pedidoId;
+	}
+	
 }
