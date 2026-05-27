@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.salesianostriana.dam.excepciones.StockInsuficienteException;
 import com.salesianostriana.dam.excepciones.TipoMascotaInvalidoException;
 import com.salesianostriana.dam.model.Producto;
 import com.salesianostriana.dam.model.TipoMascota;
@@ -41,5 +42,13 @@ public class ProductoService extends BaseServiceImpl<Producto, Long, ProductoRep
 	
 	public List<Producto> masvendidosPorTipos(TipoMascota tipo) {
 		return repository.findMasVendidosPorTipo(tipo);
+	}
+	
+	// - Controlar el stock
+	public void verificarStock(Producto producto, int cantidad) {
+		if(producto.getStock() < cantidad) {
+			throw new StockInsuficienteException(producto.getNombre(), 
+						producto.getStock(), cantidad);
+		}
 	}
 }
