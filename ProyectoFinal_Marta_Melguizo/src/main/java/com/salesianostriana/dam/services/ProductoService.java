@@ -29,4 +29,17 @@ public class ProductoService extends BaseServiceImpl<Producto, Long, ProductoRep
 		}
 	}
 	
+	// - Los productos que tengan bajo el stock  y esta ordenado asc
+	
+	public List<Producto> productosBajoStock(int umbral) {
+		return repository.findByStockLessThanEqualOrderByStockAsc(umbral);
+	}
+	
+	public List<Producto> conDevolucion() {
+		return repository.findDevolucionTrue();
+	}
+	
+	public List<Producto> masvendidosPorTipos(TipoMascota tipo) {
+		return repository.findMasVendidosPorTipo(tipo);
+	}
 }
