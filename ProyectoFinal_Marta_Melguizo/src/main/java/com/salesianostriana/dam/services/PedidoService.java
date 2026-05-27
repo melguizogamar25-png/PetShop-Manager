@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.salesianostriana.dam.excepciones.PedidoYaFinalizadoException;
+import com.salesianostriana.dam.excepciones.StockInsuficienteException;
 import com.salesianostriana.dam.model.EstadoPedido;
 import com.salesianostriana.dam.model.LineaPedido;
 import com.salesianostriana.dam.model.Pedido;
@@ -81,6 +82,9 @@ public class PedidoService extends BaseServiceImpl<Pedido, Long, PedidoRepositor
 		Producto producto = productoService.findById(productoId)
                 .orElseThrow(() -> new NoSuchElementException(
                         "Producto no encontrado: " + productoId));
-				
+			
+		if(producto.getStock() < cantidad) {
+			throw new StockInsuficienteException(producto.getNombre(), producto.getStock(), cantidad);
+		}
 	}
 }
