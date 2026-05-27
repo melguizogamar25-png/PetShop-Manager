@@ -1,6 +1,7 @@
 package com.salesianostriana.dam.controller;
 
 import java.time.LocalDate;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
@@ -78,6 +79,18 @@ public class PedidoController {
 		pedidoService.save(p);
 		return "redirect:/pedidos/";
 	}
+	
+	@GetMapping("/editar/{id}")
+	public String showEdit(@PathVariable Long id, Model model) {
+		Pedido p = pedidoService.findById(id)
+				.orElseThrow(() -> new NoSuchElementException("Pedido no encontrado."));
+		
+		model.addAttribute("pedido", p);
+		model.addAttribute("clientes", clienteService.findAll());
+		model.addAttribute("estados", EstadoPedido.values());
+		return "pedido-form";
+	}
+	
 	
 	@PostMapping("/editar/{id}")
 	public String update (@PathVariable long id, @Valid @ModelAttribute("pedido")
