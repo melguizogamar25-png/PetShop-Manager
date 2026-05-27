@@ -13,7 +13,7 @@ public interface ProductoRepository extends JpaRepository <Producto, Long>{
 
 	//Consultas Derivadas
 	
-	List<Producto> findByNombreConstainingIgnoreCase(String nombre);
+	List<Producto> findByNombreContainingIgnoreCase(String nombre);
 	
 	// - Buscar los productos de un tipo de mascota
 	List<Producto> findByTipoMascota(TipoMascota tipo);

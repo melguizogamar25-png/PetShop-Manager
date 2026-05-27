@@ -2,11 +2,9 @@ package com.salesianostriana.dam.controller;
 
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,27 +15,25 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.salesianostriana.dam.model.Producto;
 import com.salesianostriana.dam.model.TipoMascota;
 import com.salesianostriana.dam.services.ProductoService;
-import com.salesianostriana.dam.services.base.BaseService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @Controller 
+@RequiredArgsConstructor
 @RequestMapping("/productos")
 public class ProductoController {
 
-	private ProductoService productoService;
-	
+	private final ProductoService productoService;
 
-	public ProductoController(ProductoService productoService) {
-		this.productoService = productoService;
-	}
-	
-	//Ponerle los filtros
 	@GetMapping("/")
-	public String listAll(Model model) {
-		model.addAttribute("productos", productoService.findAll());
-		model.addAttribute("tipos", TipoMascota.values());
+	public String listAll(Model model,
+					@RequestParam(required = false) String buscar) {
+		
+		if(buscar != null && !buscar.isBlank()) {
+			model.addAttribute("productos", productoService.buscarPorNombre(buscar));
+			model.addAttribute("buscar", buscar);
+		}
 		return "producto-list";
 	}
 	
