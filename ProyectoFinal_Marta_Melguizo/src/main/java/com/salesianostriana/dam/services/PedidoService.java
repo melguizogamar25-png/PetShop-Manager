@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.salesianostriana.dam.excepciones.PedidoYaFinalizadoException;
 import com.salesianostriana.dam.excepciones.StockInsuficienteException;
+import com.salesianostriana.dam.model.Cliente;
 import com.salesianostriana.dam.model.EstadoPedido;
 import com.salesianostriana.dam.model.LineaPedido;
 import com.salesianostriana.dam.model.Pedido;
@@ -106,8 +107,43 @@ public class PedidoService extends BaseServiceImpl<Pedido, Long, PedidoRepositor
 		recalcularTotal(pedido);
 		
 		return edit(pedido);
+	}
 		
-		
+		//Tramitar Carrito
+		public Pedido tramitarCarrito(Map<Producto, Integer> carrito,
+									  Cliente cliente, ProductoService productoService) {
+			
+			if(carrito == null || carrito.isEmpty()) {
+				throw new IllegalStateException("El carrito está vacío");
+			}
+			
+			boolean esSocio = cliente != null && cliente.isSocioTienda();
+			
+			// - Comprobar el stock antes de crear el pedido
+			carrito.forEach((producto, cantidad) ->
+					productoService.verificarStock(producto, cantidad));
 	
+			// - Crear el pedido
+			Pedido pedido = new Pedido();
+			pedido.setCodigo(System.currentTimeMillis());
+			pedido.setFecha(LocalDate.now());
+			pedido.setEstadoPedido(EstadoPedido.PENDIENTE);
+			pedido.setCliente(cliente);
+			
+			//crear las lineas y descontar stock
+			carrito.forEach((producto, cantidad) -> {
+				double precioFinal = producto.getPrecioConDescuento(esSocio);
+				
+				LineaPedido linea = new LineaPedido();
+				linea.setCantidad(cantidad);
+				linea.setPrecioUnitario(precioFinal);
+				linea.setSubtotal(precioFinal * cantidad);
+				pedido.addLinea(linea);
+				
+				productoService.descontarStock(producto, cantidad);
+			});
+			
+			recalcularTotal(pedido);
+			return save(pedido);
 	}
 }
