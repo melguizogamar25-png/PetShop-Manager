@@ -42,4 +42,13 @@ public class ProductoService extends BaseServiceImpl<Producto, Long, ProductoRep
 	public List<Producto> masvendidosPorTipos(TipoMascota tipo) {
 		return repository.findMasVendidosPorTipo(tipo);
 	}
+	
+	//Logica de negocios
+	public double precioMedioPorTipo(TipoMascota tipo) {
+		return findAll().stream()
+				.filter(p -> p.getTipoMascota() == tipo)
+				.mapToDouble(Producto::getPrecio)
+				.average() //Calcula la media
+				.orElse(0.0);
+	}
 }
