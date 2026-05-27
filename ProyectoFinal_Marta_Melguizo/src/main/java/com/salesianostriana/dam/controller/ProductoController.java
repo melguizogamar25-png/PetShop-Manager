@@ -28,12 +28,20 @@ public class ProductoController {
 
 	@GetMapping("/")
 	public String listAll(Model model,
-					@RequestParam(required = false) String buscar) {
+					@RequestParam(required = false) String buscar,
+					@RequestParam(required = false) String tipo) {
 		
 		if(buscar != null && !buscar.isBlank()) {
 			model.addAttribute("productos", productoService.buscarPorNombre(buscar));
 			model.addAttribute("buscar", buscar);
+		}else if(tipo != null && !tipo.isBlank()) {
+			model.addAttribute("productos", productoService.porTipoMascota(tipo));
+			model.addAttribute("tipoSeleccionado", tipo);
+		}else {
+			model.addAttribute("productos", productoService.findAll());
 		}
+		model.addAttribute("tipos", TipoMascota.values());
+		//AlertaStock
 		return "producto-list";
 	}
 	
