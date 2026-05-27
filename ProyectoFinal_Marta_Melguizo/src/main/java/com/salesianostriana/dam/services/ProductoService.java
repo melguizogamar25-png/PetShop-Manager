@@ -1,6 +1,7 @@
 package com.salesianostriana.dam.services;
 
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -75,11 +76,25 @@ public class ProductoService extends BaseServiceImpl<Producto, Long, ProductoRep
 		}
 	}
 	
-	//descontar stock
+	// - descontar stock
 	public void descontarStock(Producto producto, int cantidad) {
 		verificarStock(producto, cantidad);
 		producto.setStock(producto.getStock() - cantidad);
 		edit(producto);
+	}
+	
+	// - Devolcer el stock 
+	public void devolverStock(Producto producto, int cantidad) {
+		producto.setStock(producto.getStock() + cantidad);
+		edit(producto);
+	}
+	
+	// - Productos aleatorios de catalogo
+	public List<Producto> productosAleatorios(int cantidad) {
+		List<Long> ids = repository.findAllIds();
+		Collections.shuffle(ids);
+		ids = ids.stream().limit(cantidad).collect(Collectors.toList());
+		return repository.findAllById(ids);
 	}
 	
 }
