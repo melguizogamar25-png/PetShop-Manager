@@ -66,7 +66,7 @@ public class ClienteService extends BaseServiceImpl<Cliente, Long, ClienteReposi
 	}
 	
 	// - Una lista de los clientes que mas han gastado
-	  public List<Cliente> clientesPorGastoStream() {
+	  public List<Cliente> clientesPorGasto() {
 	        return findAll().stream()
 	                .sorted(Comparator.comparingDouble(
 	                        (Cliente c) -> c.getPedidos().stream()
