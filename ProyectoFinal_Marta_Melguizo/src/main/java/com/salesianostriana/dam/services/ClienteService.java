@@ -31,7 +31,20 @@ public class ClienteService extends BaseServiceImpl<Cliente, Long, ClienteReposi
 		return repository.findBySocioTiendaTrue();
 	}
 	
+	// - CLientes que estan ordenador por el total
+	public List<Cliente> clientesPorgastosDesc() {
+		return repository.findClientesOrdenadosPorGastoDesc();
+	}
 	
+	// - Los clientes que ya tienen como minimo 1 pedido
+	public List<Cliente> clientesConPedidos() {
+		return repository.findClientesConPedidos();
+	}
+	
+	// - Comprueba si el email esta en uso
+	public boolean emailEnUso(String email) {
+		return repository.existsByEmailIgnoreCase(email);
+	}
 	
 	//La logica de negocio
 	// - Cuenta cuantos socios hay
