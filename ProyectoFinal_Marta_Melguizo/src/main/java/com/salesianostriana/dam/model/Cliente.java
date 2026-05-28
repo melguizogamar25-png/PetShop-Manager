@@ -49,7 +49,7 @@ public class Cliente {
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
 	//Un cliente puede tener muchos pedidos
-	@OneToMany(mappedBy = "cliente") 
+	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true) 
 	private List<Pedido> pedidos = new ArrayList<>();
 	
 	//Método bidireccional
