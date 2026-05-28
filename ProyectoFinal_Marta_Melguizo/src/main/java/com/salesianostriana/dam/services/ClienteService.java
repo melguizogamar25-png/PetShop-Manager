@@ -31,6 +31,8 @@ public class ClienteService extends BaseServiceImpl<Cliente, Long, ClienteReposi
 		return repository.findBySocioTiendaTrue();
 	}
 	
+	
+	
 	//La logica de negocio
 	// - Cuenta cuantos socios hay
 	public long totalSOcios() {

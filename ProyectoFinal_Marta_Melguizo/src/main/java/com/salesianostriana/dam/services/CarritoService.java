@@ -58,6 +58,7 @@ public class CarritoService extends BaseServiceImpl<Producto, Long, ProductoRepo
 	}
 	
 	//Recorrer el carrito
+	// - Enseña el carrito pero no se puede modificar
 	public Map<Producto, Integer> getProductosInCarr() {
 		return Collections.unmodifiableMap(carrito);
 	}
