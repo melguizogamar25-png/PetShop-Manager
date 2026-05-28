@@ -45,7 +45,7 @@ public class Producto {
 	
 	private boolean devolucion;
 	
-	@NotNull(message = "Debes seleccional el tipo de mascota.")
+	@NotNull(message = "Debes seleccionar el tipo de mascota.")
 	@Enumerated(EnumType.STRING)
 	//Sirve para guardar el enum como String
 	private TipoMascota tipoMascota;

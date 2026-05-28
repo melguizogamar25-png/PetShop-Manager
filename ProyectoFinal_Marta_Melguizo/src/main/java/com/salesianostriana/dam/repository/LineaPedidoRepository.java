@@ -6,4 +6,5 @@ import com.salesianostriana.dam.model.LineaPedido;
 
 public interface LineaPedidoRepository extends JpaRepository <LineaPedido, Long>{
 
+	
 }

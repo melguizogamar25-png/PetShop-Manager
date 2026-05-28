@@ -41,13 +41,6 @@ public class PedidoService extends BaseServiceImpl<Pedido, Long, PedidoRepositor
 		return repository.findTop5ByOrderByTotalDesc();
 	}
 	
-	// - EL total facturado de los pedidos que ya estan entregados
-	public Double toralFacturado() {
-		Double result; 
-		result = repository.sumTotalFacturado();
-		return result != null ? result : 0.0;
-	}
-	
 	//La logica de negocios
 	public Map<EstadoPedido, List<Pedido>> agrupadosPorEstado() {
 		return findAll().stream()
