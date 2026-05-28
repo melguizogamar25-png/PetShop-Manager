@@ -73,6 +73,31 @@ public class ConsultasController {
 		model.addAttribute("pedidosrango", pedidoService.pedidosPorRango(desde, hasta));
 		model.addAttribute("desde", desde);
 		model.addAttribute("hasta", hasta);
+		cargarDatosPanel(model);
+		return "consultas";
+	}
+	
+	// - Poductos que tienen el stock bajo
+	@GetMapping("/bajo-stock")
+	public String bajoStock(@RequestParam(defaultValue = "5") int umbral, Model model) {
+		model.addAttribute("productosBajoStock", productoService.productosBajoStock(umbral));
+		model.addAttribute("umbral", umbral);
+		cargarDatosPanel(model);
+		return "consultas";
+	}
+	
+	// - Productos de un tipo
+	@GetMapping("/por-tipo")
+	public String porTipo(@RequestParam String tipo, Model model) {
+		try {
+			TipoMascota tipoM = TipoMascota.valueOf(tipo);
+			model.addAttribute("ProductoPorTipo", productoService.porTipoMascota(tipo));
+			model.addAttribute("tipoSeleccionado", tipoM);
+			model.addAttribute("precioMedio", productoService.precioMedioPorTipo(tipoM));
+		}catch(IllegalArgumentException e) {
+			throw new TipoMascotaInvalidoException(tipo);
+		}
+		cargarDatosPanel(model);
 		return "consultas";
 	}
 	
