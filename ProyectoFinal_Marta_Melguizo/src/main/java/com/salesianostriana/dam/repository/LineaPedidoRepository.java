@@ -20,4 +20,12 @@ public interface LineaPedidoRepository extends JpaRepository <LineaPedido, Long>
 	long countByPedidoCodigo(Long codigoPedido);
 	
 
+	// - Producto mas pedido
+	@Query("""
+			select l.producto.id, sum(l.cantidad) as total
+			from LineaPedido l
+			group by l.producto.id
+			order by total desc
+			""")
+	List<Object[]> findProductoMasVendidoRaw(); 
 }
