@@ -115,6 +115,28 @@ body {
     border: 2px solid var(--verde);
 }
 
+.ticket-wrap {
+    background: #fff;
+    border: 1px solid #dde8e2;
+    border-radius: 12px;
+    overflow: hidden;
+}
+.ticket-header {
+    background-color: var(--verde);
+    color: #fff;
+    padding: 1.4rem;
+    text-align: center;
+}
+.ticket-line { border: none; border-top: 1px dashed #cbd5e1; margin: .4rem 0; }
+
+.discount-card {
+    background-color: #edf7f1;
+    border: 1px solid #a8dbbe;
+    border-radius: 10px;
+    padding: 1rem 1.2rem;
+    font-size: .85rem;
+}
+
 .site-footer {
     background-color: var(--verde);
     color: rgba(255,255,255,0.65);

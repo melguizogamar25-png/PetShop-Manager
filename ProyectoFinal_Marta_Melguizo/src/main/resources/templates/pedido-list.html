@@ -4,34 +4,29 @@
 <head th:replace="~{fragments/fragments :: head_deps}">
     <title>Pedidos — PetShop Manager</title>
 </head>
-<body>
-<nav th:replace="~{fragments/fragments :: menu}"></nav>
+<body class="d-flex flex-column min-vh-100">
+<nav th:replace="~{fragments/fragments :: menu_admin}"></nav>
 
-<div class="page-header">
-    <div class="container position-relative">
-        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
-            <div class="d-flex align-items-center gap-3">
-                <div class="ph-icon">🧾</div>
-                <div>
-                    <h1>Gestión de Pedidos</h1>
-                    <p>
-                        Total facturado (entregados):
-                        <strong style="color:var(--sage);"
-                                th:text="${#numbers.formatDecimal(totalFacturado,1,2)} + ' €'">0.00 €</strong>
-                    </p>
-                </div>
-            </div>
-            <a th:href="@{/pedidos/nuevo}" class="btn-light-outline" sec:authorize="hasRole('ADMIN')">
-                <i class="bi bi-plus-lg"></i> Nuevo pedido
-            </a>
+<div class="seccion-header">
+    <div class="container d-flex align-items-center justify-content-between">
+        <div>
+            <h5 class="fw-bold mb-0">Gestión de Pedidos</h5>
+            <p class="mb-0 small opacity-75">
+                Total facturado (entregados):
+                <strong th:text="${#numbers.formatDecimal(totalFacturado,1,2)} + ' €'">0.00 €</strong>
+            </p>
         </div>
+        <a th:href="@{/pedidos/nuevo}" class="btn btn-light btn-sm rounded-pill fw-semibold"
+           style="color:var(--verde);" sec:authorize="hasRole('ADMIN')">
+            <i class="bi bi-plus-lg me-1"></i>Nuevo pedido
+        </a>
     </div>
 </div>
 
-<div class="container py-4">
-    <div class="card p-0">
-        <div class="table-scroll">
-            <table class="table table-petshop align-middle mb-0">
+<div class="container py-4 flex-grow-1">
+    <div class="card border-0 shadow-sm p-0">
+        <div class="table-responsive">
+            <table class="table tabla-verde align-middle mb-0">
                 <thead>
                     <tr>
                         <th class="ps-4">Código</th>
@@ -45,40 +40,35 @@
                 </thead>
                 <tbody>
                     <tr th:each="p : ${pedidos}">
-                        <td class="ps-4">
-                            <span class="fw-semibold" style="color:var(--text-soft);font-size:0.875rem;"
-                                  th:text="'#' + ${p.codigo}">1</span>
-                        </td>
-                        <td style="font-size:0.875rem;"
-                            th:text="${#temporals.format(p.fecha,'dd/MM/yyyy')}">—</td>
+                        <td class="ps-4 fw-semibold text-muted small" th:text="'#' + ${p.codigo}">1</td>
+                        <td class="small" th:text="${#temporals.format(p.fecha,'dd/MM/yyyy')}">—</td>
+                        <td class="fw-semibold" style="color:var(--verde);"
+                            th:text="${p.cliente != null ? p.cliente.nombre : '—'}">—</td>
                         <td>
-                            <span class="fw-semibold" style="font-size:0.9rem;"
-                                  th:text="${p.cliente != null ? p.cliente.nombre : '—'}">—</span>
-                        </td>
-                        <td>
-                            <span th:if="${p.estadoPedido.name() == 'pendiente'}"  class="badge-estado badge-pendiente"  th:text="${p.estadoPedido}">pendiente</span>
-                            <span th:if="${p.estadoPedido.name() == 'enviado'}"    class="badge-estado badge-enviado"    th:text="${p.estadoPedido}">enviado</span>
-                            <span th:if="${p.estadoPedido.name() == 'entregado'}"  class="badge-estado badge-entregado"  th:text="${p.estadoPedido}">entregado</span>
+                            <span th:if="${p.estadoPedido.name() == 'PENDIENTE'}"  class="badge-pendiente"  th:text="${p.estadoPedido}">PENDIENTE</span>
+                            <span th:if="${p.estadoPedido.name() == 'ENVIADO'}"    class="badge-enviado"    th:text="${p.estadoPedido}">ENVIADO</span>
+                            <span th:if="${p.estadoPedido.name() == 'ENTREGADO'}"  class="badge-entregado"  th:text="${p.estadoPedido}">ENTREGADO</span>
                         </td>
                         <td class="text-center">
-                            <span style="background:var(--cream-dark);color:var(--forest-mid);font-size:0.72rem;font-weight:700;border-radius:100px;padding:3px 10px;"
+                            <span class="badge rounded-pill"
+                                  style="background-color:var(--menta);color:var(--verde);font-size:.7rem;"
                                   th:text="${p.lineas.size()} + ' líneas'">0</span>
                         </td>
-                        <td class="text-end fw-bold" style="color:var(--forest-mid);"
+                        <td class="text-end fw-bold" style="color:var(--verde-med);"
                             th:text="${#numbers.formatDecimal(p.total,1,2)} + ' €'">0.00 €</td>
                         <td class="text-center pe-4">
-                            <div class="d-flex justify-content-center gap-2">
+                            <div class="d-flex justify-content-center gap-1">
                                 <a th:href="@{/pedidos/{id}(id=${p.codigo})}"
-                                   class="btn btn-sm btn-outline-success rounded-pill" style="font-size:0.78rem;padding:3px 10px;">
-                                    <i class="bi bi-eye"></i> Ver
+                                   class="btn btn-sm btn-outline-success rounded-pill px-3">
+                                    <i class="bi bi-eye"></i>
                                 </a>
                                 <a th:href="@{/pedidos/editar/{id}(id=${p.codigo})}"
-                                   class="btn btn-sm btn-outline-primary rounded-pill" style="font-size:0.78rem;padding:3px 10px;"
+                                   class="btn btn-sm btn-outline-primary rounded-pill px-2"
                                    sec:authorize="hasRole('ADMIN')">
                                     <i class="bi bi-pencil"></i>
                                 </a>
                                 <a th:href="@{/pedidos/borrar/{id}(id=${p.codigo})}"
-                                   class="btn btn-sm btn-outline-danger rounded-pill" style="font-size:0.78rem;padding:3px 10px;"
+                                   class="btn btn-sm btn-outline-danger rounded-pill px-2"
                                    onclick="return confirm('¿Eliminar este pedido?')"
                                    sec:authorize="hasRole('ADMIN')">
                                     <i class="bi bi-trash"></i>
@@ -87,10 +77,7 @@
                         </td>
                     </tr>
                     <tr th:if="${#lists.isEmpty(pedidos)}">
-                        <td colspan="7" class="text-center py-5">
-                            <div style="font-size:2.5rem;margin-bottom:.75rem;">🧾</div>
-                            <p class="mb-0 text-muted">No hay pedidos registrados.</p>
-                        </td>
+                        <td colspan="7" class="text-center py-5 text-muted">No hay pedidos registrados.</td>
                     </tr>
                 </tbody>
             </table>
@@ -98,10 +85,6 @@
     </div>
 </div>
 
-<footer class="site-footer text-center mt-5">
-    <div class="container">
-        <span>🐾 <strong>PetShop Manager</strong> &copy; 2025</span>
-    </div>
-</footer>
+<footer th:replace="~{fragments/fragments :: footer}"></footer>
 </body>
 </html>

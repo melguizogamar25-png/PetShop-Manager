@@ -22,7 +22,7 @@ public interface ProductoRepository extends JpaRepository <Producto, Long>{
 	o = umbral y esta ordenado ASC*/
 	List<Producto> findByStockLessThanEqualOrderByStockAsc(int umbral);
 	
-	List<Producto> findDevolucionTrue();
+	List<Producto> findByDevolucionTrue();
 	
 	/* - los productos que tengan el precio menor 
 	o = al que tengo ordenado asc*/
@@ -36,13 +36,13 @@ public interface ProductoRepository extends JpaRepository <Producto, Long>{
 	long countByTipoMascota(TipoMascota tipo);
 	
 	// - Hay algun producto que se llame asi
-	boolean existsByNombreIgnorecase(String nombre);
+	boolean existsByNombreIgnoreCase(String nombre);
 	
 	// - El producto mas vendido por tipo
 	@Query("""
 			select p from Producto p where p.tipoMascota = :tipo
 			order by (select coalesce(sum(l.cantidad),0)
-						from Lineapedido l where l.producto = p)
+						from LineaPedido l where l.producto = p)
 			desc
 			""")
 	List<Producto> findMasVendidosPorTipo(@Param("tipo") TipoMascota tipo);

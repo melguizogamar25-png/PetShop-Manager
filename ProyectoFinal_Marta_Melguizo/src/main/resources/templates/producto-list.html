@@ -6,7 +6,6 @@
 </head>
 <body class="d-flex flex-column min-vh-100">
 <nav th:replace="~{fragments/fragments :: menu_admin}"></nav>
-
 <div class="seccion-header">
     <div class="container d-flex align-items-center justify-content-between">
         <div>
@@ -21,8 +20,6 @@
 </div>
 
 <div class="container py-4 flex-grow-1">
-
-    <!-- Alerta stock bajo -->
     <div th:if="${alertaStock != null and not #lists.isEmpty(alertaStock)}"
          sec:authorize="hasRole('ADMIN')"
          class="alert alert-warning d-flex align-items-center gap-2 mb-3">
@@ -30,16 +27,13 @@
         <span><strong>Atención:</strong> <span th:text="${alertaStock.size()}">0</span> producto(s) con stock ≤ 5 unidades.</span>
     </div>
 
-    <!-- Filtros -->
     <div class="card border-0 shadow-sm mb-4 p-3">
         <div class="row g-2 align-items-center">
             <div class="col-md-5">
                 <form th:action="@{/productos/}" method="get" class="d-flex gap-2">
                     <input type="text" name="buscar" class="form-control form-control-sm"
                            placeholder="Buscar por nombre..." th:value="${buscar}">
-                    <button type="submit" class="btn btn-verde btn-sm px-3">
-                        <i class="bi bi-search"></i>
-                    </button>
+                    <button type="submit" class="btn btn-verde btn-sm px-3"><i class="bi bi-search"></i></button>
                 </form>
             </div>
             <div class="col-md-4">
@@ -49,9 +43,7 @@
                         <option th:each="t : ${tipos}" th:value="${t}" th:text="${t}"
                                 th:selected="${tipoSeleccionado == t.name()}"></option>
                     </select>
-                    <button type="submit" class="btn btn-verde btn-sm px-3">
-                        <i class="bi bi-funnel"></i>
-                    </button>
+                    <button type="submit" class="btn btn-verde btn-sm px-3"><i class="bi bi-funnel"></i></button>
                 </form>
             </div>
             <div class="col-md-3">
@@ -65,12 +57,9 @@
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-3">
         <div class="col" th:each="p : ${productos}">
             <div class="card h-100 border-0 shadow-sm" style="border-radius:10px;overflow:hidden;">
-
                 <div class="position-relative">
                     <img class="producto-img"
-                         th:src="${p.imagen != null and !#strings.isEmpty(p.imagen)}
-                                 ? ${p.imagen}
-                                 : 'https://placehold.co/300x160/e8f5ee/2d6a4f?text=Sin+imagen'"
+                         th:src="${p.imagen != null and !#strings.isEmpty(p.imagen)} ? ${p.imagen} : 'https://placehold.co/300x160/e8f5ee/2d6a4f?text=Sin+imagen'"
                          th:alt="${p.nombre}">
                     <span class="badge position-absolute top-0 start-0 m-2"
                           style="background-color:var(--verde);font-size:.65rem;"
@@ -82,7 +71,6 @@
                           class="badge bg-danger position-absolute top-0 end-0 m-2"
                           style="font-size:.65rem;">Sin stock</span>
                 </div>
-
                 <div class="card-body d-flex flex-column p-3">
                     <h6 class="fw-bold text-truncate mb-1" style="color:var(--verde);" th:text="${p.nombre}">Producto</h6>
                     <p class="small text-muted flex-grow-1 mb-2" th:text="${p.descripcion}">Descripción</p>
@@ -92,8 +80,7 @@
                               th:text="${#numbers.formatDecimal(p.precio,1,2)} + ' €'">0 €</span>
                         <span class="badge rounded-pill"
                               th:classappend="${p.stock > 10} ? 'bg-success' : (${p.stock > 0} ? 'bg-warning text-dark' : 'bg-danger')"
-                              style="font-size:.7rem;"
-                              th:text="'Stock: ' + ${p.stock}">0</span>
+                              style="font-size:.7rem;" th:text="'Stock: ' + ${p.stock}">0</span>
                     </div>
 
                     <div class="d-flex gap-2 small text-muted mb-2">

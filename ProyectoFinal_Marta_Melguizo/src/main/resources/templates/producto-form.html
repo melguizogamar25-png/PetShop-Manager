@@ -6,24 +6,25 @@
 <body class="d-flex flex-column min-vh-100">
 <nav th:replace="~{fragments/fragments :: menu_admin}"></nav>
 
+<div class="seccion-header">
+    <div class="container">
+        <h5 class="fw-bold mb-0" th:text="${producto.id != null} ? '✏️ Editar producto' : '📦 Nuevo producto'">Producto</h5>
+        <p class="mb-0 small opacity-75">Completa los datos para el catálogo de la tienda</p>
+    </div>
+</div>
+
 <div class="container py-4 flex-grow-1" style="max-width:680px;">
     <div class="card border-0 shadow-sm">
-        <div class="card-header seccion-header border-0 py-3 px-4">
-            <h5 class="fw-bold mb-0" th:text="${producto.id != null} ? '✏️ Editar producto' : '📦 Nuevo producto'">Producto</h5>
-            <p class="mb-0 small opacity-75">Completa los datos para el catálogo de la tienda</p>
-        </div>
         <div class="card-body p-4">
             <form th:action="${producto.id != null} ? @{/productos/editar/submit} : @{/productos/save}"
                   th:object="${producto}" method="post">
                 <input type="hidden" th:field="*{id}">
 
                 <div class="row g-3">
-
                     <div class="col-12">
                         <label class="form-label fw-semibold small">Nombre <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" th:field="*{nombre}"
-                               th:errorclass="is-invalid"
-                               placeholder="Ej: Pienso premium para perro adulto">
+                               th:errorclass="is-invalid" placeholder="Ej: Pienso premium para perro adulto">
                         <div class="invalid-feedback" th:errors="*{nombre}"></div>
                     </div>
 
@@ -58,8 +59,7 @@
 
                     <div class="col-md-6">
                         <label class="form-label fw-semibold small">Fecha de caducidad</label>
-                        <input type="date" class="form-control" th:field="*{fechaCaducidad}"
-                               th:errorclass="is-invalid">
+                        <input type="date" class="form-control" th:field="*{fechaCaducidad}" th:errorclass="is-invalid">
                         <div class="invalid-feedback" th:errors="*{fechaCaducidad}"></div>
                     </div>
 
@@ -80,12 +80,11 @@
                     <div class="col-12">
                         <div class="form-check form-switch">
                             <input class="form-check-input" type="checkbox" id="devolucion" th:field="*{devolucion}">
-                            <label class="form-check-label small fw-semibold" for="devolucion">
+                            <label class="form-check-label fw-semibold small" for="devolucion">
                                 Admite devolución
                             </label>
                         </div>
                     </div>
-
                 </div>
 
                 <hr class="my-4">

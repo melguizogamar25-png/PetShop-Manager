@@ -41,7 +41,7 @@ public class ProductoService extends BaseServiceImpl<Producto, Long, ProductoRep
 	}
 	
 	public List<Producto> conDevolucion() {
-		return repository.findDevolucionTrue();
+		return repository.findByDevolucionTrue();
 	}
 	
 	public List<Producto> masvendidosPorTipos(TipoMascota tipo) {

@@ -21,8 +21,6 @@
 </div>
 
 <div class="container py-4 flex-grow-1">
-
-    <!-- Filtros -->
     <div class="card border-0 shadow-sm mb-4 p-3">
         <div class="row g-2 align-items-center">
             <div class="col-md-6">
@@ -35,8 +33,7 @@
                 </form>
             </div>
             <div class="col-md-3">
-                <a th:href="@{/clientes/?socios=true}"
-                   class="btn btn-sm w-100 rounded-pill"
+                <a th:href="@{/clientes/?socios=true}" class="btn btn-sm w-100 rounded-pill"
                    th:classappend="${filtroSocios} ? 'btn-verde' : 'btn-verde-outline'">
                     <i class="bi bi-star-fill me-1"></i>Solo socios
                 </a>
@@ -77,7 +74,8 @@
                             <span th:unless="${c.socioTienda}" class="text-muted small">No</span>
                         </td>
                         <td class="text-center">
-                            <span class="badge rounded-pill" style="background-color:var(--menta);color:var(--verde);"
+                            <span class="badge rounded-pill"
+                                  style="background-color:var(--menta);color:var(--verde);"
                                   th:text="${c.pedidos.size()}">0</span>
                         </td>
                         <td class="text-center pe-4" sec:authorize="hasRole('ADMIN')">
@@ -95,9 +93,7 @@
                         </td>
                     </tr>
                     <tr th:if="${#lists.isEmpty(clientes)}">
-                        <td colspan="7" class="text-center py-5 text-muted">
-                            No hay clientes registrados.
-                        </td>
+                        <td colspan="7" class="text-center py-5 text-muted">No hay clientes registrados.</td>
                     </tr>
                 </tbody>
             </table>

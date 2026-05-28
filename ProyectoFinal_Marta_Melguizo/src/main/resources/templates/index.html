@@ -7,74 +7,55 @@
 <body class="d-flex flex-column min-vh-100">
 <nav th:replace="~{fragments/fragments :: menu}"></nav>
 
-<!-- Hero -->
 <section class="hero">
     <div class="container">
         <h1 class="fw-bold mb-2">🐾 PetShop Manager</h1>
-        <p class="mb-4 opacity-75">Administra productos, clientes y pedidos desde un único panel intuitivo.</p>
+        <p class="mb-4 opacity-75">Administra productos, clientes y pedidos desde un único panel.</p>
         <div class="d-flex flex-wrap gap-2">
             <a th:href="@{/productos/}" class="btn btn-light rounded-pill px-4 fw-semibold" style="color:var(--verde);">
                 <i class="bi bi-box-seam me-1"></i>Ver catálogo
             </a>
-            <a th:href="@{/pedidos/}" class="btn btn-outline-light rounded-pill px-4"
-               sec:authorize="hasRole('ADMIN')">
-                <i class="bi bi-receipt me-1"></i>Ver pedidos
-            </a>
-            <a th:href="@{/carrito}" class="btn btn-outline-light rounded-pill px-4"
-               sec:authorize="hasRole('USER')">
-                <i class="bi bi-cart3 me-1"></i>Mi carrito
+            <a th:href="@{/login}" class="btn btn-outline-light rounded-pill px-4">
+                <i class="bi bi-box-arrow-in-right me-1"></i>Iniciar sesión
             </a>
         </div>
     </div>
 </section>
 
-<!-- Accesos rápidos -->
 <section class="container py-5 flex-grow-1">
-    <h5 class="fw-bold mb-1" style="color:var(--verde);">Accesos rápidos</h5>
-    <p class="text-muted small mb-4">Todo lo que necesitas a un clic</p>
-
+    <h5 class="fw-bold mb-1" style="color:var(--verde);">¿Qué puedes hacer?</h5>
+    <p class="text-muted small mb-4">Inicia sesión para acceder a todas las funciones</p>
     <div class="row g-3 justify-content-center">
         <div class="col-sm-6 col-md-3">
             <div class="card h-100 border-0 shadow-sm text-center p-4">
                 <div class="fs-2 mb-2">📦</div>
                 <h6 class="fw-bold" style="color:var(--verde);">Catálogo</h6>
                 <p class="small text-muted flex-grow-1">Explora todos los productos de la tienda.</p>
-                <a th:href="@{/productos/}" class="btn btn-verde btn-sm rounded-pill w-100">
-                    <i class="bi bi-arrow-right-circle me-1"></i>Ver catálogo
-                </a>
+                <a th:href="@{/productos/}" class="btn btn-verde btn-sm rounded-pill w-100">Ver catálogo</a>
             </div>
         </div>
-
-        <div class="col-sm-6 col-md-3" sec:authorize="hasRole('ADMIN')">
+        <div class="col-sm-6 col-md-3">
             <div class="card h-100 border-0 shadow-sm text-center p-4">
                 <div class="fs-2 mb-2">👥</div>
                 <h6 class="fw-bold" style="color:var(--verde);">Clientes</h6>
-                <p class="small text-muted flex-grow-1">Consulta y gestiona tu base de clientes.</p>
-                <a th:href="@{/clientes/}" class="btn btn-verde btn-sm rounded-pill w-100">
-                    <i class="bi bi-arrow-right-circle me-1"></i>Ver clientes
-                </a>
+                <p class="small text-muted flex-grow-1">Gestión de clientes y socios. Solo admin.</p>
+                <a th:href="@{/login}" class="btn btn-verde btn-sm rounded-pill w-100">Acceder</a>
             </div>
         </div>
-
-        <div class="col-sm-6 col-md-3" sec:authorize="hasRole('ADMIN')">
+        <div class="col-sm-6 col-md-3">
             <div class="card h-100 border-0 shadow-sm text-center p-4">
                 <div class="fs-2 mb-2">🧾</div>
                 <h6 class="fw-bold" style="color:var(--verde);">Pedidos</h6>
-                <p class="small text-muted flex-grow-1">Revisa el historial completo de pedidos.</p>
-                <a th:href="@{/pedidos/}" class="btn btn-verde btn-sm rounded-pill w-100">
-                    <i class="bi bi-arrow-right-circle me-1"></i>Ver pedidos
-                </a>
+                <p class="small text-muted flex-grow-1">Historial y gestión de pedidos. Solo admin.</p>
+                <a th:href="@{/login}" class="btn btn-verde btn-sm rounded-pill w-100">Acceder</a>
             </div>
         </div>
-
-        <div class="col-sm-6 col-md-3" sec:authorize="hasRole('USER')">
+        <div class="col-sm-6 col-md-3">
             <div class="card h-100 border-0 shadow-sm text-center p-4">
                 <div class="fs-2 mb-2">🛒</div>
-                <h6 class="fw-bold" style="color:var(--verde);">Mi Carrito</h6>
-                <p class="small text-muted flex-grow-1">Revisa los productos seleccionados.</p>
-                <a th:href="@{/carrito}" class="btn btn-verde btn-sm rounded-pill w-100">
-                    <i class="bi bi-arrow-right-circle me-1"></i>Ver carrito
-                </a>
+                <h6 class="fw-bold" style="color:var(--verde);">Carrito</h6>
+                <p class="small text-muted flex-grow-1">Compra productos para tu mascota.</p>
+                <a th:href="@{/login}" class="btn btn-verde btn-sm rounded-pill w-100">Acceder</a>
             </div>
         </div>
     </div>
