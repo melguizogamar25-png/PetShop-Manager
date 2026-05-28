@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -52,7 +53,7 @@ public class Pedido {
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
 	//Un pedido tiene unas cuantas de lineas de pedido
-	@OneToMany 
+	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List <LineaPedido> lineas = new ArrayList<>(); 
 	
 	//Añade y elimina una linea de pedido
