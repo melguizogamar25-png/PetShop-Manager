@@ -5,7 +5,12 @@
     <title>Catálogo — PetShop Manager</title>
 </head>
 <body class="d-flex flex-column min-vh-100">
-<nav th:replace="~{fragments/fragments :: menu_admin}"></nav>
+<div sec:authorize="hasRole('ROLE_ADMIN')">
+    <nav th:replace="~{fragments/fragments :: menu_admin}"></nav>
+</div>
+<div sec:authorize="hasRole('ROLE_USER')">
+    <nav th:replace="~{fragments/fragments :: menu_user}"></nav>
+</div>
 <div class="seccion-header">
     <div class="container d-flex align-items-center justify-content-between">
         <div>

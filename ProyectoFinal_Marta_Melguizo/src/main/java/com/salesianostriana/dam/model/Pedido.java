@@ -54,6 +54,7 @@ public class Pedido {
 	@ToString.Exclude
 	//Un pedido tiene unas cuantas de lineas de pedido
 	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+	@Builder.Default
 	private List <LineaPedido> lineas = new ArrayList<>(); 
 	
 	//Añade y elimina una linea de pedido

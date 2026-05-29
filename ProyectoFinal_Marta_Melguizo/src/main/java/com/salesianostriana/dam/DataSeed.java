@@ -1,6 +1,7 @@
 package com.salesianostriana.dam;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -12,7 +13,6 @@ import com.salesianostriana.dam.model.Pedido;
 import com.salesianostriana.dam.model.Producto;
 import com.salesianostriana.dam.model.TipoMascota;
 import com.salesianostriana.dam.repository.ClienteRepository;
-import com.salesianostriana.dam.repository.LineaPedidoRepository;
 import com.salesianostriana.dam.repository.PedidoRepository;
 import com.salesianostriana.dam.repository.ProductoRepository;
 
@@ -25,10 +25,9 @@ public class DataSeed {
 
 	private final ProductoRepository productoRepository;
 	private final ClienteRepository clienteRepository;
-	private final LineaPedidoRepository lineaPedidoRepository;
 	private final PedidoRepository pedidoRepository;
 	
-	
+	@PostConstruct
 	public void init() {
 
 		//Productos
@@ -142,7 +141,7 @@ public class DataSeed {
 				.fechaCaducidad(LocalDate.of(2026, 10, 1))
 				.devolucion(false)
 				.tipoMascota(TipoMascota.ROEDOR)
-				.imagen("")
+				.imagen("https://static3.zoomalia.com/cdn-cgi/image/width=800,height=800,format=auto/prod_img/15599/lm_cf9d006bd74b4ba33ed8fd389640b50f_st3.jpg")
 				.descripcion("Pellets enriquecidos con vitaminas C y D para conejos enanos y cobayas.")
 				.build();
 
@@ -151,7 +150,7 @@ public class DataSeed {
 				.precio(89.00)
 				.stock(5)
 				.devolucion(true).tipoMascota(TipoMascota.PEZ)
-				.imagen("https://static3.zoomalia.com/cdn-cgi/image/width=800,height=800,format=auto/prod_img/15599/lm_cf9d006bd74b4ba33ed8fd389640b50f_st3.jpg")
+				.imagen("https://m.media-amazon.com/images/I/91FFhy1kAJL._AC_SX679_.jpg")
 				.descripcion("Acuario de 60L con filtro interno, iluminación LED y termómetro incluido.")
 				.build();
 
@@ -189,13 +188,14 @@ public class DataSeed {
 
 		clienteRepository.saveAll(List.of(c1, c2, c3, c4));
 
-		//Pedidos y LineaPedido
+		//Pedidos y LineaPedido (Corregidos con .lineas(new ArrayList<>()))
 		Pedido pe1 = Pedido.builder()
 				.codigo(1001L)
 				.fecha(LocalDate.now().minusMonths(2))
 				.estadoPedido(EstadoPedido.ENTREGADO)
 				.descripcion("Pedido mensual de María")
 				.cliente(c1)
+				.lineas(new ArrayList<>())
 				.build();
 		agregarLinea(pe1, p1, 2, true);
 		agregarLinea(pe1, p3, 1, true);
@@ -207,6 +207,7 @@ public class DataSeed {
 				.estadoPedido(EstadoPedido.ENVIADO)
 				.descripcion("Encargo gato esterilizado")
 				.cliente(c2)
+				.lineas(new ArrayList<>())
 				.build();
 		agregarLinea(pe2, p4, 1, false);
 		agregarLinea(pe2, p5, 1, false);
@@ -218,6 +219,7 @@ public class DataSeed {
 				.estadoPedido(EstadoPedido.PENDIENTE)
 				.descripcion("Pedido para terrario y aves")
 				.cliente(c3)
+				.lineas(new ArrayList<>())
 				.build();
 		agregarLinea(pe3, p6, 3, true);
 		agregarLinea(pe3, p8, 1, true);
@@ -230,6 +232,7 @@ public class DataSeed {
 				.estadoPedido(EstadoPedido.ENTREGADO)
 				.descripcion("Material roedor y acuario")
 				.cliente(c4)
+				.lineas(new ArrayList<>())
 				.build();
 		agregarLinea(pe4, p10, 2, false);
 		agregarLinea(pe4, p11, 1, false);
@@ -242,6 +245,7 @@ public class DataSeed {
 				.estadoPedido(EstadoPedido.PENDIENTE)
 				.descripcion("Reposición pienso y arnés")
 				.cliente(c1)
+				.lineas(new ArrayList<>())
 				.build();
 		agregarLinea(pe5, p1, 1, true);
 		agregarLinea(pe5, p2, 1, true);

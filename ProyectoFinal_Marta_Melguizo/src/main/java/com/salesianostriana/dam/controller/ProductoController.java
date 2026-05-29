@@ -25,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 public class ProductoController {
 
 	private final ProductoService productoService;
-
+	 
 	@GetMapping("/")
 	public String listAll(Model model,
 					@RequestParam(required = false) String buscar,
@@ -79,7 +79,7 @@ public class ProductoController {
 	
 	//Actualizar
 	@PostMapping("/editar/submit")
-	public String update(@PathVariable long id, @Valid @ModelAttribute("producto") 
+	public String update(@Valid @ModelAttribute("producto") 
 						Producto p, BindingResult result, Model model) {
 		
 		if(result.hasErrors()) {

@@ -59,8 +59,8 @@ public class Producto {
 	public double getPrecioConDescuento (boolean esSocio) {
 		double dto = switch(tipoMascota) {
 		case AVE, REPTIL -> 0.10;
-		case ROEDOR, PEZ -> 0.8;
-		default -> 0.5;
+		case ROEDOR, PEZ -> 0.08;
+		default -> 0.05;
 		};
 		if (esSocio) {
 			dto += 0.5;
