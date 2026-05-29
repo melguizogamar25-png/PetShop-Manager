@@ -5,17 +5,13 @@
     <title>Catálogo — PetShop Manager</title>
 </head>
 <body class="d-flex flex-column min-vh-100">
-<div sec:authorize="hasRole('ROLE_ADMIN')">
-    <nav th:replace="~{fragments/fragments :: menu_admin}"></nav>
-</div>
-<div sec:authorize="hasRole('ROLE_USER')">
-    <nav th:replace="~{fragments/fragments :: menu_user}"></nav>
-</div>
+<nav th:replace="~{fragments/fragments :: menu_user}" sec:authorize="hasRole('USER')"></nav>
+
 <div class="seccion-header">
     <div class="container d-flex align-items-center justify-content-between">
         <div>
             <h5 class="fw-bold mb-0">Catálogo de Productos</h5>
-            <p class="mb-0 small opacity-75">Busca, filtra y gestiona el inventario</p>
+            <p class="mb-0 small opacity-75">Busca y filtra el inventario</p>
         </div>
         <a th:href="@{/productos/nuevo}" class="btn btn-light btn-sm rounded-pill fw-semibold"
            style="color:var(--verde);" sec:authorize="hasRole('ADMIN')">
@@ -25,6 +21,7 @@
 </div>
 
 <div class="container py-4 flex-grow-1">
+
     <div th:if="${alertaStock != null and not #lists.isEmpty(alertaStock)}"
          sec:authorize="hasRole('ADMIN')"
          class="alert alert-warning d-flex align-items-center gap-2 mb-3">
@@ -99,6 +96,7 @@
                         </span>
                     </div>
 
+                    <!-- user -->
                     <div class="mb-2" sec:authorize="hasRole('USER')">
                         <a th:href="@{/productoACarrito/{id}(id=${p.id})}"
                            class="btn btn-verde btn-sm rounded-pill w-100"
@@ -108,6 +106,7 @@
                         </a>
                     </div>
 
+                    <!-- admin -->
                     <div class="d-flex gap-2 mt-auto" sec:authorize="hasRole('ADMIN')">
                         <a th:href="@{/productos/editar/{id}(id=${p.id})}"
                            class="btn btn-outline-primary btn-sm rounded-pill flex-fill">

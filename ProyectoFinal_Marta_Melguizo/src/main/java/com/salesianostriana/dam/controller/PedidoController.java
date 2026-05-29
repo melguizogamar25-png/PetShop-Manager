@@ -66,20 +66,25 @@ public class PedidoController {
 	}
 	
 	//Guardar el formulario
-	@PostMapping("/save")
-	public String save (@Valid @ModelAttribute("pedido") Pedido p,
-						BindingResult result, @RequestParam long clienteId,
-						Model model) {
-		if(result.hasErrors()) {
-			model.addAttribute("clientes", clienteService.findAll());
-			model.addAttribute("estados", EstadoPedido.values());
-			return "pedido-form";
-		}
-		clienteService.findById(clienteId).ifPresent(p::setCliente);
-		p.setTotal(0.0);
-		pedidoService.save(p);
-		return "redirect:/pedidos/";
-	}
+    @PostMapping("/save")
+    public String save(@Valid @ModelAttribute("pedido") Pedido p,
+                       BindingResult result,
+                       @RequestParam long clienteId,
+                       Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("clientes", clienteService.findAll());
+            model.addAttribute("estados", EstadoPedido.values());
+            return "pedido-form";
+        }
+        // Asignar ID manual si no viene informado (pedido nuevo)
+        if (p.getCodigo() == null) {
+            p.setCodigo(System.currentTimeMillis());
+        }
+        clienteService.findById(clienteId).ifPresent(p::setCliente);
+        p.setTotal(0.0);
+        pedidoService.save(p);
+        return "redirect:/pedidos/";
+    }
 	
 	@GetMapping("/editar/{id}")
 	public String showEdit(@PathVariable Long id, Model model) {
@@ -119,10 +124,11 @@ public class PedidoController {
 	
 	//Añadir linea pedido desde admin
 		//Las excepciones son del global
-	@PostMapping("/{id}/agregar-producto")
-	public String agregarProducto(@PathVariable Long id, @RequestParam Long productoId,
-								@RequestParam int cantidad) {
-		pedidoService.agregarLineaPedido(id, productoId, cantidad, productoService);
-		return "redirect:/pedidos/" + id; 
-	}
+	 @PostMapping("/{id}/lineas/add")
+	    public String agregarProducto(@PathVariable Long id,
+	                                  @RequestParam Long productoId,
+	                                  @RequestParam int cantidad) {
+	        pedidoService.agregarLineaPedido(id, productoId, cantidad, productoService);
+	        return "redirect:/pedidos/" + id;
+	    }
 }

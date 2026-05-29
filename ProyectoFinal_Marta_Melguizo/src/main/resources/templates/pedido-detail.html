@@ -39,8 +39,6 @@
 
 <div class="container py-4 flex-grow-1">
     <div class="row g-4">
-
-        <!-- Líneas del pedido -->
         <div class="col-lg-8">
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-header" style="background-color:var(--verde);color:#fff;border-radius:0;">
@@ -89,11 +87,8 @@
                 </div>
             </div>
         </div>
-
-        <!-- Panel lateral -->
         <div class="col-lg-4 d-flex flex-column gap-3">
 
-            <!-- Añadir producto -->
             <div class="card border-0 shadow-sm">
                 <div class="card-header" style="background-color:var(--verde);color:#fff;border-radius:0;">
                     <span class="fw-semibold small"><i class="bi bi-cart-plus me-1"></i>Añadir producto</span>
@@ -104,7 +99,6 @@
                         <i class="bi bi-lock-fill me-1"></i>
                         Pedido <strong th:text="${pedido.estadoPedido}">procesado</strong>. No se pueden añadir productos.
                     </div>
-
                     <form th:if="${pedido.estadoPedido.name() == 'PENDIENTE'}"
                           th:action="@{/pedidos/{id}/lineas/add(id=${pedido.codigo})}"
                           method="post">
@@ -131,8 +125,6 @@
                     </form>
                 </div>
             </div>
-
-            <!-- Descuentos -->
             <div class="discount-card">
                 <p class="fw-bold mb-2 small" style="color:var(--verde);">
                     <i class="bi bi-tag-fill me-1"></i>Descuentos aplicados

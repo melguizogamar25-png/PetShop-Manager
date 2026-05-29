@@ -66,13 +66,13 @@ public class CarritoController {
 	
 	//Para el ticket que confirma el pedido
 	@GetMapping("/carrito/tramitar")
-	public String tramitar(Model model) {
-		if(carritoService.estaVacio()) {
-			return "redirect:/carrito";
-		}
-		model.addAttribute("productos", carritoService.getProductosInCarr());
-		return "ticket";
-	}
+    public String tramitar(Model model) {
+        if (carritoService.estaVacio()) {
+            return "redirect:/carrito";
+        }
+        model.addAttribute("productos", carritoService.getProductosInCarr());
+        return "ticket";
+    }
 	
 	//Confirmar el pedido
 	@GetMapping("/carrito/confirmar")

@@ -91,6 +91,7 @@ public class PedidoService extends BaseServiceImpl<Pedido, Long, PedidoRepositor
 		linea.setCantidad(cantidad);
 		linea.setPrecioUnitario(precioFinal);
 		linea.setSubtotal(precioFinal * cantidad);
+		linea.setProducto(producto);
 		pedido.addLinea(linea);
 		
 		// - Descontar el stock

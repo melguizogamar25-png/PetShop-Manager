@@ -19,63 +19,60 @@ public class SecurityConfig {
 	private final AuthenticationSuccessHandler authenticationSuccessHandler;
 	
 	@Bean
-	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		
-		http.authorizeHttpRequests(authz -> authz
-				.requestMatchers("/", "/login", "/logout", "/css/**", "/js/**", 
-						"/img/**", "/h2/**", "/error").permitAll()
-				
-				//ADMIN --> Admin podia crear, editar y borrar
-				.requestMatchers("/admin/**").hasRole("ADMIN")
-				
-				.requestMatchers("/productos/nuevo", "/productos/save",
-								"/productos/editar/**", "/productos/borrar/**").hasRole("ADMIN")
-				
-				.requestMatchers("/clientes/**").hasRole("ADMIN")
-				
-				.requestMatchers("/pedidos/nuevo", "/pedidos/save", 
-						"/pedidos/editar/**", "/pedidos/borrar/**",
-						"/pedidos/*/agregar-producto").hasRole("ADMIN")
-				
-				.requestMatchers("/consultas/**").hasRole("ADMIN")
-				
-				//Usuarios --> Pueden ver listas y consultas
-				.requestMatchers("/user/**").hasRole("USER")
-				
-				.requestMatchers("/carrito/**", "/productoACarrito/**",
-								"/borrarProducto/**", "/eliminarDelCarrito/**"
-								).hasAnyRole("USER", "ADMIN")
-				
-				.requestMatchers("/productos/", "/productos/{id}").authenticated()
-				
-				.requestMatchers("/pedidos/").hasRole("ADMIN")
-				
-				.requestMatchers("/pedido/{id}").hasRole("ADMIN")
-				
-				.anyRequest().authenticated()
-		)
-		
-		//No vamos a guardar la url de origen
-		.requestCache(cache -> cache.requestCache(new NullRequestCache()))
-		
-		.formLogin(form -> form
-				.loginPage("/login")
-				.successHandler(authenticationSuccessHandler)
-				.permitAll()
-		)
-		
-		.logout(logout -> logout
-				.logoutUrl("/logout")
-				.logoutSuccessUrl("/login?logout")
-				.invalidateHttpSession(true) //Esto destruye el carrito de la sesion 
-				.permitAll()
-		)
-				//H2
-				.csrf(csrf -> csrf.ignoringRequestMatchers("/h2/**"))
-				.headers(headers -> headers.frameOptions(opts -> opts.disable()));
-		
-		return http.build();
-		
-	}
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+ 
+        http.authorizeHttpRequests(authz -> authz
+                .requestMatchers(
+                        "/", "/login", "/logout", "/registro",   // FIX BUG 3: /registro es público
+                        "/css/**", "/js/**", "/img/**", "/h2/**", "/error"
+                ).permitAll()
+ 
+                // ADMIN
+                .requestMatchers("/admin/**").hasRole("ADMIN")
+                .requestMatchers("/productos/nuevo", "/productos/save",
+                        "/productos/editar/**", "/productos/borrar/**").hasRole("ADMIN")
+                .requestMatchers("/clientes/**").hasRole("ADMIN")
+                .requestMatchers("/pedidos/nuevo", "/pedidos/save",
+                        "/pedidos/editar/**", "/pedidos/borrar/**",
+                        "/pedidos/*/agregar-producto",
+                        "/pedidos/*/lineas/add"            // FIX BUG 4: ruta correcta
+                ).hasRole("ADMIN")
+                .requestMatchers("/consultas/**").hasRole("ADMIN")
+ 
+                // USER
+                .requestMatchers("/user/**").hasRole("USER")
+                .requestMatchers("/carrito/**", "/productoACarrito/**",
+                        "/borrarProducto/**", "/eliminarDelCarrito/**"
+                ).hasRole("USER")   // FIX BUG 2: el carrito es solo USER
+ 
+                // Autenticados
+                .requestMatchers("/productos/", "/productos/{id}").authenticated()
+                .requestMatchers("/pedidos/").hasRole("ADMIN")
+                .requestMatchers("/pedido/{id}").hasRole("ADMIN")
+ 
+                .anyRequest().authenticated()
+        )
+ 
+        .requestCache(cache -> cache.requestCache(new NullRequestCache()))
+ 
+        .formLogin(form -> form
+                .loginPage("/login")
+                .successHandler(authenticationSuccessHandler)
+                .permitAll()
+        )
+ 
+        .logout(logout -> logout
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/login?logout")
+                .invalidateHttpSession(true)  // destruye el carrito de sesión
+                .permitAll()
+        )
+ 
+        // H2
+        .csrf(csrf -> csrf.ignoringRequestMatchers("/h2/**"))
+        .headers(headers -> headers.frameOptions(opts -> opts.disable()));
+ 
+        return http.build();
+    }
 	
 }
