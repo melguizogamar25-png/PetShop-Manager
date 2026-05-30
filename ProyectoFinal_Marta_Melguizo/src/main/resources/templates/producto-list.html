@@ -5,7 +5,10 @@
     <title>Catálogo — PetShop Manager</title>
 </head>
 <body class="d-flex flex-column min-vh-100">
+
+<nav th:replace="~{fragments/fragments :: menu_admin}" sec:authorize="hasRole('ADMIN')"></nav>
 <nav th:replace="~{fragments/fragments :: menu_user}" sec:authorize="hasRole('USER')"></nav>
+<nav th:replace="~{fragments/fragments :: menu}" sec:authorize="isAnonymous()"></nav>
 
 <div class="seccion-header">
     <div class="container d-flex align-items-center justify-content-between">
@@ -96,7 +99,7 @@
                         </span>
                     </div>
 
-                    <!-- user -->
+                    <!-- Botón carrito SOLO para USER -->
                     <div class="mb-2" sec:authorize="hasRole('USER')">
                         <a th:href="@{/productoACarrito/{id}(id=${p.id})}"
                            class="btn btn-verde btn-sm rounded-pill w-100"
@@ -106,7 +109,7 @@
                         </a>
                     </div>
 
-                    <!-- admin -->
+                    <!-- Botones SOLO para ADMIN -->
                     <div class="d-flex gap-2 mt-auto" sec:authorize="hasRole('ADMIN')">
                         <a th:href="@{/productos/editar/{id}(id=${p.id})}"
                            class="btn btn-outline-primary btn-sm rounded-pill flex-fill">
