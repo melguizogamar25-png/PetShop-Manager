@@ -190,7 +190,6 @@ public class DataSeed {
 
 		//Pedidos y LineaPedido (Corregidos con .lineas(new ArrayList<>()))
 		Pedido pe1 = Pedido.builder()
-				.codigo(1001L)
 				.fecha(LocalDate.now().minusMonths(2))
 				.estadoPedido(EstadoPedido.ENTREGADO)
 				.descripcion("Pedido mensual de María")
@@ -202,7 +201,6 @@ public class DataSeed {
 		recalcularTotal(pe1);
 
 		Pedido pe2 = Pedido.builder()
-				.codigo(1002L)
 				.fecha(LocalDate.now().minusWeeks(3))
 				.estadoPedido(EstadoPedido.ENVIADO)
 				.descripcion("Encargo gato esterilizado")
@@ -214,7 +212,6 @@ public class DataSeed {
 		recalcularTotal(pe2);
 
 		Pedido pe3 = Pedido.builder()
-				.codigo(1003L)
 				.fecha(LocalDate.now().minusDays(5))
 				.estadoPedido(EstadoPedido.PENDIENTE)
 				.descripcion("Pedido para terrario y aves")
@@ -227,7 +224,6 @@ public class DataSeed {
 		recalcularTotal(pe3);
 
 		Pedido pe4 = Pedido.builder()
-				.codigo(1004L)
 				.fecha(LocalDate.now().minusMonths(1))
 				.estadoPedido(EstadoPedido.ENTREGADO)
 				.descripcion("Material roedor y acuario")
@@ -240,7 +236,6 @@ public class DataSeed {
 		recalcularTotal(pe4);
 
 		Pedido pe5 = Pedido.builder()
-				.codigo(1005L)
 				.fecha(LocalDate.now().minusDays(1))
 				.estadoPedido(EstadoPedido.PENDIENTE)
 				.descripcion("Reposición pienso y arnés")

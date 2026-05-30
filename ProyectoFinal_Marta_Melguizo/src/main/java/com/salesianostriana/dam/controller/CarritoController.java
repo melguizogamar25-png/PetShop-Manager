@@ -1,5 +1,6 @@
 package com.salesianostriana.dam.controller;
 
+import java.time.LocalDate;
 import java.util.NoSuchElementException;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequiredArgsConstructor
 public class CarritoController {
-
+ 
 	private final CarritoService carritoService;
 	private final ProductoService productoService;
 	private final PedidoService pedidoService;
@@ -71,6 +72,7 @@ public class CarritoController {
             return "redirect:/carrito";
         }
         model.addAttribute("productos", carritoService.getProductosInCarr());
+        model.addAttribute("fechaHoy", LocalDate.now().toString());
         return "ticket";
     }
 	

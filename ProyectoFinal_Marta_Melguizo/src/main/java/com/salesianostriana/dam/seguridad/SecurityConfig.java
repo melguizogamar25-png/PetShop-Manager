@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-
+ 
 	private final AuthenticationSuccessHandler authenticationSuccessHandler;
 	
 	@Bean
@@ -23,19 +23,20 @@ public class SecurityConfig {
  
         http.authorizeHttpRequests(authz -> authz
                 .requestMatchers(
-                        "/", "/login", "/logout", "/registro",   // FIX BUG 3: /registro es público
+                        "/", "/login", "/logout", "/registro",  
                         "/css/**", "/js/**", "/img/**", "/h2/**", "/error"
                 ).permitAll()
  
                 // ADMIN
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/productos/nuevo", "/productos/save",
-                        "/productos/editar/**", "/productos/borrar/**").hasRole("ADMIN")
+                        "/productos/editar/**", "/productos/borrar/**",
+                        "/productos/admin").hasRole("ADMIN")
                 .requestMatchers("/clientes/**").hasRole("ADMIN")
                 .requestMatchers("/pedidos/nuevo", "/pedidos/save",
                         "/pedidos/editar/**", "/pedidos/borrar/**",
                         "/pedidos/*/agregar-producto",
-                        "/pedidos/*/lineas/add"            // FIX BUG 4: ruta correcta
+                        "/pedidos/*/lineas/add"         
                 ).hasRole("ADMIN")
                 .requestMatchers("/consultas/**").hasRole("ADMIN")
  
@@ -43,7 +44,7 @@ public class SecurityConfig {
                 .requestMatchers("/user/**").hasRole("USER")
                 .requestMatchers("/carrito/**", "/productoACarrito/**",
                         "/borrarProducto/**", "/eliminarDelCarrito/**"
-                ).hasRole("USER")   // FIX BUG 2: el carrito es solo USER
+                ).hasRole("USER") 
  
                 // Autenticados
                 .requestMatchers("/productos/", "/productos/{id}").authenticated()
@@ -64,7 +65,7 @@ public class SecurityConfig {
         .logout(logout -> logout
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/login?logout")
-                .invalidateHttpSession(true)  // destruye el carrito de sesión
+                .invalidateHttpSession(true) 
                 .permitAll()
         )
  

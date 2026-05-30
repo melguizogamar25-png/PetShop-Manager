@@ -1,27 +1,40 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/fragments :: head_deps}">
-    <title>Catálogo — PetShop Manager</title>
+    <title>Gestión de Productos — PetShop Manager</title>
 </head>
 <body class="d-flex flex-column min-vh-100">
-<nav th:replace="~{fragments/fragments :: menu_user}"></nav>
+<nav th:replace="~{fragments/fragments :: menu_admin}"></nav>
 
 <div class="seccion-header">
     <div class="container d-flex align-items-center justify-content-between">
         <div>
-            <h5 class="fw-bold mb-0">Catálogo de Productos</h5>
-            <p class="mb-0 small opacity-75">Encuentra todo lo que tu mascota necesita</p>
+            <h5 class="fw-bold mb-0">Gestión de Productos</h5>
+            <p class="mb-0 small opacity-75">Gestiona el inventario de la tienda</p>
         </div>
+        <a th:href="@{/productos/nuevo}" class="btn btn-light btn-sm rounded-pill fw-semibold"
+           style="color:var(--verde);">
+            <i class="bi bi-plus-lg me-1"></i>Nuevo producto
+        </a>
     </div>
 </div>
 
 <div class="container py-4 flex-grow-1">
 
+    <!-- stock bajo -->
+    <div th:if="${alertaStock != null and not #lists.isEmpty(alertaStock)}"
+         class="alert alert-warning d-flex align-items-center gap-2 mb-3">
+        <i class="bi bi-exclamation-triangle-fill flex-shrink-0"></i>
+        <span><strong>Atención:</strong>
+            <span th:text="${alertaStock.size()}">0</span> producto(s) con stock ≤ 5 unidades.
+        </span>
+    </div>
+
     <!-- filtros -->
     <div class="card border-0 shadow-sm mb-4 p-3">
         <div class="row g-2 align-items-center">
             <div class="col-md-5">
-                <form th:action="@{/productos/}" method="get" class="d-flex gap-2">
+                <form th:action="@{/productos/admin}" method="get" class="d-flex gap-2">
                     <input type="text" name="buscar" class="form-control form-control-sm"
                            placeholder="Buscar por nombre..." th:value="${buscar}">
                     <button type="submit" class="btn btn-verde btn-sm px-3">
@@ -30,7 +43,7 @@
                 </form>
             </div>
             <div class="col-md-4">
-                <form th:action="@{/productos/}" method="get" class="d-flex gap-2">
+                <form th:action="@{/productos/admin}" method="get" class="d-flex gap-2">
                     <select name="tipo" class="form-select form-select-sm">
                         <option value="">— Todos los tipos —</option>
                         <option th:each="t : ${tipos}" th:value="${t}" th:text="${t}"
@@ -42,7 +55,7 @@
                 </form>
             </div>
             <div class="col-md-3">
-                <a th:href="@{/productos/}" class="btn btn-verde-outline btn-sm w-100 rounded-pill">
+                <a th:href="@{/productos/admin}" class="btn btn-verde-outline btn-sm w-100 rounded-pill">
                     <i class="bi bi-x-circle me-1"></i>Limpiar
                 </a>
             </div>
@@ -86,20 +99,25 @@
                             <span th:text="${p.devolucion} ? 'Devolución OK' : 'Sin devolución'">—</span>
                         </span>
                     </div>
-                    <!-- Botón añadir al carrito -->
-                    <a th:href="@{/productoACarrito/{id}(id=${p.id})}"
-                       class="btn btn-verde btn-sm rounded-pill w-100 mt-auto"
-                       th:classappend="${p.stock == 0} ? ' disabled' : ''">
-                        <i class="bi bi-cart-plus me-1"></i>
-                        <span th:text="${p.stock == 0} ? 'Sin stock' : 'Añadir al carrito'">Añadir</span>
-                    </a>
+                    <!-- Botones admin: editar y borrar, SIN carrito -->
+                    <div class="d-flex gap-2 mt-auto">
+                        <a th:href="@{/productos/editar/{id}(id=${p.id})}"
+                           class="btn btn-outline-primary btn-sm rounded-pill flex-fill">
+                            <i class="bi bi-pencil me-1"></i>Editar
+                        </a>
+                        <a th:href="@{/productos/borrar/{id}(id=${p.id})}"
+                           class="btn btn-outline-danger btn-sm rounded-pill"
+                           onclick="return confirm('¿Eliminar este producto?')">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="col-12 text-center py-5" th:if="${#lists.isEmpty(productos)}">
             <p class="text-muted">📭 No se encontraron productos.</p>
-            <a th:href="@{/productos/}" class="btn btn-verde btn-sm rounded-pill mt-1">
+            <a th:href="@{/productos/admin}" class="btn btn-verde btn-sm rounded-pill mt-1">
                 <i class="bi bi-arrow-counterclockwise me-1"></i>Ver todos
             </a>
         </div>
