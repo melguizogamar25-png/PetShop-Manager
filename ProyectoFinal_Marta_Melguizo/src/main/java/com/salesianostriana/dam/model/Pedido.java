@@ -8,6 +8,7 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -29,7 +30,7 @@ import lombok.ToString;
 @Builder
 public class Pedido {
 
-	@Id
+	@Id @GeneratedValue
 	private Long codigo;
 	
 	@NotNull(message = "La fecha de pedido es obligatoria.")

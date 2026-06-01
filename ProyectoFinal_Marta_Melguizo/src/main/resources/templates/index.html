@@ -37,54 +37,6 @@
     </div>
 </section>
 
-<section class="py-5" style="background:#fff;border-bottom:1px solid #e2ede8;">
-    <div class="container">
-        <h5 class="fw-bold text-center mb-4" style="color:var(--verde);">Nuestros productos destacados</h5>
-        <div id="carruselProductos" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-indicators">
-                <button type="button" data-bs-target="#carruselProductos" data-bs-slide-to="0" class="active"></button>
-                <button type="button" data-bs-target="#carruselProductos" data-bs-slide-to="1"></button>
-                <button type="button" data-bs-target="#carruselProductos" data-bs-slide-to="2"></button>
-            </div>
-            <div class="carousel-inner rounded-3 overflow-hidden" style="border:1px solid #e2ede8;">
-                <div class="carousel-item active">
-                    <div style="height:280px;background:linear-gradient(135deg,#2d6a4f,#40916c);display:flex;align-items:center;justify-content:center;flex-direction:column;color:#fff;gap:1rem;">
-                        <div style="font-size:4rem;">🐶</div>
-                        <div class="text-center">
-                            <h5 class="fw-bold mb-1">Alimentación para Perros</h5>
-                            <p class="opacity-75 mb-0">Piensos premium, snacks y suplementos para tu mejor amigo</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <div style="height:280px;background:linear-gradient(135deg,#40916c,#74c69d);display:flex;align-items:center;justify-content:center;flex-direction:column;color:#fff;gap:1rem;">
-                        <div style="font-size:4rem;">🐱</div>
-                        <div class="text-center">
-                            <h5 class="fw-bold mb-1">Productos para Gatos</h5>
-                            <p class="opacity-75 mb-0">Todo lo que tu gato necesita: comida, juguetes y accesorios</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <div style="height:280px;background:linear-gradient(135deg,#74c69d,#b7e4c7);display:flex;align-items:center;justify-content:center;flex-direction:column;color:var(--verde);gap:1rem;">
-                        <div style="font-size:4rem;">🐠</div>
-                        <div class="text-center">
-                            <h5 class="fw-bold mb-1">Acuarios y Reptiles</h5>
-                            <p class="opacity-75 mb-0">Productos especializados para peces, aves y reptiles</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carruselProductos" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon"></span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carruselProductos" data-bs-slide="next">
-                <span class="carousel-control-next-icon"></span>
-            </button>
-        </div>
-    </div>
-</section>
-
 <section class="container py-5">
     <h5 class="fw-bold mb-1" style="color:var(--verde);">¿Qué puedes hacer?</h5>
     <p class="text-muted small mb-4">Inicia sesión para acceder a todas las funciones</p>
@@ -101,7 +53,7 @@
             <div class="card h-100 border-0 shadow-sm text-center p-4">
                 <div class="fs-2 mb-2">👥</div>
                 <h6 class="fw-bold" style="color:var(--verde);">Clientes</h6>
-                <p class="small text-muted flex-grow-1">Gestión de clientes y socios. Solo administradores.</p>
+                <p class="small text-muted flex-grow-1">Gestión de clientes y socios.</p>
                 <a th:href="@{/login}" class="btn btn-verde btn-sm rounded-pill w-100">Acceder</a>
             </div>
         </div>
@@ -109,7 +61,7 @@
             <div class="card h-100 border-0 shadow-sm text-center p-4">
                 <div class="fs-2 mb-2">🧾</div>
                 <h6 class="fw-bold" style="color:var(--verde);">Pedidos</h6>
-                <p class="small text-muted flex-grow-1">Historial y gestión de pedidos. Solo administradores.</p>
+                <p class="small text-muted flex-grow-1">Historial y gestión de pedidos.</p>
                 <a th:href="@{/login}" class="btn btn-verde btn-sm rounded-pill w-100">Acceder</a>
             </div>
         </div>

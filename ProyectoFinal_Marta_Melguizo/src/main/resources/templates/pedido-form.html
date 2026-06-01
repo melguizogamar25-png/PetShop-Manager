@@ -17,34 +17,23 @@
 <div class="container py-4 flex-grow-1" style="max-width:650px;">
     <div class="card border-0 shadow-sm">
         <div class="card-body p-4">
-            <!--
-                FIX BUG 8: el form necesita th:object="${pedido}" para que
-                th:field funcione con @Valid. El problema era que Pedido.codigo
-                no tiene @GeneratedValue, así que llegaba null al POST /save
-                y JPA lanzaba una excepción de PK nula.
 
-                La solución está en PedidoController.save(): si codigo es null,
-                se asigna con System.currentTimeMillis() antes de persistir.
-
-                El campo oculto th:field="*{codigo}" es necesario para que en
-                la edición el código viaje en el form y Spring lo bindee.
-                En nuevo pedido viajará vacío, y el controller lo gestionará.
-            -->
             <form th:action="${pedido.codigo != null}
                               ? @{/pedidos/editar/{id}(id=${pedido.codigo})}
                               : @{/pedidos/save}"
                   th:object="${pedido}"
-                  method="post"
-                  novalidate>
+                  method="post">
 
-                <!-- Campo oculto para el código (necesario en edición) -->
-                <input type="hidden" th:field="*{codigo}">
+                <input type="hidden" th:if="${pedido.codigo != null}" th:field="*{codigo}">
 
                 <div class="mb-3">
                     <label class="form-label fw-semibold small">
                         Cliente <span class="text-danger">*</span>
                     </label>
-                    <select class="form-select" name="clienteId" required>
+                    <select class="form-select"
+                            th:classappend="${errorCliente != null} ? ' is-invalid' : ''"
+                            name="clienteId"
+                            required>
                         <option value="">— Selecciona un cliente —</option>
                         <option th:each="c : ${clientes}"
                                 th:value="${c.id}"
@@ -52,13 +41,17 @@
                                 th:selected="${pedido.cliente != null and pedido.cliente.id == c.id}">
                         </option>
                     </select>
+                    <div class="invalid-feedback"
+                         th:if="${errorCliente != null}"
+                         th:text="${errorCliente}"></div>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label fw-semibold small">
                         Fecha <span class="text-danger">*</span>
                     </label>
-                    <input type="date" class="form-control" th:field="*{fecha}" th:errorclass="is-invalid">
+                    <input type="date" class="form-control"
+                           th:field="*{fecha}" th:errorclass="is-invalid" required>
                     <div class="invalid-feedback" th:errors="*{fecha}"></div>
                 </div>
 

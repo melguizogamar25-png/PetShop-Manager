@@ -23,39 +23,35 @@ import com.salesianostriana.dam.services.ProductoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
-@Controller 
+@Controller
 @RequiredArgsConstructor
 @RequestMapping("/pedidos")
 public class PedidoController {
-
-	private final PedidoService pedidoService;
-	private final ClienteService clienteService;
+ 
+	private final PedidoService   pedidoService;
+	private final ClienteService  clienteService;
 	private final ProductoService productoService;
-	
+ 
 	@GetMapping("/")
 	public String listAll(Model model) {
 		model.addAttribute("pedidos", pedidoService.findAll());
 		model.addAttribute("totalFacturado", pedidoService.totalFacturado());
 		return "pedido-list";
 	}
-	
-	//Ver los detalles
+ 
 	@GetMapping("/{id}")
 	public String detalles(@PathVariable long id, Model model) {
-		Optional <Pedido> peDetalle = pedidoService.findById(id);
-		
-		if(peDetalle.isPresent()) {
+		Optional<Pedido> peDetalle = pedidoService.findById(id);
+		if (peDetalle.isPresent()) {
 			model.addAttribute("pedido", peDetalle.get());
 			model.addAttribute("productos", productoService.findAll());
 			return "pedido-detail";
-		}else {
-			return "redirect:/pedidos/";
 		}
-		
+		return "redirect:/pedidos/";
 	}
-	
+ 
 	@GetMapping("/nuevo")
-	public String showForm (Model model) {
+	public String showForm(Model model) {
 		Pedido p = new Pedido();
 		p.setFecha(LocalDate.now());
 		p.setEstadoPedido(EstadoPedido.PENDIENTE);
@@ -64,45 +60,52 @@ public class PedidoController {
 		model.addAttribute("estados", EstadoPedido.values());
 		return "pedido-form";
 	}
-	
-	//Guardar el formulario
-    @PostMapping("/save")
-    public String save(@Valid @ModelAttribute("pedido") Pedido p,
-                       BindingResult result,
-                       @RequestParam long clienteId,
-                       Model model) {
-        if (result.hasErrors()) {
-            model.addAttribute("clientes", clienteService.findAll());
-            model.addAttribute("estados", EstadoPedido.values());
-            return "pedido-form";
-        }
-        // Asignar ID manual si no viene informado (pedido nuevo)
-        if (p.getCodigo() == null) {
-            p.setCodigo(System.currentTimeMillis());
-        }
-        clienteService.findById(clienteId).ifPresent(p::setCliente);
-        p.setTotal(0.0);
-        pedidoService.save(p);
-        return "redirect:/pedidos/";
-    }
-	
+ 
+	@PostMapping("/save")
+	public String save(@Valid @ModelAttribute("pedido") Pedido p,
+	                   BindingResult result,
+	                   @RequestParam(required = false) Long clienteId,
+	                   Model model) {
+		if (clienteId == null) {
+			model.addAttribute("clientes", clienteService.findAll());
+			model.addAttribute("estados", EstadoPedido.values());
+			model.addAttribute("errorCliente", "Debes seleccionar un cliente.");
+			return "pedido-form";
+		}
+		if (result.hasErrors()) {
+			model.addAttribute("clientes", clienteService.findAll());
+			model.addAttribute("estados", EstadoPedido.values());
+			return "pedido-form";
+		}
+		clienteService.findById(clienteId).ifPresent(p::setCliente);
+		p.setTotal(0.0);
+		pedidoService.save(p);
+		return "redirect:/pedidos/";
+	}
+ 
 	@GetMapping("/editar/{id}")
 	public String showEdit(@PathVariable Long id, Model model) {
 		Pedido p = pedidoService.findById(id)
 				.orElseThrow(() -> new NoSuchElementException("Pedido no encontrado."));
-		
 		model.addAttribute("pedido", p);
 		model.addAttribute("clientes", clienteService.findAll());
 		model.addAttribute("estados", EstadoPedido.values());
 		return "pedido-form";
 	}
-	
-	
+ 
 	@PostMapping("/editar/{id}")
-	public String update (@PathVariable long id, @Valid @ModelAttribute("pedido")
-						  Pedido p, BindingResult result, 
-						  @RequestParam long clienteId, Model model) {
-		if(result.hasErrors()) {
+	public String update(@PathVariable long id,
+	                     @Valid @ModelAttribute("pedido") Pedido p,
+	                     BindingResult result,
+	                     @RequestParam(required = false) Long clienteId,
+	                     Model model) {
+		if (clienteId == null) {
+			model.addAttribute("clientes", clienteService.findAll());
+			model.addAttribute("estados", EstadoPedido.values());
+			model.addAttribute("errorCliente", "Debes seleccionar un cliente.");
+			return "pedido-form";
+		}
+		if (result.hasErrors()) {
 			model.addAttribute("clientes", clienteService.findAll());
 			model.addAttribute("estados", EstadoPedido.values());
 			return "pedido-form";
@@ -115,20 +118,12 @@ public class PedidoController {
 		pedidoService.edit(p);
 		return "redirect:/pedidos/";
 	}
-	
+ 
 	@GetMapping("/borrar/{id}")
 	public String delete(@PathVariable long id) {
 		pedidoService.deleteById(id);
 		return "redirect:/pedidos/";
 	}
-	
-	//Añadir linea pedido desde admin
-		//Las excepciones son del global
-	 @PostMapping("/{id}/lineas/add")
-	    public String agregarProducto(@PathVariable Long id,
-	                                  @RequestParam Long productoId,
-	                                  @RequestParam int cantidad) {
-	        pedidoService.agregarLineaPedido(id, productoId, cantidad, productoService);
-	        return "redirect:/pedidos/" + id;
-	    }
+ 
 }
+ 
