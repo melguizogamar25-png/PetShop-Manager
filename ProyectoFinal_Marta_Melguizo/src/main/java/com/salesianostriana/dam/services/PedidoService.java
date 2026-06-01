@@ -104,40 +104,43 @@ public class PedidoService extends BaseServiceImpl<Pedido, Long, PedidoRepositor
 	}
 		
 		//Tramitar Carrito
-		public Pedido tramitarCarrito(Map<Producto, Integer> carrito,
-									  Cliente cliente, ProductoService productoService) {
-			
-			if(carrito == null || carrito.isEmpty()) {
-				throw new IllegalStateException("El carrito está vacío");
-			}
-			
-			boolean esSocio = cliente != null && cliente.isSocioTienda();
-			
-			// - Comprobar el stock antes de crear el pedido
-			carrito.forEach((producto, cantidad) ->
-					productoService.verificarStock(producto, cantidad));
-	
-			// - Crear el pedido
-			Pedido pedido = new Pedido();
-			pedido.setCodigo(System.currentTimeMillis());
-			pedido.setFecha(LocalDate.now());
-			pedido.setEstadoPedido(EstadoPedido.PENDIENTE);
-			pedido.setCliente(cliente);
-			
-			//crear las lineas y descontar stock
-			carrito.forEach((producto, cantidad) -> {
-				double precioFinal = producto.getPrecioConDescuento(esSocio);
-				
-				LineaPedido linea = new LineaPedido();
-				linea.setCantidad(cantidad);
-				linea.setPrecioUnitario(precioFinal);
-				linea.setSubtotal(precioFinal * cantidad);
-				pedido.addLinea(linea);
-				
-				productoService.descontarStock(producto, cantidad);
-			});
-			
-			recalcularTotal(pedido);
-			return save(pedido);
+	public Pedido tramitarCarrito(Map<Producto, Integer> carrito,
+			Cliente cliente, ProductoService productoService) {
+ 
+		if (carrito == null || carrito.isEmpty()) {
+			throw new IllegalStateException("El carrito está vacío");
+		}
+ 
+		boolean esSocio = cliente != null && cliente.isSocioTienda();
+ 
+		// Verificar stock de todos los productos antes de empezar
+		carrito.forEach((producto, cantidad) ->
+				productoService.verificarStock(producto, cantidad));
+ 
+		// Crear el pedido SIN setCodigo(): @GeneratedValue lo asigna JPA solo.
+		// Antes había pedido.setCodigo(System.currentTimeMillis()) que causaba
+		// conflicto con @GeneratedValue → StaleObjectStateException al guardar.
+		Pedido pedido = new Pedido();
+		pedido.setFecha(LocalDate.now());
+		pedido.setEstadoPedido(EstadoPedido.PENDIENTE);
+		pedido.setCliente(cliente);
+ 
+		// Crear líneas y descontar stock
+		carrito.forEach((producto, cantidad) -> {
+			double precioFinal = producto.getPrecioConDescuento(esSocio);
+ 
+			LineaPedido linea = new LineaPedido();
+			linea.setCantidad(cantidad);
+			linea.setPrecioUnitario(precioFinal);
+			linea.setSubtotal(precioFinal * cantidad);
+			// Faltaba este setProducto: sin él el nombre aparecía vacío en el detalle
+			linea.setProducto(producto);
+			pedido.addLinea(linea);
+ 
+			productoService.descontarStock(producto, cantidad);
+		});
+ 
+		recalcularTotal(pedido);
+		return save(pedido);
 	}
 }
