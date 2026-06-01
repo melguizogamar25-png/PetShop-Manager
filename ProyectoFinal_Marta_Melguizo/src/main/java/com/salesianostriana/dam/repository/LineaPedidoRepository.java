@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import com.salesianostriana.dam.model.LineaPedido;
 import com.salesianostriana.dam.model.Pedido;
+import com.salesianostriana.dam.model.Producto;
 
 public interface LineaPedidoRepository extends JpaRepository <LineaPedido, Long>{
 
@@ -15,6 +16,8 @@ public interface LineaPedidoRepository extends JpaRepository <LineaPedido, Long>
 	List<LineaPedido> findByPedido(Pedido pedido);
 	
 	List<LineaPedido> findByPedidoCodigo(Long codigoPedido);
+	
+	List<LineaPedido> findByProducto(Producto producto);
 	
 	// - Numero de lineas del pedido
 	long countByPedidoCodigo(Long codigoPedido);

@@ -10,7 +10,7 @@
 <div class="seccion-header">
     <div class="container d-flex align-items-center justify-content-between">
         <div>
-            <h5 class="fw-bold mb-0">📊 Estadísticas</h5>
+            <h5 class="fw-bold mb-0"><i class="bi bi-bar-chart-line me-2"></i>Estadísticas</h5>
             <p class="mb-0 small opacity-75">Resumen de ventas, clientes y stock</p>
         </div>
     </div>
@@ -299,7 +299,7 @@
                                 </td>
                             </tr>
                             <tr th:if="${productoBajoStock == null or #lists.isEmpty(productoBajoStock)}">
-                                <td colspan="2" class="text-center py-3 text-muted small">Todo el stock está bien. ✅</td>
+                                <td colspan="2" class="text-center py-3 text-muted small"><i class="bi bi-check-circle-fill me-1" style="color:var(--verde-med);"></i>Todo el stock está bien.</td>
                             </tr>
                         </tbody>
                     </table>

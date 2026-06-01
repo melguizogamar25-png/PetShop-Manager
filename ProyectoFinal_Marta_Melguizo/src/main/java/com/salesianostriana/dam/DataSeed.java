@@ -158,6 +158,14 @@ public class DataSeed {
 		
 
 		//Clientes
+		//Este cliente es para cuando se haga un pedido desde user
+		Cliente c0 = Cliente.builder()
+				.nombre("Usuario Demo")
+				.email("user@user.com")   
+				.telefono(600000000)
+				.socioTienda(false)
+				.build();
+		
 		Cliente c1 = Cliente.builder()
 				.nombre("María García López")
 				.email("maria.garcia@email.com")
@@ -186,7 +194,7 @@ public class DataSeed {
 				.socioTienda(false)
 				.build();
 
-		clienteRepository.saveAll(List.of(c1, c2, c3, c4));
+		clienteRepository.saveAll(List.of(c0, c1, c2, c3, c4));
 
 		//Pedidos y LineaPedido (Corregidos con .lineas(new ArrayList<>()))
 		Pedido pe1 = Pedido.builder()
