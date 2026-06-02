@@ -1,0 +1,120 @@
+package com.salesianostriana.dam.controller;
+
+import java.time.LocalDate;
+import java.util.NoSuchElementException;
+
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import com.salesianostriana.dam.model.Cliente;
+import com.salesianostriana.dam.model.Producto;
+import com.salesianostriana.dam.seguridad.Usuario;
+import com.salesianostriana.dam.services.CarritoService;
+import com.salesianostriana.dam.services.ClienteService;
+import com.salesianostriana.dam.services.PedidoService;
+import com.salesianostriana.dam.services.ProductoService;
+
+import lombok.RequiredArgsConstructor;
+
+@Controller
+@RequiredArgsConstructor
+public class CarritoController {
+ 
+	private final CarritoService carritoService;
+	private final ProductoService productoService;
+	private final PedidoService pedidoService;
+	private final ClienteService clienteService;
+	
+	@GetMapping("/carrito")
+	public String verCarrito(Model model) {
+		model.addAttribute("productos", carritoService.getProductosInCarr());
+		return "carrito";
+	}
+	
+	@GetMapping("/productoACarrito/{id}")
+    public String addToCart(@PathVariable Long id) {
+        Producto p = productoService.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Producto no encontrado: " + id));
+        carritoService.addProducto(p);
+        return "redirect:/carrito";
+    }
+	
+	//Quitar una unidad del carrito
+	@GetMapping("/borrarProducto/{id}")
+	public String removeOne(@PathVariable Long id) {
+		Producto p = productoService.findById(id)
+				.orElseThrow(() -> new NoSuchElementException("Producto no encontrado: " + id));
+		carritoService.removeProducto(p);
+		return "redirect:/carrito";
+	}
+	
+	//Quitamos el producto entero
+	@GetMapping("/eliminarDelCarrito/{id}")
+	public String removeAll(@PathVariable Long id) {
+		carritoService.eliminarProductoCompleto(id);
+		return "redirect:/carrito";
+	}
+	
+	@GetMapping("/carrito/vaciar")
+		public String vaciar() {
+			carritoService.vaciarCarrito();
+			return "redirect:/carrito";
+		}
+	
+	//Para el ticket que confirma el pedido
+	@GetMapping("/carrito/tramitar")
+    public String tramitar(Model model) {
+        if (carritoService.estaVacio()) {
+            return "redirect:/carrito";
+        }
+        model.addAttribute("productos", carritoService.getProductosInCarr());
+        model.addAttribute("fechaHoy", LocalDate.now().toString());
+        return "ticket";
+    }
+	
+	//Confirmar el pedido
+	@GetMapping("/carrito/confirmar")
+	public String confirmar(@AuthenticationPrincipal Usuario userDetails) {
+		
+		if(carritoService.estaVacio()) {
+			return "redirect:/carrito";
+		}
+		
+		// - Busca el cliente para que el email coincida 
+		Cliente cliente = null;
+		if(userDetails != null) {
+			cliente = clienteService.findAll().stream()
+					.filter(c -> c.getEmail().equalsIgnoreCase(userDetails.getEmail()))
+					.findFirst()
+					.orElse(null); //Si no tenemos un clienete asociado es un pedido sin cliente
+		}
+		
+		// - Crear pedido aplicando los descuentos
+		pedidoService.tramitarCarrito(carritoService.getProductosInCarr(),
+							cliente, productoService);
+		
+		carritoService.vaciarCarrito();
+		return "redirect:/carrito/confirmado";
+	}
+	
+	// - Pagina que esta la compra confirmada
+	@GetMapping("/carrito/confirmado")
+	public String confirmado() {
+		return "compra-confirmada";
+	}
+	
+	// - En el fragments del menu se puede ver el total del carrito
+	@ModelAttribute("total_carrito")
+	public Double totalCarrito() {
+		return carritoService.calcularTotal();
+	}
+	
+	@ModelAttribute("unidades_carrito")
+	public int unidadesCarrito() {
+		return carritoService.totalUnidades();
+	}
+	}

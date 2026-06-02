@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/fragments :: head_deps}">
+    <title>Catálogo — PetShop Manager</title>
+</head>
+<body class="d-flex flex-column min-vh-100">
+<nav th:replace="~{fragments/fragments :: menu_user}"></nav>
+
+<div class="seccion-header">
+    <div class="container d-flex align-items-center justify-content-between">
+        <div>
+            <h5 class="fw-bold mb-0">Catálogo de Productos</h5>
+            <p class="mb-0 small opacity-75">Encuentra todo lo que tu mascota necesita</p>
+        </div>
+    </div>
+</div>
+
+<div class="container py-4 flex-grow-1">
+
+    <!-- filtros -->
+    <div class="card border-0 shadow-sm mb-4 p-3">
+        <div class="row g-2 align-items-center">
+            <div class="col-md-5">
+                <form th:action="@{/productos/}" method="get" class="d-flex gap-2">
+                    <input type="text" name="buscar" class="form-control form-control-sm"
+                           placeholder="Buscar por nombre..." th:value="${buscar}">
+                    <button type="submit" class="btn btn-verde btn-sm px-3">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </form>
+            </div>
+            <div class="col-md-4">
+                <form th:action="@{/productos/}" method="get" class="d-flex gap-2">
+                    <select name="tipo" class="form-select form-select-sm">
+                        <option value="">— Todos los tipos —</option>
+                        <option th:each="t : ${tipos}" th:value="${t}" th:text="${t}"
+                                th:selected="${tipoSeleccionado == t.name()}"></option>
+                    </select>
+                    <button type="submit" class="btn btn-verde btn-sm px-3">
+                        <i class="bi bi-funnel"></i>
+                    </button>
+                </form>
+            </div>
+            <div class="col-md-3">
+                <a th:href="@{/productos/}" class="btn btn-verde-outline btn-sm w-100 rounded-pill">
+                    <i class="bi bi-x-circle me-1"></i>Limpiar
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-3">
+        <div class="col" th:each="p : ${productos}">
+            <div class="card h-100 border-0 shadow-sm" style="border-radius:10px;overflow:hidden;">
+                <div class="position-relative">
+                    <img class="producto-img"
+                         th:src="${p.imagen != null and !#strings.isEmpty(p.imagen)} ? ${p.imagen} : 'https://placehold.co/300x160/e8f5ee/2d6a4f?text=Sin+imagen'"
+                         th:alt="${p.nombre}">
+                    <span class="badge position-absolute top-0 start-0 m-2"
+                          style="background-color:var(--verde);font-size:.65rem;"
+                          th:text="${p.tipoMascota}">Tipo</span>
+                    <span th:if="${p.stock > 0 and p.stock <= 5}"
+                          class="badge bg-warning text-dark position-absolute top-0 end-0 m-2"
+                          style="font-size:.65rem;">⚠ Stock bajo</span>
+                    <span th:if="${p.stock == 0}"
+                          class="badge bg-danger position-absolute top-0 end-0 m-2"
+                          style="font-size:.65rem;">Sin stock</span>
+                </div>
+                <div class="card-body d-flex flex-column p-3">
+                    <h6 class="fw-bold text-truncate mb-1" style="color:var(--verde);" th:text="${p.nombre}">Producto</h6>
+                    <p class="small text-muted flex-grow-1 mb-2" th:text="${p.descripcion}">Descripción</p>
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <span class="fw-bold fs-5" style="color:var(--verde);"
+                              th:text="${#numbers.formatDecimal(p.precio,1,2)} + ' €'">0 €</span>
+                        <span class="badge rounded-pill"
+                              th:classappend="${p.stock > 10} ? 'bg-success' : (${p.stock > 0} ? 'bg-warning text-dark' : 'bg-danger')"
+                              style="font-size:.7rem;" th:text="'Stock: ' + ${p.stock}">0</span>
+                    </div>
+                    <div class="d-flex gap-2 small text-muted mb-3">
+                        <span th:if="${p.fechaCaducidad != null}">
+                            <i class="bi bi-calendar3 me-1"></i>
+                            <span th:text="${#temporals.format(p.fechaCaducidad,'dd/MM/yyyy')}">—</span>
+                        </span>
+                        <span th:class="${p.devolucion} ? 'text-success' : ''">
+                            <i class="bi bi-arrow-return-left me-1"></i>
+                            <span th:text="${p.devolucion} ? 'Devolución OK' : 'Sin devolución'">—</span>
+                        </span>
+                    </div>
+                    <!-- Botón añadir al carrito -->
+                    <a th:href="@{/productoACarrito/{id}(id=${p.id})}"
+                       class="btn btn-verde btn-sm rounded-pill w-100 mt-auto"
+                       th:classappend="${p.stock == 0} ? ' disabled' : ''">
+                        <i class="bi bi-cart-plus me-1"></i>
+                        <span th:text="${p.stock == 0} ? 'Sin stock' : 'Añadir al carrito'">Añadir</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 text-center py-5" th:if="${#lists.isEmpty(productos)}">
+            <p class="text-muted">📭 No se encontraron productos.</p>
+            <a th:href="@{/productos/}" class="btn btn-verde btn-sm rounded-pill mt-1">
+                <i class="bi bi-arrow-counterclockwise me-1"></i>Ver todos
+            </a>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="~{fragments/fragments :: footer}"></footer>
+</body>
+</html>

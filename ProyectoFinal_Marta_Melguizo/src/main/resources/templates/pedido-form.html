@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/fragments :: head_deps}">
+    <title>Pedido — PetShop Manager</title>
+</head>
+<body class="d-flex flex-column min-vh-100">
+<nav th:replace="~{fragments/fragments :: menu_admin}"></nav>
+
+<div class="seccion-header">
+    <div class="container">
+        <h5 class="fw-bold mb-0"
+            th:text="${pedido.codigo != null} ? '✏️ Editar pedido #' + ${pedido.codigo} : '🧾 Nuevo pedido'">Pedido</h5>
+        <p class="mb-0 small opacity-75">Completa los datos del pedido</p>
+    </div>
+</div>
+
+<div class="container py-4 flex-grow-1" style="max-width:650px;">
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+
+            <form th:action="${pedido.codigo != null}
+                              ? @{/pedidos/editar/{id}(id=${pedido.codigo})}
+                              : @{/pedidos/save}"
+                  th:object="${pedido}"
+                  method="post">
+
+                <input type="hidden" th:if="${pedido.codigo != null}" th:field="*{codigo}">
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold small">
+                        Cliente <span class="text-danger">*</span>
+                    </label>
+                    <select class="form-select"
+                            th:classappend="${errorCliente != null} ? ' is-invalid' : ''"
+                            name="clienteId"
+                            required>
+                        <option value="">— Selecciona un cliente —</option>
+                        <option th:each="c : ${clientes}"
+                                th:value="${c.id}"
+                                th:text="${c.nombre + (c.socioTienda ? ' ⭐' : '')}"
+                                th:selected="${pedido.cliente != null and pedido.cliente.id == c.id}">
+                        </option>
+                    </select>
+                    <div class="invalid-feedback"
+                         th:if="${errorCliente != null}"
+                         th:text="${errorCliente}"></div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold small">
+                        Fecha <span class="text-danger">*</span>
+                    </label>
+                    <input type="date" class="form-control"
+                           th:field="*{fecha}" th:errorclass="is-invalid" required>
+                    <div class="invalid-feedback" th:errors="*{fecha}"></div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-semibold small">
+                        Estado <span class="text-danger">*</span>
+                    </label>
+                    <select class="form-select" th:field="*{estadoPedido}" th:errorclass="is-invalid">
+                        <option th:each="e : ${estados}" th:value="${e}" th:text="${e}"></option>
+                    </select>
+                    <div class="invalid-feedback" th:errors="*{estadoPedido}"></div>
+                </div>
+
+                <hr class="my-3">
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-verde rounded-pill px-4 flex-grow-1">
+                        <i class="bi bi-check-circle me-1"></i>Guardar pedido
+                    </button>
+                    <a th:href="@{/pedidos/}" class="btn btn-verde-outline rounded-pill px-4">
+                        <i class="bi bi-arrow-left me-1"></i>Cancelar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="~{fragments/fragments :: footer}"></footer>
+</body>
+</html>

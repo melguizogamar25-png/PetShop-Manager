@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/fragments :: head_deps}">
+    <title>Detalle Pedido — PetShop Manager</title>
+</head>
+<body class="d-flex flex-column min-vh-100">
+<nav th:replace="~{fragments/fragments :: menu_admin}"></nav>
+
+<div class="seccion-header">
+    <div class="container d-flex align-items-center justify-content-between flex-wrap gap-2">
+        <div>
+            <h5 class="fw-bold mb-0">Pedido <span th:text="'#' + ${pedido.codigo}">#1</span></h5>
+            <p class="mb-0 small opacity-75">
+                <i class="bi bi-person me-1"></i>
+                <span th:text="${pedido.cliente != null ? pedido.cliente.nombre : 'Sin cliente'}">—</span>
+                <span th:if="${pedido.cliente != null and pedido.cliente.socioTienda}" class="badge-admin ms-1">⭐ Socio</span>
+                &nbsp;·&nbsp;
+                <i class="bi bi-calendar3 me-1"></i>
+                <span th:text="${#temporals.format(pedido.fecha,'dd/MM/yyyy')}">—</span>
+                &nbsp;·&nbsp;
+                <span th:if="${pedido.estadoPedido.name() == 'PENDIENTE'}"  class="badge-pendiente"  th:text="${pedido.estadoPedido}">PENDIENTE</span>
+                <span th:if="${pedido.estadoPedido.name() == 'ENVIADO'}"    class="badge-enviado"    th:text="${pedido.estadoPedido}">ENVIADO</span>
+                <span th:if="${pedido.estadoPedido.name() == 'ENTREGADO'}"  class="badge-entregado"  th:text="${pedido.estadoPedido}">ENTREGADO</span>
+            </p>
+        </div>
+        <div class="d-flex gap-2">
+            <a th:href="@{/pedidos/editar/{id}(id=${pedido.codigo})}"
+               class="btn btn-light btn-sm rounded-pill fw-semibold" style="color:var(--verde);"
+               sec:authorize="hasRole('ADMIN')">
+                <i class="bi bi-pencil me-1"></i>Editar
+            </a>
+            <a th:href="@{/pedidos/}" class="btn btn-outline-light btn-sm rounded-pill">
+                <i class="bi bi-arrow-left me-1"></i>Volver
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="container py-4 flex-grow-1">
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header" style="background-color:var(--verde);color:#fff;border-radius:0;">
+                    <span class="fw-semibold small"><i class="bi bi-list-ul me-1"></i>Líneas del pedido</span>
+                </div>
+                <div class="table-responsive">
+                    <table class="table tabla-verde align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th class="ps-4">Producto</th>
+                                <th class="text-center">Cant.</th>
+                                <th class="text-end">Precio unit.</th>
+                                <th class="text-end pe-4">Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="linea : ${pedido.lineas}">
+                                <td class="ps-4">
+                                    <div class="fw-semibold small" style="color:var(--verde);"
+                                         th:text="${linea.producto != null ? linea.producto.nombre : '—'}">—</div>
+                                    <div class="text-muted" style="font-size:.75rem;"
+                                         th:text="${linea.producto != null ? linea.producto.tipoMascota : ''}"></div>
+                                </td>
+                                <td class="text-center">
+                                    <span class="badge rounded-pill"
+                                          style="background-color:var(--menta);color:var(--verde);"
+                                          th:text="${linea.cantidad}">1</span>
+                                </td>
+                                <td class="text-end text-muted small"
+                                    th:text="${#numbers.formatDecimal(linea.precioUnitario,1,2)} + ' €'"></td>
+                                <td class="text-end pe-4 fw-bold" style="color:var(--verde-med);"
+                                    th:text="${#numbers.formatDecimal(linea.subtotal,1,2)} + ' €'"></td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(pedido.lineas)}">
+                                <td colspan="4" class="text-center py-5 text-muted">No hay productos en este pedido.</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr style="background-color:#f4f9f6;">
+                                <td colspan="3" class="text-end fw-bold ps-4 small text-muted">TOTAL DEL PEDIDO</td>
+                                <td class="text-end pe-4 fw-bold fs-5" style="color:var(--verde-med);"
+                                    th:text="${#numbers.formatDecimal(pedido.total,1,2)} + ' €'">0.00 €</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 d-flex flex-column gap-3">
+
+            <div class="card border-0 shadow-sm">
+                <div class="card-header" style="background-color:var(--verde);color:#fff;border-radius:0;">
+                    <span class="fw-semibold small"><i class="bi bi-cart-plus me-1"></i>Añadir producto</span>
+                </div>
+                <div class="card-body p-3">
+                    <div th:if="${pedido.estadoPedido.name() != 'PENDIENTE'}"
+                         class="alert alert-warning py-2 mb-0" style="font-size:.82rem;">
+                        <i class="bi bi-lock-fill me-1"></i>
+                        Pedido <strong th:text="${pedido.estadoPedido}">procesado</strong>. No se pueden añadir productos.
+                    </div>
+                    <form th:if="${pedido.estadoPedido.name() == 'PENDIENTE'}"
+                          th:action="@{/pedidos/{id}/lineas/add(id=${pedido.codigo})}"
+                          method="post">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold small">Producto</label>
+                            <select class="form-select form-select-sm" name="productoId" required>
+                                <option value="">— Elige un producto —</option>
+                                <option th:each="p : ${productos}"
+                                        th:value="${p.id}"
+                                        th:text="${p.nombre + ' (' + p.stock + ' uds.) — ' + #numbers.formatDecimal(p.precio,1,2) + ' €'}"
+                                        th:disabled="${p.stock == 0}">
+                                </option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold small">Cantidad</label>
+                            <input type="number" class="form-control form-control-sm"
+                                   name="cantidad" value="1" min="1" required>
+                        </div>
+                        <button type="submit" class="btn btn-verde btn-sm rounded-pill w-100"
+                                onclick="return confirm('¿Añadir este producto al pedido?')">
+                            <i class="bi bi-cart-plus me-1"></i>Añadir
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="discount-card">
+                <p class="fw-bold mb-2 small" style="color:var(--verde);">
+                    <i class="bi bi-tag-fill me-1"></i>Descuentos aplicados
+                </p>
+                <ul class="mb-0 ps-3 small text-muted" style="line-height:2;">
+                    <li>Perro / Gato → <strong>5% dto.</strong></li>
+                    <li>Roedor / Pez → <strong>8% dto.</strong></li>
+                    <li>Ave / Reptil → <strong>10% dto.</strong></li>
+                    <li>Cliente socio → <strong>+5% adicional</strong></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="~{fragments/fragments :: footer}"></footer>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/fragments :: head_deps}">
+    <title>Acceso — PetShop Manager</title>
+</head>
+<body style="background-color:var(--verde);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2rem 1rem;">
+
+<div style="width:100%;max-width:860px;">
+
+    <!-- Alertas globales -->
+    <div th:if="${param.registered}"
+         class="alert alert-success d-flex align-items-center gap-2 mb-3" style="font-size:.875rem;">
+        <i class="bi bi-check-circle-fill flex-shrink-0"></i>
+        Cuenta creada correctamente. Ya puedes iniciar sesión.
+    </div>
+    <div th:if="${param.errorRegistro}"
+         class="alert alert-danger d-flex align-items-center gap-2 mb-3" style="font-size:.875rem;">
+        <i class="bi bi-exclamation-circle-fill flex-shrink-0"></i>
+        Ese nombre de usuario ya está en uso.
+    </div>
+
+    <div class="row g-4">
+
+        <!-- login -->
+        <div class="col-md-6">
+            <div style="background:#fff;border-radius:12px;overflow:hidden;">
+                <div style="background-color:var(--verde);padding:2rem;text-align:center;color:#fff;">
+                    <i class="bi bi-shop" style="font-size:2rem;color:#fff;"></i>
+                    <h4 style="font-weight:700;margin:.5rem 0 0;">Iniciar sesión</h4>
+                    <p style="opacity:.7;font-size:.85rem;margin:4px 0 0;">Accede a tu panel</p>
+                </div>
+                <div style="padding:1.8rem 2rem 2rem;">
+                    <div th:if="${param.error}"
+                         class="alert alert-danger d-flex align-items-center gap-2 py-2 mb-3" style="font-size:.875rem;">
+                        <i class="bi bi-exclamation-circle-fill flex-shrink-0"></i>
+                        Usuario o contraseña incorrectos.
+                    </div>
+                    <div th:if="${param.logout}"
+                         class="alert alert-success d-flex align-items-center gap-2 py-2 mb-3" style="font-size:.875rem;">
+                        <i class="bi bi-check-circle-fill flex-shrink-0"></i>
+                        Has cerrado sesión correctamente.
+                    </div>
+
+                    <form th:action="@{/login}" method="post">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold small">Usuario</label>
+                            <input type="text" name="username" class="form-control" placeholder="Tu usuario" autofocus required>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold small">Contraseña</label>
+                            <input type="password" name="password" class="form-control" placeholder="Contraseña" required>
+                        </div>
+                        <button type="submit" class="btn btn-verde w-100 rounded-pill py-2">
+                            <i class="bi bi-box-arrow-in-right me-1"></i>Entrar
+                        </button>
+                    </form>
+
+                    <hr class="my-3">
+                    <p class="text-center text-muted small fw-semibold mb-2" style="text-transform:uppercase;letter-spacing:.05em;">Cuentas de demo</p>
+                    <div class="d-flex justify-content-center gap-3">
+                        <div class="text-center p-2 rounded-3 border" style="min-width:100px;">
+                            <span class="badge-admin d-inline-block mb-1">Admin</span>
+                            <p class="mb-0 small text-muted">admin / admin</p>
+                        </div>
+                        <div class="text-center p-2 rounded-3 border" style="min-width:100px;">
+                            <span class="badge-user d-inline-block mb-1">User</span>
+                            <p class="mb-0 small text-muted">user / user</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- registro -->
+        <div class="col-md-6">
+            <div style="background:#fff;border-radius:12px;overflow:hidden;">
+                <div style="background-color:var(--verde-med);padding:2rem;text-align:center;color:#fff;">
+                    <i class="bi bi-person-plus" style="font-size:2rem;color:#fff;"></i>
+                    <h4 style="font-weight:700;margin:.5rem 0 0;">Crear cuenta</h4>
+                    <p style="opacity:.7;font-size:.85rem;margin:4px 0 0;">Regístrate como nuevo cliente</p>
+                </div>
+                <div style="padding:1.8rem 2rem 2rem;">
+                    <form th:action="@{/registro}" method="post">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold small">Nombre completo <span class="text-danger">*</span></label>
+                            <input type="text" name="fullname" class="form-control" placeholder="María García" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold small">Usuario <span class="text-danger">*</span></label>
+                            <input type="text" name="username" class="form-control" placeholder="Elige un usuario" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold small">Email <span class="text-danger">*</span></label>
+                            <input type="email" name="email" class="form-control" placeholder="correo@ejemplo.com" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold small">Teléfono</label>
+                            <input type="number" name="telefono" class="form-control" placeholder="600000000">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold small">Contraseña <span class="text-danger">*</span></label>
+                            <input type="password" name="password" class="form-control" placeholder="Mínimo 6 caracteres" required>
+                        </div>
+                        <div class="mb-4">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="socioReg" name="socioTienda">
+                                <label class="form-check-label small fw-semibold" for="socioReg">
+                                    <i class="bi bi-star-fill me-1" style="color:#f59e0b;"></i>Quiero ser socio de la tienda
+                                    <span class="fw-normal text-muted d-block" style="font-size:.78rem;">Obtén descuentos adicionales</span>
+                                </label>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn w-100 rounded-pill py-2 fw-semibold"
+                                style="background-color:var(--verde-med);color:#fff;">
+                            <i class="bi bi-person-plus me-1"></i>Crear cuenta
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

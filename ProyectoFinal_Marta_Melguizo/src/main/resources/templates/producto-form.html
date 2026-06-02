@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/fragments :: head_deps}">
+    <title>Producto — PetShop Manager</title>
+</head>
+<body class="d-flex flex-column min-vh-100">
+<nav th:replace="~{fragments/fragments :: menu_admin}"></nav>
+
+<div class="seccion-header">
+    <div class="container">
+        <h5 class="fw-bold mb-0" th:text="${producto.id != null} ? '✏️ Editar producto' : '📦 Nuevo producto'">Producto</h5>
+        <p class="mb-0 small opacity-75">Completa los datos para el catálogo de la tienda</p>
+    </div>
+</div>
+
+<div class="container py-4 flex-grow-1" style="max-width:680px;">
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+            <form th:action="${producto.id != null} ? @{/productos/editar/submit} : @{/productos/save}"
+                  th:object="${producto}" method="post">
+                <input type="hidden" th:field="*{id}">
+
+                <div class="row g-3">
+                    <div class="col-12">
+                        <label class="form-label fw-semibold small">Nombre <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" th:field="*{nombre}"
+                               th:errorclass="is-invalid" placeholder="Ej: Pienso premium para perro adulto">
+                        <div class="invalid-feedback" th:errors="*{nombre}"></div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold small">Precio <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" th:field="*{precio}"
+                                   th:errorclass="is-invalid" step="0.01" min="0.01" placeholder="9.99">
+                            <span class="input-group-text">€</span>
+                        </div>
+                        <div class="invalid-feedback" th:errors="*{precio}"></div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold small">Stock <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" th:field="*{stock}"
+                                   th:errorclass="is-invalid" min="0" placeholder="50">
+                            <span class="input-group-text">uds</span>
+                        </div>
+                        <div class="invalid-feedback" th:errors="*{stock}"></div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold small">Tipo de mascota <span class="text-danger">*</span></label>
+                        <select class="form-select" th:field="*{tipoMascota}" th:errorclass="is-invalid">
+                            <option value="">— Selecciona —</option>
+                            <option th:each="t : ${tipos}" th:value="${t}" th:text="${t}"></option>
+                        </select>
+                        <div class="invalid-feedback" th:errors="*{tipoMascota}"></div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold small">Fecha de caducidad</label>
+                        <input type="date" class="form-control" th:field="*{fechaCaducidad}" th:errorclass="is-invalid">
+                        <div class="invalid-feedback" th:errors="*{fechaCaducidad}"></div>
+                    </div>
+
+                    <div class="col-12">
+                        <label class="form-label fw-semibold small">URL de imagen</label>
+                        <input type="url" class="form-control" th:field="*{imagen}"
+                               placeholder="https://ejemplo.com/imagen.jpg">
+                    </div>
+
+                    <div class="col-12">
+                        <label class="form-label fw-semibold small">Descripción</label>
+                        <textarea class="form-control" th:field="*{descripcion}"
+                                  th:errorclass="is-invalid" rows="3" maxlength="500"
+                                  placeholder="Descripción breve del producto..."></textarea>
+                        <div class="invalid-feedback" th:errors="*{descripcion}"></div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="devolucion" th:field="*{devolucion}">
+                            <label class="form-check-label fw-semibold small" for="devolucion">
+                                Admite devolución
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="my-4">
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-verde rounded-pill px-4 flex-grow-1">
+                        <i class="bi bi-check-circle me-1"></i>Guardar producto
+                    </button>
+                    <a th:href="@{/productos/admin}" class="btn btn-verde-outline rounded-pill px-4">
+                        <i class="bi bi-arrow-left me-1"></i>Cancelar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="~{fragments/fragments :: footer}"></footer>
+</body>
+</html>

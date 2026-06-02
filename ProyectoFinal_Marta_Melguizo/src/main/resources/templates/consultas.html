@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/fragments :: head_deps}">
+    <title>Estadísticas — PetShop Manager</title>
+</head>
+<body class="d-flex flex-column min-vh-100">
+<nav th:replace="~{fragments/fragments :: menu_admin}"></nav>
+
+<div class="seccion-header">
+    <div class="container d-flex align-items-center justify-content-between">
+        <div>
+            <h5 class="fw-bold mb-0"><i class="bi bi-bar-chart-line me-2"></i>Estadísticas</h5>
+            <p class="mb-0 small opacity-75">Resumen de ventas, clientes y stock</p>
+        </div>
+    </div>
+</div>
+
+<div class="container py-4 flex-grow-1">
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-md-3">
+            <div class="card border-0 shadow-sm text-center p-3 h-100">
+                <div class="fw-bold" style="font-size:1.6rem;color:var(--verde);"
+                     th:text="${#numbers.formatDecimal(totalfacturado,1,2)} + ' €'">0.00 €</div>
+                <div class="small text-muted text-uppercase fw-semibold" style="letter-spacing:.04em;">Total facturado</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card border-0 shadow-sm text-center p-3 h-100">
+                <div class="fw-bold" style="font-size:1.6rem;color:var(--verde);"
+                     th:text="${productoBajoStock != null ? productoBajoStock.size() : 0}">0</div>
+                <div class="small text-muted text-uppercase fw-semibold" style="letter-spacing:.04em;">Productos stock bajo</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card border-0 shadow-sm text-center p-3 h-100">
+                <div class="fw-bold" style="font-size:1.6rem;color:var(--verde);"
+                     th:text="${top5Pedidos != null ? top5Pedidos.size() : 0}">0</div>
+                <div class="small text-muted text-uppercase fw-semibold" style="letter-spacing:.04em;">Top pedidos</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card border-0 shadow-sm text-center p-3 h-100">
+                <div class="fw-bold" style="font-size:1.6rem;color:var(--verde);"
+                     th:text="${clienteGasto != null ? clienteGasto.size() : 0}">0</div>
+                <div class="small text-muted text-uppercase fw-semibold" style="letter-spacing:.04em;">Clientes con gasto</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-7 d-flex flex-column gap-4">
+
+            <!-- Filtro por tipo de mascota -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-header" style="background-color:var(--verde);color:#fff;">
+                    <span class="fw-semibold small"><i class="bi bi-heart me-1"></i>Más vendidos por tipo de mascota</span>
+                </div>
+                <div class="card-body p-3">
+                    <form th:action="@{/consultas/mas-vendidos}" method="get" class="d-flex gap-2 mb-3">
+                        <select name="tipo" class="form-select form-select-sm" required>
+                            <option value="">— Selecciona un tipo —</option>
+                            <option th:each="t : ${tipos}" th:value="${t}" th:text="${t}"
+                                    th:selected="${TipoSeleccionado != null and TipoSeleccionado == t}"></option>
+                        </select>
+                        <button type="submit" class="btn btn-verde btn-sm px-3">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </form>
+                    <div th:if="${masVendidos != null and not #lists.isEmpty(masVendidos)}"
+                         class="table-responsive">
+                        <table class="table tabla-verde align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th class="ps-3">Producto</th>
+                                    <th class="text-end pe-3">Precio</th>
+                                    <th class="text-center">Stock</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="p : ${masVendidos}">
+                                    <td class="ps-3 fw-semibold small" style="color:var(--verde);" th:text="${p.nombre}">—</td>
+                                    <td class="text-end pe-3 small" th:text="${#numbers.formatDecimal(p.precio,1,2)} + ' €'">—</td>
+                                    <td class="text-center">
+                                        <span class="badge rounded-pill"
+                                              th:classappend="${p.stock > 10} ? 'bg-success' : (${p.stock > 0} ? 'bg-warning text-dark' : 'bg-danger')"
+                                              style="font-size:.7rem;" th:text="${p.stock}">0</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p th:if="${masVendidos == null or #lists.isEmpty(masVendidos)}"
+                       class="text-muted small mb-0">Selecciona un tipo para ver los resultados.</p>
+                </div>
+            </div>
+
+            <!-- Filtro por rango de fechas -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-header" style="background-color:var(--verde);color:#fff;">
+                    <span class="fw-semibold small"><i class="bi bi-calendar-range me-1"></i>Pedidos por rango de fechas</span>
+                </div>
+                <div class="card-body p-3">
+                    <form th:action="@{/consultas/pedidos-rango}" method="get" class="row g-2 mb-3">
+                        <div class="col-md-5">
+                            <input type="date" name="desde" class="form-control form-control-sm"
+                                   th:value="${desde}" required>
+                        </div>
+                        <div class="col-md-5">
+                            <input type="date" name="hasta" class="form-control form-control-sm"
+                                   th:value="${hasta}" required>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-verde btn-sm w-100">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </div>
+                    </form>
+                    <div th:if="${pedidosrango != null and not #lists.isEmpty(pedidosrango)}"
+                         class="table-responsive">
+                        <table class="table tabla-verde align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th class="ps-3">Código</th>
+                                    <th>Fecha</th>
+                                    <th>Cliente</th>
+                                    <th>Estado</th>
+                                    <th class="text-end pe-3">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="p : ${pedidosrango}">
+                                    <td class="ps-3 small text-muted" th:text="'#' + ${p.codigo}">—</td>
+                                    <td class="small" th:text="${#temporals.format(p.fecha,'dd/MM/yyyy')}">—</td>
+                                    <td class="fw-semibold small" style="color:var(--verde);"
+                                        th:text="${p.cliente != null ? p.cliente.nombre : '—'}">—</td>
+                                    <td>
+                                        <span th:if="${p.estadoPedido.name() == 'PENDIENTE'}"  class="badge-pendiente"  th:text="${p.estadoPedido}">PENDIENTE</span>
+                                        <span th:if="${p.estadoPedido.name() == 'ENVIADO'}"    class="badge-enviado"    th:text="${p.estadoPedido}">ENVIADO</span>
+                                        <span th:if="${p.estadoPedido.name() == 'ENTREGADO'}"  class="badge-entregado"  th:text="${p.estadoPedido}">ENTREGADO</span>
+                                    </td>
+                                    <td class="text-end pe-3 fw-bold" style="color:var(--verde-med);"
+                                        th:text="${#numbers.formatDecimal(p.total,1,2)} + ' €'">—</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p th:if="${pedidosrango == null or #lists.isEmpty(pedidosrango)}"
+                       class="text-muted small mb-0">Selecciona un rango para ver los resultados.</p>
+                </div>
+            </div>
+
+            <!-- Filtro productos por tipo -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-header" style="background-color:var(--verde);color:#fff;">
+                    <span class="fw-semibold small"><i class="bi bi-funnel me-1"></i>Productos por tipo de mascota</span>
+                </div>
+                <div class="card-body p-3">
+                    <form th:action="@{/consultas/por-tipo}" method="get" class="d-flex gap-2 mb-3">
+                        <select name="tipo" class="form-select form-select-sm" required>
+                            <option value="">— Selecciona un tipo —</option>
+                            <option th:each="t : ${tipos}" th:value="${t}" th:text="${t}"
+                                    th:selected="${tipoSeleccionado != null and tipoSeleccionado == t}"></option>
+                        </select>
+                        <button type="submit" class="btn btn-verde btn-sm px-3">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </form>
+                    <div th:if="${precioMedio != null}"
+                         class="alert alert-success py-2 mb-3 small">
+                        Precio medio para <strong th:text="${tipoSeleccionado}">—</strong>:
+                        <strong th:text="${#numbers.formatDecimal(precioMedio,1,2)} + ' €'">—</strong>
+                    </div>
+                    <div th:if="${ProductoPorTipo != null and not #lists.isEmpty(ProductoPorTipo)}"
+                         class="table-responsive">
+                        <table class="table tabla-verde align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th class="ps-3">Producto</th>
+                                    <th class="text-end">Precio</th>
+                                    <th class="text-center pe-3">Stock</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="p : ${ProductoPorTipo}">
+                                    <td class="ps-3 fw-semibold small" style="color:var(--verde);" th:text="${p.nombre}">—</td>
+                                    <td class="text-end small" th:text="${#numbers.formatDecimal(p.precio,1,2)} + ' €'">—</td>
+                                    <td class="text-center pe-3">
+                                        <span class="badge rounded-pill"
+                                              th:classappend="${p.stock > 10} ? 'bg-success' : (${p.stock > 0} ? 'bg-warning text-dark' : 'bg-danger')"
+                                              style="font-size:.7rem;" th:text="${p.stock}">0</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p th:if="${ProductoPorTipo == null or #lists.isEmpty(ProductoPorTipo)}"
+                       class="text-muted small mb-0">Selecciona un tipo para ver los productos.</p>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-lg-5 d-flex flex-column gap-4">
+
+            <!-- Top 5 pedidos -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-header" style="background-color:var(--verde);color:#fff;">
+                    <span class="fw-semibold small"><i class="bi bi-trophy me-1"></i>Top 5 pedidos por importe</span>
+                </div>
+                <div class="table-responsive">
+                    <table class="table tabla-verde align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th class="ps-3">Código</th>
+                                <th>Cliente</th>
+                                <th class="text-end pe-3">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="p : ${top5Pedidos}">
+                                <td class="ps-3 small text-muted" th:text="'#' + ${p.codigo}">—</td>
+                                <td class="small fw-semibold" style="color:var(--verde);"
+                                    th:text="${p.cliente != null ? p.cliente.nombre : '—'}">—</td>
+                                <td class="text-end pe-3 fw-bold" style="color:var(--verde-med);"
+                                    th:text="${#numbers.formatDecimal(p.total,1,2)} + ' €'">—</td>
+                            </tr>
+                            <tr th:if="${top5Pedidos == null or #lists.isEmpty(top5Pedidos)}">
+                                <td colspan="3" class="text-center py-3 text-muted small">Sin datos.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Clientes por gasto -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-header" style="background-color:var(--verde);color:#fff;">
+                    <span class="fw-semibold small"><i class="bi bi-people me-1"></i>Clientes por gasto total</span>
+                </div>
+                <div class="table-responsive">
+                    <table class="table tabla-verde align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th class="ps-3">Cliente</th>
+                                <th class="text-center">Socio</th>
+                                <th class="text-end pe-3">Pedidos</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="c : ${clienteGasto}">
+                                <td class="ps-3 fw-semibold small" style="color:var(--verde);" th:text="${c.nombre}">—</td>
+                                <td class="text-center">
+                                    <span th:if="${c.socioTienda}" class="badge-pendiente">⭐ Socio</span>
+                                    <span th:unless="${c.socioTienda}" class="text-muted small">No</span>
+                                </td>
+                                <td class="text-end pe-3">
+                                    <span class="badge rounded-pill"
+                                          style="background-color:var(--menta);color:var(--verde);font-size:.7rem;"
+                                          th:text="${c.pedidos.size()}">0</span>
+                                </td>
+                            </tr>
+                            <tr th:if="${clienteGasto == null or #lists.isEmpty(clienteGasto)}">
+                                <td colspan="3" class="text-center py-3 text-muted small">Sin datos.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Stock bajo -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-header" style="background-color:var(--verde);color:#fff;">
+                    <span class="fw-semibold small"><i class="bi bi-exclamation-triangle me-1"></i>Productos con stock bajo</span>
+                </div>
+                <div class="card-body p-3 pb-2">
+                    <form th:action="@{/consultas/bajo-stock}" method="get" class="d-flex gap-2 mb-3">
+                        <input type="number" name="umbral" class="form-control form-control-sm"
+                               th:value="${umbral} ?: 5" min="1" placeholder="Umbral (ej: 5)">
+                        <button type="submit" class="btn btn-verde btn-sm px-3">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </form>
+                </div>
+                <div class="table-responsive">
+                    <table class="table tabla-verde align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th class="ps-3">Producto</th>
+                                <th class="text-center pe-3">Stock</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="p : ${productoBajoStock}">
+                                <td class="ps-3 fw-semibold small" style="color:var(--verde);" th:text="${p.nombre}">—</td>
+                                <td class="text-center pe-3">
+                                    <span class="badge rounded-pill"
+                                          th:classappend="${p.stock == 0} ? 'bg-danger' : 'bg-warning text-dark'"
+                                          style="font-size:.7rem;" th:text="${p.stock}">0</span>
+                                </td>
+                            </tr>
+                            <tr th:if="${productoBajoStock == null or #lists.isEmpty(productoBajoStock)}">
+                                <td colspan="2" class="text-center py-3 text-muted small"><i class="bi bi-check-circle-fill me-1" style="color:var(--verde-med);"></i>Todo el stock está bien.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<footer th:replace="~{fragments/fragments :: footer}"></footer>
+</body>
+</html>
